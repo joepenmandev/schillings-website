@@ -7,6 +7,7 @@ import type { PersonProfile } from '@/data/people';
 import { EXPERTISE_LABELS, type ExpertiseId } from '@/data/people-taxonomy';
 import { strategicSituationIdsForPersonExpertise } from '@/data/person-expertise-strategic-situations';
 import { getSituationDetailById, situationPathSlug } from '@/data/strategic-rebuild-content';
+import { expertisePathSlug } from '@/lib/expertise-paths';
 import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
 
 interface Props {
@@ -39,7 +40,7 @@ const linkClass =
       <ul class={`${linkList} list-none`}>
         {expertise.map((id) => (
           <li>
-            <a href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${id}`)} class={linkClass}>
+            <a href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(id)}`)} class={linkClass}>
               {EXPERTISE_LABELS[id]}
             </a>
           </li>

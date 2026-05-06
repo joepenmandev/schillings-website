@@ -8,7 +8,9 @@ import type { Office, OfficeSlug } from './offices';
 import { OFFICES, officeAddressCountry } from './offices';
 import { breadcrumbListGraphNode } from './jsonld-breadcrumbs';
 import { organizationNodeId, websiteNodeId } from './jsonld-entity-ids';
+import { expertisePathSlug } from './expertise-paths';
 import { absolutePageUrl } from './public-url';
+import { isExpertiseId } from './service-hubs';
 
 export function canonicalPageUrl(origin: string, locale: string, pathSegment: string): string {
   return absolutePageUrl(origin, locale as Locale, pathSegment);
@@ -123,7 +125,7 @@ export function buildExpertiseIndexGraphJsonLd(options: {
   locale: Locale;
   /** Index path segment (e.g. `expertise`). */
   collectionSegment: string;
-  /** `pathAfterLocale` overrides full tail under locale (e.g. `expertise` vs `expertise/reputation_privacy`). */
+  /** `pathAfterLocale` overrides full tail under locale (e.g. `expertise` vs `expertise/reputation-privacy`). */
   hubs: { id: string; label: string; pathAfterLocale?: string }[];
   pageTitle: string;
   pageDescription: string;
@@ -139,7 +141,12 @@ export function buildExpertiseIndexGraphJsonLd(options: {
     item: {
       '@type': 'WebPage',
       name: h.label,
-      url: absolutePageUrl(o, options.locale, h.pathAfterLocale ?? `${seg}/${h.id}`),
+      url: absolutePageUrl(
+        o,
+        options.locale,
+        h.pathAfterLocale ??
+          (isExpertiseId(h.id) ? `${seg}/${expertisePathSlug(h.id)}` : `${seg}/${h.id}`),
+      ),
     },
   }));
 

@@ -1,6 +1,7 @@
 ---
 import { getServicesIndexPublicExpertiseCards } from '@/data/strategic-rebuild-content';
 import type { Locale } from '@/i18n/config';
+import { expertisePathSlug } from '@/lib/expertise-paths';
 import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
 
 interface Props {
@@ -11,25 +12,29 @@ const { locale } = Astro.props;
 const cards = getServicesIndexPublicExpertiseCards();
 
 const cardClass =
-  'block rounded-lg border border-secondary-2/30 bg-utility-2/40 px-4 py-4 transition-colors hover:border-secondary-3 hover:bg-utility-2/70';
+  'group flex min-h-[8.5rem] flex-col rounded-sm border border-secondary-2/20 bg-utility-1/90 px-5 py-5 transition-colors hover:border-secondary-3/35 hover:bg-utility-2/50 md:min-h-0 md:px-6 md:py-6';
 const staticCardClass =
-  'block rounded-lg border border-secondary-2/30 bg-utility-2/40 px-4 py-4';
+  'flex min-h-[8.5rem] flex-col rounded-sm border border-secondary-2/20 bg-utility-1/90 px-5 py-5 md:min-h-0 md:px-6 md:py-6';
 ---
 
-<ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+<ul class="mt-8 grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5" aria-label="Expertise areas">
   {
     cards.map((card) => {
       const hub = card.linkedExpertiseId;
       return (
         <li>
           {hub ? (
-            <a href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${hub}`)} class={cardClass}>
-              <span class="font-medium text-secondary-4">{card.label}</span>
-              <span class="mt-1 block text-xs leading-relaxed text-secondary-3">Related people and work</span>
+            <a href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(hub)}`)} class={cardClass}>
+              <span class="font-serif text-lg font-extralight text-secondary-4 group-hover:text-secondary-3 md:text-xl">
+                {card.label}
+              </span>
+              <span class="mt-2 line-clamp-4 flex-1 text-sm font-extralight leading-snug text-secondary-3 md:line-clamp-3 md:text-[0.9375rem] md:leading-relaxed">
+                Related people and work
+              </span>
             </a>
           ) : (
             <div class={staticCardClass}>
-              <span class="font-medium text-secondary-4">{card.label}</span>
+              <span class="font-serif text-lg font-extralight text-secondary-4 md:text-xl">{card.label}</span>
             </div>
           )}
         </li>

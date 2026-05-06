@@ -120,13 +120,17 @@ function fixExpertiseHub(content, fixedLocale) {
     .replace(
       /export function getStaticPaths\(\) \{\s*const paths: \{ params: \{ locale: Locale; expertiseId: string \} \}\[\] = \[\];\s*for \(const locale of locales\) \{\s*for \(const expertiseId of EXPERTISE_IDS\) \{\s*paths\.push\(\{ params: \{ locale, expertiseId \} \}\);\s*\}\s*\}\s*return paths;\s*\}/,
       `export function getStaticPaths() {
-  return EXPERTISE_IDS.map((expertiseId) => ({ params: { expertiseId } }));
+  return getAllExpertisePathSlugs().map((slug) => ({ params: { slug } }));
 }`,
     )
     .replace(
       /const rawLocale = Astro\.params\.locale;\s*\nconst expertiseIdRaw = Astro\.params\.expertiseId;\s*\nif \(!rawLocale \|\| !isLocale\(rawLocale\) \|\| typeof expertiseIdRaw !== 'string' \|\| !isExpertiseId\(expertiseIdRaw\)\) \{\s*return new Response\(null, \{ status: 404 \}\);\s*\}\s*\nconst locale = rawLocale;/,
-      `const expertiseIdRaw = Astro.params.expertiseId;
-if (typeof expertiseIdRaw !== 'string' || !isExpertiseId(expertiseIdRaw)) {
+      `const slugRaw = Astro.params.slug;
+if (typeof slugRaw !== 'string') {
+  return new Response(null, { status: 404 });
+}
+const expertiseId = expertiseIdFromPathSlug(slugRaw);
+if (!expertiseId) {
   return new Response(null, { status: 404 });
 }
 const locale = '${fixedLocale}';`,
@@ -199,7 +203,7 @@ function transformFile(absPath, fixedLocale, pagesRoot) {
     content = fixNewsPagePaginated(content, fixedLocale);
   } else if (absPath.includes(`${path.sep}news${path.sep}topic${path.sep}[topic]${path.sep}`)) {
     content = fixNewsTopic(content, fixedLocale);
-  } else if (absPath.includes(`${path.sep}expertise${path.sep}[expertiseId]${path.sep}`)) {
+  } else if (absPath.includes(`${path.sep}expertise${path.sep}[slug]${path.sep}`)) {
     content = fixExpertiseHub(content, fixedLocale);
   } else if (absPath.includes(`${path.sep}keith-schilling-biography${path.sep}[slug]${path.sep}`)) {
     content = fixKeithBio(content, fixedLocale);

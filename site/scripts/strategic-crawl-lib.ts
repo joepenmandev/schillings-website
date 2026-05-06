@@ -5,7 +5,7 @@
 import { locales, type Locale } from '../src/i18n/config';
 import { publicPathname } from '../src/lib/public-url';
 import { getAllSituationPathSlugs, getAllWhatWeProtectPathSlugs } from '../src/data/strategic-rebuild-content';
-import { EXPERTISE_IDS } from '../src/data/people-taxonomy';
+import { getAllExpertisePathSlugs } from '../src/lib/expertise-paths';
 
 export type StrategicCrawlEntry = { locale: Locale; path: string };
 
@@ -23,8 +23,8 @@ export function buildStrategicCrawlPathnames(): StrategicCrawlEntry[] {
     }
     out.push({ locale, path: publicPathname(locale, 'response-system') });
     out.push({ locale, path: publicPathname(locale, 'expertise') });
-    for (const id of EXPERTISE_IDS) {
-      out.push({ locale, path: publicPathname(locale, `expertise/${id}`) });
+    for (const slug of getAllExpertisePathSlugs()) {
+      out.push({ locale, path: publicPathname(locale, `expertise/${slug}`) });
     }
     out.push({ locale, path: publicPathname(locale, 'people') });
     out.push({ locale, path: publicPathname(locale, 'news') });

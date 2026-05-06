@@ -6,6 +6,7 @@ import {
   isThinMigrationNewsPath,
 } from './sitemap-news-people';
 import { EXPERTISE_IDS } from '../data/people-taxonomy';
+import { expertisePathSlug } from '../lib/expertise-paths';
 import { getNewsBySlug } from '../data/news';
 import { publishedPeople } from '../data/people';
 import { publicPathname } from '../lib/public-url';
@@ -47,12 +48,25 @@ describe('sitemap-news-people', () => {
     expect(isThinMigrationNewsPath('/news/rss.xml')).toBe(false);
   });
 
-  it('includes UK / US / IE expertise hub URLs for every EXPERTISE_IDS slug', () => {
+  it('includes UK / US / IE expertise hub URLs with public kebab-case slugs', () => {
     const urls = expertiseHubAbsoluteUrls('https://example.com');
     expect(urls.length).toBe(EXPERTISE_IDS.length * locales.length);
     for (const id of EXPERTISE_IDS) {
       for (const locale of locales) {
-        expect(urls).toContain('https://example.com' + publicPathname(locale, `expertise/${id}`));
+        expect(urls).toContain(
+          'https://example.com' + publicPathname(locale, `expertise/${expertisePathSlug(id)}`),
+        );
+      }
+    }
+  });
+
+  it('expertise hub sitemap URLs do not use snake_case ExpertiseId segments', () => {
+    const urls = expertiseHubAbsoluteUrls('https://example.com');
+    for (const url of urls) {
+      const path = new URL(url).pathname.replace(/\/$/, '');
+      const tail = path.match(/\/expertise\/([^/]+)$/);
+      if (tail) {
+        expect(tail[1]).not.toMatch(/_/);
       }
     }
   });

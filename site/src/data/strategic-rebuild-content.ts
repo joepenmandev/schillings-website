@@ -4,6 +4,7 @@
  * Path keys (`id`) are stable for future routes and CMS mapping.
  */
 
+import { expertisePathSlug } from '../lib/expertise-paths';
 import type { ExpertiseId } from './people-taxonomy';
 
 export const STRATEGIC_PRIMARY_NAV_IDS = [
@@ -186,7 +187,7 @@ export function getServicesIndexPublicExpertiseCards(): readonly ServicesIndexPu
   }));
 }
 
-/** Graph hubs for expertise index JSON-LD and cards (`/expertise/`, `/expertise/{id}/`). */
+/** Graph hubs for expertise index JSON-LD and cards (`/expertise/`, `/expertise/{public-slug}/`). */
 export function getExpertiseIndexGraphHubEntries(): {
   id: string;
   label: string;
@@ -196,7 +197,7 @@ export function getExpertiseIndexGraphHubEntries(): {
   return getServicesIndexPublicExpertiseCards().map((c) => ({
     id: c.id,
     label: c.label,
-    pathAfterLocale: c.linkedExpertiseId ? `${base}/${c.linkedExpertiseId}` : base,
+    pathAfterLocale: c.linkedExpertiseId ? `${base}/${expertisePathSlug(c.linkedExpertiseId)}` : base,
   }));
 }
 

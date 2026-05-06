@@ -82,6 +82,8 @@ describe('jsonld-page', () => {
     expect(g['@graph'][1]).toMatchObject({
       numberOfItems: 1,
     });
+    const list = g['@graph'][1] as { itemListElement: { item: { url: string } }[] };
+    expect(list.itemListElement[0].item.url).toBe('https://x.com/expertise/reputation-privacy/');
   });
 
   it('expertise index graph respects pathAfterLocale for index-only items', () => {
@@ -94,7 +96,7 @@ describe('jsonld-page', () => {
         {
           id: 'reputation_privacy',
           label: 'Reputation & Defamation',
-          pathAfterLocale: 'expertise/reputation_privacy',
+          pathAfterLocale: 'expertise/reputation-privacy',
         },
       ],
       pageTitle: 'Expertise | Schillings',
@@ -106,7 +108,7 @@ describe('jsonld-page', () => {
       itemListElement: { item: { url: string } }[];
     };
     expect(list.itemListElement[0].item.url).toBe('https://x.com/expertise/');
-    expect(list.itemListElement[1].item.url).toBe('https://x.com/expertise/reputation_privacy/');
+    expect(list.itemListElement[1].item.url).toBe('https://x.com/expertise/reputation-privacy/');
   });
 
   it('buildJsonLdGraph merges nodes', () => {

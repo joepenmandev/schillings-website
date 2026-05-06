@@ -7,7 +7,7 @@ import {
 } from '../data/strategic-rebuild-content';
 import { publicPathname } from './public-url';
 
-/** Canonical public path segment for expertise hubs (`/expertise/`, `/expertise/{id}/`). */
+/** Canonical public path segment for expertise hubs (`/expertise/`, `/expertise/{public-kebab-slug}/`). */
 export const EXPERTISE_PUBLIC_SEGMENT = EXPERTISE_INDEX_PATH_SEGMENT;
 
 /** URL segment per strategic nav id — hyphens in paths; `intelligence` → `/news/` until IA rename. */

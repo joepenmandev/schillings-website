@@ -1,0 +1,20 @@
+---
+import ExpertiseHubDetail from '@/components/ExpertiseHubDetail.astro';
+import { expertiseIdFromPathSlug, getAllExpertisePathSlugs } from '@/lib/expertise-paths';
+
+export function getStaticPaths() {
+  return getAllExpertisePathSlugs().map((slug) => ({ params: { slug } }));
+}
+
+const slugRaw = Astro.params.slug;
+if (typeof slugRaw !== 'string') {
+  return new Response(null, { status: 404 });
+}
+const expertiseId = expertiseIdFromPathSlug(slugRaw);
+if (!expertiseId) {
+  return new Response(null, { status: 404 });
+}
+const locale = 'en-us';
+---
+
+<ExpertiseHubDetail {locale} {expertiseId} />

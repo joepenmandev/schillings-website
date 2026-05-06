@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { isExpertisePathSlug } from '../lib/expertise-paths';
 import { EXPERTISE_IDS } from './people-taxonomy';
 import {
   getAllSituationPathSlugs,
@@ -245,7 +246,7 @@ describe('strategic-rebuild-content expertise index public cards', () => {
       expect(h.pathAfterLocale === base || h.pathAfterLocale.startsWith(`${base}/`)).toBe(true);
       if (h.pathAfterLocale !== base) {
         const slug = h.pathAfterLocale.slice(`${base}/`.length);
-        expect(EXPERTISE_IDS).toContain(slug);
+        expect(isExpertisePathSlug(slug)).toBe(true);
       }
     }
   });

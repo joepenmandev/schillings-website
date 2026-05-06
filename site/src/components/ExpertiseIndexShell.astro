@@ -8,7 +8,7 @@ import { getExpertiseIndexGraphHubEntries } from '@/data/strategic-rebuild-conte
 import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
 import { buildJsonLdGraph, buildExpertiseIndexGraphNodes } from '@/lib/jsonld-page';
 import { absolutePageUrl } from '@/lib/public-url';
-import { EXPERTISE_PUBLIC_SEGMENT } from '@/lib/site-nav';
+import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
 import type { Locale } from '@/i18n/config';
 
 interface Props {
@@ -34,20 +34,48 @@ const pageJsonLd = buildJsonLdGraph(
     { name: 'Expertise', item: `${absolutePageUrl(origin, locale, EXPERTISE_PUBLIC_SEGMENT)}` },
   ]),
 );
+
+const crumbClass =
+  'text-secondary-2 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3';
+const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
+const gridListHeading = 'Areas of expertise';
 ---
 
 <Base title={pageTitle} description={pageDescription} {locale} pathAfterLocale={EXPERTISE_PUBLIC_SEGMENT}>
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(pageJsonLd)} />
   <SiteHeader {locale} />
-  <DocumentMain>
-    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
-      Expertise
-    </h1>
-    <p class="mt-4 max-w-3xl text-pretty text-base leading-relaxed text-secondary-3">
-      Schillings combines specialist capabilities across legal, intelligence, investigations, communications and digital resilience
-      to protect reputation, privacy, security and continuity in high-stakes situations.
-    </p>
-    <ExpertiseIndexCards {locale} />
-    <MarketingStubNav {locale} currentSegment={EXPERTISE_PUBLIC_SEGMENT} />
+  <DocumentMain contentWidth="wide">
+    <article class="mx-auto max-w-6xl">
+      <nav aria-label="Breadcrumb" class="text-xs font-normal text-secondary-3">
+        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <li>
+            <a href={localeHref(locale, '')} class={crumbClass}>Home</a>
+          </li>
+          <li class="text-secondary-2/50" aria-hidden="true">/</li>
+          <li class="text-secondary-4" aria-current="page">Expertise</li>
+        </ol>
+      </nav>
+
+      <header class="mt-8 md:mt-10">
+        <h1 class="font-serif text-pretty text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+          Expertise
+        </h1>
+        <p class="mt-6 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem] md:leading-[1.65]">
+          Schillings combines specialist capabilities across legal, intelligence, investigations, communications and digital resilience
+          to protect reputation, privacy, security and continuity in high-stakes situations.
+        </p>
+      </header>
+
+      <section class="mt-12 md:mt-14" aria-labelledby="expertise-grid-heading">
+        <h2 id="expertise-grid-heading" class={sectionKicker}>
+          {gridListHeading}
+        </h2>
+        <ExpertiseIndexCards {locale} />
+      </section>
+
+      <div class="mt-14 md:mt-16">
+        <MarketingStubNav {locale} currentSegment={EXPERTISE_PUBLIC_SEGMENT} />
+      </div>
+    </article>
   </DocumentMain>
 </Base>

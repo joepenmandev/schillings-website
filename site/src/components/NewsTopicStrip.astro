@@ -4,6 +4,7 @@
  * Aligns with DESIGN-REFERENCES.md taxonomy vocabulary without requiring per-article topic tags yet.
  */
 import type { Locale } from '../i18n/config';
+import { expertisePathSlug } from '../lib/expertise-paths';
 import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '../lib/site-nav';
 import { NEWS_THEME_LINKS } from '../lib/news-topics';
 
@@ -25,7 +26,7 @@ const { locale } = Astro.props;
       NEWS_THEME_LINKS.map(({ label, expertiseId }) => (
         <li>
           <a
-            href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertiseId}`)}
+            href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(expertiseId)}`)}
             class="rounded-full border border-secondary-2/40 bg-brand-white px-3 py-1.5 text-xs font-normal text-secondary-4 transition-colors hover:border-secondary-3 hover:bg-utility-2/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-4"
           >
             {label}
