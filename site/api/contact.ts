@@ -10,6 +10,8 @@
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
+import { gateSiteBasicAuth } from '../src/lib/site-basic-auth-gate';
+
 export const config = { runtime: 'edge' };
 
 /** Max JSON body size (characters); qualifying form payloads are far smaller. */
@@ -124,6 +126,11 @@ async function applyRateLimit(request: Request): Promise<Response | null> {
 }
 
 export default async function handler(request: Request): Promise<Response> {
+  const authDenied = gateSiteBasicAuth(request);
+  if (authDenied) {
+    return authDenied;
+  }
+
   if (request.method !== 'POST') {
     return json({ error: 'Method not allowed' }, 405);
   }
