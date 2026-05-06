@@ -46,7 +46,11 @@ Set in the Vercel project (or **`.env`** locally — never commit secrets). Line
 | **`PUBLIC_FORM_ENDPOINT`** | Client form action; production typically **`/api/contact`**. Leave empty in local dev to log payloads to the console. |
 | **`UPSTASH_REDIS_REST_URL`** / **`UPSTASH_REDIS_REST_TOKEN`** | Optional; **global** rate limit for `/api/contact` across Edge isolates. Omit for in-memory limit only. |
 | **`CONTACT_RATE_LIMIT_MAX`** | Optional; max POSTs per IP per minute (default **30**). |
-| **`SITE_USER`** / **`SITE_PASS`** | Optional; when both are set in a production deployment, Astro middleware enables HTTP Basic Auth for all routes. |
+| **`SITE_USER`** / **`SITE_PASS`** | Optional; when both are set in production, HTTP Basic Auth gates the site (see below). |
+
+**Basic Auth and `api/`:** `src/middleware.ts` runs for Astro-rendered routes only. Vercel **`api/*.ts`** handlers are separate Edge functions and **do not** go through that middleware. When you add a new API route and the site is gated, call **`gateSiteBasicAuth(request)`** from **`src/lib/site-basic-auth-gate.ts`** at the top of the handler (same env vars). **`api/contact.ts`** already does this.
+
+**Vercel + Git:** Production should build from the connected Git repo (not only `vercel deploy` from a partial tree), with **Root Directory** set to the folder that contains **`package.json`** and **`astro.config.mjs`** (this repo: **`site`** when the Vercel project root is the monorepo, or **`.`** when the project is linked only to `site/`). Mismatches produce static-only deploys where middleware never runs.
 
 ## Adding routes & locale mirrors
 
@@ -94,7 +98,7 @@ You can audit this quickly with `npm run verify:nonprod-indexing` (set `INDEXING
 - **`@astrojs/sitemap`** — emits `sitemap-index.xml` / `sitemap-0.xml` (UK homepage **`/`** included; thin migration URLs excluded; see `astro.config.mjs`)
 - **`src/layouts/Base.astro`** — skip link, default meta description, `robots`, canonical, **hreflang** (optional prop **`hreflangLocales`** when a page is not a full three-way alternate), **`og:locale`** + **`og:locale:alternate`** (aligned with hreflang targets), **Open Graph**, **Twitter**, **Organization** JSON-LD (SRA id, London address, `contactPoint` phone, `sameAs` socials)
 - **`vercel.json`** — security headers + **301 redirects** from legacy paths to **UK unprefixed** URLs (e.g. **`/news/:path*`** → **`/news/:path*`**), **`/en-gb/:path*`** → **`/:path*`**, plus **wildcards** for people/news/biography (see `../REDIRECT-MAP.md`)
-- **`api/contact.ts`** — Vercel **Edge** POST handler; env vars in **§ Environment variables** and **`.env.example`**
+- **`api/contact.ts`** — Vercel **Edge** POST handler; env vars in **§ Environment variables** and **`.env.example`**; applies **`gateSiteBasicAuth`** when **`SITE_USER`** / **`SITE_PASS`** are set
 - **`html lang`** — BCP 47 (`en-GB`, etc.) via `src/i18n/config.ts`
 
 Default **`/og-default.svg`** (1200×630) is used for Open Graph / Twitter unless a page passes `ogImage` into `Base`. Replace with a raster **1200×630** when brand supplies one (some crawlers prefer PNG/JPEG).

@@ -3,11 +3,15 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 describe('api/contact handler', () => {
   const originalEnv = process.env.CONTACT_WEBHOOK_URL;
   const originalRate = process.env.CONTACT_RATE_LIMIT_MAX;
+  const originalSiteUser = process.env.SITE_USER;
+  const originalSitePass = process.env.SITE_PASS;
   const originalFetch = globalThis.fetch;
 
   beforeEach(() => {
     process.env.CONTACT_WEBHOOK_URL = 'https://hooks.example.test/inbound';
     delete process.env.CONTACT_RATE_LIMIT_MAX;
+    delete process.env.SITE_USER;
+    delete process.env.SITE_PASS;
     globalThis.fetch = vi.fn().mockResolvedValue(new Response('ok', { status: 200 }));
   });
 
@@ -16,6 +20,10 @@ describe('api/contact handler', () => {
     else process.env.CONTACT_WEBHOOK_URL = originalEnv;
     if (originalRate === undefined) delete process.env.CONTACT_RATE_LIMIT_MAX;
     else process.env.CONTACT_RATE_LIMIT_MAX = originalRate;
+    if (originalSiteUser === undefined) delete process.env.SITE_USER;
+    else process.env.SITE_USER = originalSiteUser;
+    if (originalSitePass === undefined) delete process.env.SITE_PASS;
+    else process.env.SITE_PASS = originalSitePass;
     globalThis.fetch = originalFetch;
   });
 
@@ -34,6 +42,21 @@ describe('api/contact handler', () => {
     const { default: handler } = await import('./contact');
     const res = await handler(new Request('https://example.com/api/contact', { method: 'GET' }));
     expect(res.status).toBe(405);
+  });
+
+  it('returns 401 when Basic Auth is configured but Authorization is missing', async () => {
+    process.env.SITE_USER = 'reviewer';
+    process.env.SITE_PASS = 'secret';
+    const { default: handler } = await import('./contact');
+    const res = await handler(
+      new Request('https://example.com/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({}),
+      }),
+    );
+    expect(res.status).toBe(401);
+    expect(res.headers.get('www-authenticate')).toMatch(/Basic realm=/);
   });
 
   it('returns 413 when JSON body is too large', async () => {
