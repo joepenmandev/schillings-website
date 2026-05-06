@@ -14,7 +14,6 @@ interface Props {
 const { locale, deferHeaderLogoPriority = false } = Astro.props;
 const home = localeHref(locale, '');
 const immediateHref = localeHref(locale, immediateResponseSegment);
-const intelligenceHref = '/executive-intelligence-platform/';
 
 const navLinkClass =
   'rounded-sm py-1 text-sm font-extralight text-brand-black outline-offset-4 transition-colors hover:text-secondary-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4';
@@ -66,9 +65,6 @@ const navLinkClassMobile = `${navLinkClass} block px-3 py-2`;
         <a href={localeHref(locale, contactSegment)} class={navLinkClass}>
           Contact
         </a>
-        <a href={intelligenceHref} class={navLinkClass}>
-          Intelligence
-        </a>
       </nav>
 
       <details class="group relative md:hidden">
@@ -89,9 +85,6 @@ const navLinkClassMobile = `${navLinkClass} block px-3 py-2`;
           }
           <a href={localeHref(locale, contactSegment)} class={navLinkClassMobile}>
             Contact
-          </a>
-          <a href={intelligenceHref} class={navLinkClassMobile}>
-            Intelligence
           </a>
         </div>
       </details>

@@ -35,7 +35,6 @@
     "@upstash/redis": "^1.37.0",
     "astro": "^6.2.2",
     "leaflet": "^1.9.4",
-    "marked": "^18.0.3",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
