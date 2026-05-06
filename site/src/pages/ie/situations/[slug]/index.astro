@@ -1,0 +1,15 @@
+---
+import SituationDetailPage from '@/components/SituationDetailPage.astro';
+import { getAllSituationPathSlugs, situationIdFromPathSlug } from '@/data/strategic-rebuild-content';
+
+export function getStaticPaths() {
+  return getAllSituationPathSlugs().map((slug) => ({ params: { slug } }));
+}
+
+const slug = Astro.params.slug;
+if (typeof slug !== 'string' || !situationIdFromPathSlug(slug)) {
+  return new Response(null, { status: 404 });
+}
+---
+
+<SituationDetailPage locale="en-ie" {slug} />

@@ -5,6 +5,8 @@ describe('api/contact handler', () => {
   const originalRate = process.env.CONTACT_RATE_LIMIT_MAX;
   const originalSiteUser = process.env.SITE_USER;
   const originalSitePass = process.env.SITE_PASS;
+  const originalDisableAuth = process.env.DISABLE_SITE_BASIC_AUTH;
+  const originalAuthHosts = process.env.BASIC_AUTH_HOSTS;
   const originalFetch = globalThis.fetch;
 
   beforeEach(() => {
@@ -12,6 +14,8 @@ describe('api/contact handler', () => {
     delete process.env.CONTACT_RATE_LIMIT_MAX;
     delete process.env.SITE_USER;
     delete process.env.SITE_PASS;
+    delete process.env.DISABLE_SITE_BASIC_AUTH;
+    delete process.env.BASIC_AUTH_HOSTS;
     globalThis.fetch = vi.fn().mockResolvedValue(new Response('ok', { status: 200 }));
   });
 
@@ -24,6 +28,10 @@ describe('api/contact handler', () => {
     else process.env.SITE_USER = originalSiteUser;
     if (originalSitePass === undefined) delete process.env.SITE_PASS;
     else process.env.SITE_PASS = originalSitePass;
+    if (originalDisableAuth === undefined) delete process.env.DISABLE_SITE_BASIC_AUTH;
+    else process.env.DISABLE_SITE_BASIC_AUTH = originalDisableAuth;
+    if (originalAuthHosts === undefined) delete process.env.BASIC_AUTH_HOSTS;
+    else process.env.BASIC_AUTH_HOSTS = originalAuthHosts;
     globalThis.fetch = originalFetch;
   });
 
@@ -57,6 +65,36 @@ describe('api/contact handler', () => {
     );
     expect(res.status).toBe(401);
     expect(res.headers.get('www-authenticate')).toMatch(/Basic realm=/);
+  });
+
+  it('skips Basic Auth when DISABLE_SITE_BASIC_AUTH is true (trimmed)', async () => {
+    process.env.SITE_USER = 'reviewer';
+    process.env.SITE_PASS = 'secret';
+    process.env.DISABLE_SITE_BASIC_AUTH = '  TRUE  ';
+    const { default: handler } = await import('./contact');
+    const res = await handler(
+      new Request('https://example.com/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({}),
+      }),
+    );
+    expect(res.status).not.toBe(401);
+  });
+
+  it('skips Basic Auth when request host is not in BASIC_AUTH_HOSTS', async () => {
+    process.env.SITE_USER = 'reviewer';
+    process.env.SITE_PASS = 'secret';
+    process.env.BASIC_AUTH_HOSTS = 'prod.example.org';
+    const { default: handler } = await import('./contact');
+    const res = await handler(
+      new Request('https://staging.vercel.app/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({}),
+      }),
+    );
+    expect(res.status).not.toBe(401);
   });
 
   it('returns 413 when JSON body is too large', async () => {

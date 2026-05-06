@@ -24,6 +24,9 @@
     "verify:people-photos": "node scripts/verify-people-photos.mjs",
     "verify:news-migration": "node scripts/verify-news-migration.mjs",
     "verify:staging-seo": "node scripts/verify-staging-seo.mjs",
+    "verify:strategic-crawl": "tsx scripts/verify-strategic-crawl.ts",
+    "verify:strategic-crawl:local": "node scripts/verify-strategic-crawl-local.mjs",
+    "audit:strategic-copy": "tsx scripts/audit-strategic-copy.ts",
     "backfill:news-authors": "tsx scripts/backfill-news-author-slugs.ts",
     "publish:migrated-news": "tsx scripts/publish-migrated-news.ts"
   },
@@ -35,6 +38,7 @@
     "@upstash/redis": "^1.37.0",
     "astro": "^6.2.2",
     "leaflet": "^1.9.4",
+    "split-type": "^0.3.4",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {

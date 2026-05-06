@@ -1,0 +1,15 @@
+---
+import WhatWeProtectDetailPage from '@/components/WhatWeProtectDetailPage.astro';
+import { getAllWhatWeProtectPathSlugs, whatWeProtectIdFromPathSlug } from '@/data/strategic-rebuild-content';
+
+export function getStaticPaths() {
+  return getAllWhatWeProtectPathSlugs().map((slug) => ({ params: { slug } }));
+}
+
+const slug = Astro.params.slug;
+if (typeof slug !== 'string' || !whatWeProtectIdFromPathSlug(slug)) {
+  return new Response(null, { status: 404 });
+}
+---
+
+<WhatWeProtectDetailPage locale="en-gb" {slug} />

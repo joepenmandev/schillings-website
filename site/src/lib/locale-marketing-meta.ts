@@ -1,30 +1,34 @@
 /**
  * Locale-specific document title and meta description for high-traffic marketing routes.
- * Improves international SERP differentiation; keep in sync with on-page H1/hero where relevant.
+ * Improves international SERP differentiation; keep in sync with on-page H1/hero (`homeHero` in strategic-rebuild-content).
  */
 import type { Locale } from '../i18n/config';
+import { homeHero } from '../data/strategic-rebuild-content';
 
-const UK_HOME_MISSION =
-  'Schillings deploys a unique combination of expertise to help you handle high stakes opportunities and threats, because we believe everyone has a right to fair treatment of their reputation, to a reasonable expectation of privacy and to feel safe.';
+/** Short tail so meta descriptions stay distinct per locale while sharing the hero subhead. */
+const HOME_META_TAIL: Record<Locale, string> = {
+  'en-gb': 'London, Miami and Dublin.',
+  'en-us': 'United States, Latin America and cross-border mandates — Miami, London and Dublin.',
+  'en-ie': 'Ireland and EU gateway — Dublin, London and Miami.',
+};
 
 export function homePageMeta(locale: Locale): { title: string; description: string } {
+  const description = `${homeHero.subheadline} ${HOME_META_TAIL[locale]}`;
   switch (locale) {
     case 'en-us':
       return {
         title: 'Reputation, Privacy & Security | Schillings — Americas',
-        description:
-          'Integrated legal, intelligence, communications and security from Schillings — Miami hub with London and Dublin for high-stakes reputation, privacy and crisis matters in the United States and Latin America.',
+        description,
       };
     case 'en-ie':
       return {
         title: 'Reputation, Privacy & Security | Schillings — Ireland & EU',
-        description:
-          'Schillings Ireland LLP and colleagues in London and Miami — multidisciplinary support for reputation, privacy, litigation intelligence and crisis communications, with an EU gateway in Dublin.',
+        description,
       };
     default:
       return {
-        title: 'Protecting Your Reputation, Privacy and Security | Schillings',
-        description: UK_HOME_MISSION,
+        title: 'Protecting reputation, privacy, security and continuity | Schillings',
+        description,
       };
   }
 }

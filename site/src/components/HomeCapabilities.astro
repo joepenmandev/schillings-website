@@ -1,7 +1,7 @@
 ---
 /**
- * Homepage capability accordion — copy and rhythm aligned with
- * Copy aligned with legacy homepage reference material (screenshots / live text).
+ * Homepage capability accordion — layout and rhythm guided by schillingspartners.com
+ * (left-aligned titles, generous padding, large right-hand toggle). Brand tokens unchanged.
  */
 const pillars = [
   { title: 'Intelligence', line: "Discover what's happening and why." },
@@ -13,27 +13,36 @@ const pillars = [
 ---
 
 <section
-  class="border-t border-secondary-2/20 bg-utility-1 px-[min(1.25rem,5.5vw)] py-12 md:px-[min(5rem,5.5vw)] md:py-20"
+  class="border-t border-secondary-2/20 bg-utility-1 px-[min(1.25rem,5.5vw)] py-12 md:px-[min(5rem,5.5vw)] md:py-24"
   aria-label="Capabilities"
+  data-home-capabilities
 >
-  <div class="mx-auto max-w-4xl">
+  <div class="mx-auto w-full max-w-6xl">
     {
       pillars.map(({ title, line }, i) => (
         <details
-          class="home-cap group border-b border-secondary-2/25 bg-utility-1 transition-colors duration-300 open:bg-accordion-open"
+          class="home-cap group border-b border-secondary-2/25 bg-utility-1 transition-[background-color] duration-300 open:bg-accordion-open"
           open={i === 0 ? true : undefined}
+          data-home-cap-item
         >
-          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-1 py-5 text-left marker:content-none md:px-2 md:py-6 [&::-webkit-details-marker]:hidden">
-            <span class="font-serif text-[clamp(1.5rem,3vw,2.25rem)] font-extralight leading-tight tracking-tight text-secondary-4">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-7 text-left outline-offset-4 marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4 md:py-8 [&::-webkit-details-marker]:hidden">
+            <span class="min-w-0 flex-1 font-serif text-[clamp(1.875rem,3.6vw,3.125rem)] font-extralight leading-[1.1] tracking-tight text-secondary-4">
               {title}
             </span>
-            <span class="home-cap-toggle relative flex h-6 w-6 shrink-0 items-center justify-center text-secondary-4" aria-hidden="true">
-              <span class="home-cap-plus absolute text-2xl font-extralight leading-none">+</span>
-              <span class="home-cap-minus absolute text-2xl font-extralight leading-none">—</span>
+            <span
+              class="home-cap-toggle relative flex size-[4.5rem] shrink-0 items-center justify-center text-secondary-4 md:size-20"
+              aria-hidden="true"
+            >
+              <span class="home-cap-plus absolute select-none text-[2.5rem] font-extralight leading-none md:text-[2.75rem]">+</span>
+              <span class="home-cap-minus absolute flex w-10 items-center justify-center md:w-11">
+                <span class="block h-px w-full bg-current" />
+              </span>
             </span>
           </summary>
-          <div class="px-1 pb-6 pt-0 md:px-2">
-            <p class="max-w-2xl font-serif text-lg font-extralight leading-relaxed text-secondary-4 md:text-xl">{line}</p>
+          <div class="pb-8 pt-0 md:pb-10">
+            <p class="max-w-2xl font-serif text-xl font-extralight leading-relaxed text-secondary-4 md:text-2xl md:leading-relaxed">
+              {line}
+            </p>
           </div>
         </details>
       ))
@@ -51,4 +60,69 @@ const pillars = [
   .home-cap[open] .home-cap-minus {
     opacity: 1;
   }
+  .home-cap .home-cap-plus,
+  .home-cap .home-cap-minus {
+    transition: opacity 0.2s ease-out;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .home-cap[data-cap-reveal='pending'] {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+    .home-cap[data-cap-reveal='done'] {
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
 </style>
+
+<script>
+  const SECTION_SEL = '[data-home-capabilities]';
+
+  function initCapabilitiesReveal() {
+    const section = document.querySelector(SECTION_SEL);
+    if (!section) return;
+
+    const caps = [...section.querySelectorAll<HTMLElement>('[data-home-cap-item]')];
+    if (caps.length === 0) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      caps.forEach((c) => c.removeAttribute('data-cap-reveal'));
+      return;
+    }
+
+    caps.forEach((c) => {
+      if (c.getAttribute('data-cap-reveal') === 'done') return;
+      c.setAttribute('data-cap-reveal', 'pending');
+    });
+
+    let triggered = false;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting || triggered) continue;
+          triggered = true;
+          caps.forEach((cap, i) => {
+            if (cap.getAttribute('data-cap-reveal') !== 'pending') return;
+            const delay = `${i * 0.055}s`;
+            cap.style.transitionDelay = delay;
+            requestAnimationFrame(() => {
+              cap.setAttribute('data-cap-reveal', 'done');
+            });
+          });
+          io.disconnect();
+        }
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -5% 0px' },
+    );
+
+    io.observe(section);
+  }
+
+  initCapabilitiesReveal();
+  document.addEventListener('astro:after-swap', initCapabilitiesReveal);
+</script>

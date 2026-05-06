@@ -1,0 +1,94 @@
+---
+/**
+ * Practice and IA cross-links derived from directory expertise tags only (no invented experience).
+ */
+import type { Locale } from '@/i18n/config';
+import type { PersonProfile } from '@/data/people';
+import { EXPERTISE_LABELS, type ExpertiseId } from '@/data/people-taxonomy';
+import { strategicSituationIdsForPersonExpertise } from '@/data/person-expertise-strategic-situations';
+import { getSituationDetailById, situationPathSlug } from '@/data/strategic-rebuild-content';
+import { localeHref } from '@/lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  person: PersonProfile;
+}
+
+const { locale, person } = Astro.props;
+const expertise = (person.expertise ?? []) as ExpertiseId[];
+const relatedSituationIds = strategicSituationIdsForPersonExpertise(expertise);
+
+const sectionTitle =
+  'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
+const body = 'mt-2 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3';
+const linkList = 'mt-4 flex flex-col gap-2 sm:gap-2.5';
+const linkClass =
+  'font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4';
+---
+
+{
+  expertise.length > 0 ? (
+    <section class="mt-12 border-t border-secondary-2/20 pt-10 md:mt-14" aria-labelledby="person-helps-heading">
+      <h2 id="person-helps-heading" class={sectionTitle}>
+        Helps clients with
+      </h2>
+      <p class={body}>
+        Practice hubs that match this colleague’s directory tags — useful for context, not a complete list of how they
+        practise.
+      </p>
+      <ul class={`${linkList} list-none`}>
+        {expertise.map((id) => (
+          <li>
+            <a href={localeHref(locale, `services/${id}`)} class={linkClass}>
+              {EXPERTISE_LABELS[id]}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ) : null
+}
+
+{
+  relatedSituationIds.length > 0 ? (
+    <section
+      class="mt-10 border-t border-secondary-2/20 pt-10 md:mt-12"
+      aria-labelledby="person-related-situations-heading"
+    >
+      <h2 id="person-related-situations-heading" class={sectionTitle}>
+        Related situations
+      </h2>
+      <p class={body}>
+        Typical entry points on our site that often sit alongside these practice areas.
+      </p>
+      <ul class={`${linkList} list-none`}>
+        {relatedSituationIds.map((sid) => {
+          const d = getSituationDetailById(sid);
+          return (
+            <li>
+              <a href={localeHref(locale, `situations/${situationPathSlug(sid)}`)} class={linkClass}>
+                {d.title}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  ) : null
+}
+
+{
+  expertise.length > 0 ? (
+    <section class="mt-10 border-t border-secondary-2/20 pt-10 md:mt-12" aria-labelledby="person-related-expertise-heading">
+      <h2 id="person-related-expertise-heading" class={sectionTitle}>
+        Related expertise
+      </h2>
+      <p class={body}>Browse all practice hubs and how colleagues are organised across the firm.</p>
+      <p class="mt-4">
+        <a href={localeHref(locale, 'services')} class={linkClass}>
+          All practice hubs →
+        </a>
+      </p>
+    </section>
+  ) : null
+}

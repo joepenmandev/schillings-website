@@ -30,11 +30,11 @@ export function newsListAuthorEntries(article: NewsArticle): NewsListAuthorEntry
   return out;
 }
 
-/** Section heading for “latest by these credited authors” (single vs multiple names). */
+/** Section heading for related analysis by the same credited author(s). */
 export function latestPostsByAuthorsSectionTitle(entries: NewsListAuthorEntry[]): string {
   const names = entries.map((e) => e.name);
-  if (names.length === 0) return 'Latest posts';
-  if (names.length === 1) return `Latest posts by ${names[0]}`;
-  if (names.length === 2) return `Latest posts by ${names[0]} and ${names[1]}`;
-  return `Latest posts by ${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+  if (names.length === 0) return 'Further reading';
+  if (names.length === 1) return `Further analysis from ${names[0]}`;
+  if (names.length === 2) return `Further analysis from ${names[0]} and ${names[1]}`;
+  return `Further analysis from ${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
 }

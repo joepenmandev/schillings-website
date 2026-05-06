@@ -4,6 +4,7 @@ import SiteHeader from '@/components/SiteHeader.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
 import PersonTrustSignals from '@/components/PersonTrustSignals.astro';
 import PersonPublicContact from '@/components/PersonPublicContact.astro';
+import PersonProfileContextSections from '@/components/PersonProfileContextSections.astro';
 import PersonRelatedAndExplore from '@/components/PersonRelatedAndExplore.astro';
 import PersonContactCta from '@/components/PersonContactCta.astro';
 import PersonNewsByline from '@/components/PersonNewsByline.astro';
@@ -23,6 +24,7 @@ import {
   clipPlainText,
 } from '@/lib/person-jsonld';
 import { peopleDirectoryCardByline, resolvePersonPracticeGroup } from '@/lib/people-directory';
+import { isThinPersonProfile } from '@/lib/person-profile-quality';
 import { locales, isLocale, type Locale } from '@/i18n/config';
 
 export function getStaticPaths() {
@@ -122,6 +124,8 @@ if (person) {
 const ogImageAbsolute = person?.imagePath
   ? new URL(person.imagePath, Astro.site ?? Astro.url).href
   : undefined;
+
+const isThinProfile = Boolean(person && isThinPersonProfile(person));
 ---
 
 <Base
@@ -129,10 +133,10 @@ const ogImageAbsolute = person?.imagePath
   description={pageDescription}
   {locale}
   pathAfterLocale={pathAfterLocale}
-  noindex={isMigration}
+  noindex={isMigration || isThinProfile}
   ogImage={ogImageAbsolute}
   ogType={person ? 'profile' : 'website'}
-  hreflangLocales={isMigration ? [locale] : undefined}
+  hreflangLocales={isMigration || isThinProfile ? [locale] : undefined}
 >
   {personJsonLd && <script type="application/ld+json" slot="head" set:html={JSON.stringify(personJsonLd)} />}
   <SiteHeader {locale} deferHeaderLogoPriority={!!(person?.imagePath)} />
@@ -155,7 +159,7 @@ const ogImageAbsolute = person?.imagePath
                   ) : null
                 }
                 {
-                  person.expertise && person.expertise.length > 0 ? (
+                  isThinProfile && person.expertise && person.expertise.length > 0 ? (
                     <ul class="mt-6 flex flex-wrap gap-2" aria-label="Expertise">
                       {person.expertise.map((id) => (
                         <li>
@@ -202,6 +206,8 @@ const ogImageAbsolute = person?.imagePath
                 ))}
               </div>
             </section>
+
+            {isThinProfile ? null : <PersonProfileContextSections {locale} person={person} />}
 
             <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
             <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />

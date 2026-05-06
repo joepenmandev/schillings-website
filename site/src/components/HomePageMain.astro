@@ -1,0 +1,237 @@
+---
+/**
+ * UK / US / IE homepage body — strategic IA, design tokens unchanged (utility / secondary palette, serif rhythm).
+ */
+import type { Locale } from '../i18n/config';
+import HomeExploreStrip from './HomeExploreStrip.astro';
+import {
+  homeConfidentialEngagementCta,
+  homeHero,
+  homeHeroCtas,
+  homeInstitutionalTrust,
+  homeIntelligenceSection,
+  homeResponseSystemTagline,
+  homeWhenClientsComeToUs,
+  responseSystem,
+  responseSystemPage,
+  whatWeProtect,
+  whatWeProtectPathSlug,
+} from '../data/strategic-rebuild-content';
+import { contactSegment, localeHref } from '../lib/site-nav';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const contactHref = localeHref(locale, contactSegment);
+const situationsHref = localeHref(locale, 'situations');
+const newsHref = localeHref(locale, 'news');
+const responseSystemHref = localeHref(locale, 'response-system');
+
+const h2Section = 'font-serif text-pretty text-[clamp(1.75rem,3.2vw,2.75rem)] font-extralight leading-tight tracking-tight text-secondary-4';
+---
+
+<!-- 1. Hero -->
+<section
+  class="bg-utility-1 px-[min(1.25rem,5.5vw)] pb-16 pt-12 text-center md:px-[min(5rem,5.5vw)] md:pb-20 md:pt-16"
+  aria-labelledby="home-hero-heading"
+>
+  <div class="mx-auto max-w-4xl">
+    <h1
+      id="home-hero-heading"
+      class="font-serif text-pretty font-extralight leading-[1.12] tracking-tight text-secondary-4 [font-size:clamp(1.875rem,4.2vw,3.25rem)]"
+    >
+      {homeHero.headline}
+    </h1>
+    <p
+      class="mx-auto mt-8 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-10 md:text-xl md:leading-[1.55]"
+    >
+      {homeHero.subheadline}
+    </p>
+    <p
+      class="mx-auto mt-6 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-8 md:text-[1.05rem] md:leading-[1.65]"
+    >
+      {responseSystemPage.lead}
+    </p>
+    <div class="mt-10 flex flex-col items-stretch justify-center gap-3 sm:mt-12 sm:flex-row sm:flex-wrap sm:gap-4">
+      <a
+        href={contactHref}
+        class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm bg-secondary-4 px-6 py-3 text-center text-sm font-normal tracking-wide text-brand-white outline-offset-4 transition-opacity hover:opacity-92 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
+      >
+        {homeHeroCtas.speakConfidentially}
+      </a>
+      <a
+        href={situationsHref}
+        class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm border border-secondary-4/50 bg-transparent px-6 py-3 text-center text-sm font-normal tracking-wide text-secondary-4 outline-offset-4 transition-colors hover:border-secondary-4 hover:bg-utility-2/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
+      >
+        {homeHeroCtas.exploreSituations}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 2. What We Protect -->
+<section
+  class="border-t border-secondary-2/20 bg-utility-1 px-[min(1.25rem,5.5vw)] py-14 md:px-[min(5rem,5.5vw)] md:py-20"
+  aria-labelledby="home-protect-heading"
+>
+  <div class="mx-auto max-w-6xl">
+    <h2 id="home-protect-heading" class:list={['mt-1', h2Section]}>
+      What We Protect
+    </h2>
+    <p class="mt-5 max-w-2xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem]">
+      The interests clients need to defend when attention, hostility or complexity converge.
+    </p>
+    <ul
+      class="mt-10 grid list-none gap-3 sm:grid-cols-2 md:mt-12 md:gap-x-12 md:gap-y-4 lg:grid-cols-4"
+      aria-label="What we protect"
+    >
+      {
+        whatWeProtect.map(({ id, label }) => {
+          const tail = `what-we-protect/${whatWeProtectPathSlug(id)}`;
+          return (
+            <li class="border-l-2 border-secondary-3/35 pl-4 text-pretty text-base font-extralight leading-snug md:text-[1.05rem]">
+              <a
+                href={localeHref(locale, tail)}
+                class="text-secondary-4 underline decoration-transparent underline-offset-[0.12em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-4"
+              >
+                {label}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- 3. When Clients Come To Us -->
+<section
+  class="bg-secondary-4 px-[min(1.25rem,5.5vw)] py-14 text-brand-white md:px-[min(5rem,5.5vw)] md:py-20"
+  aria-labelledby="home-clients-heading"
+>
+  <div class="mx-auto max-w-6xl">
+    <h2 id="home-clients-heading" class="mt-1 font-serif text-pretty text-[clamp(1.75rem,3.2vw,2.75rem)] font-extralight leading-tight tracking-tight text-brand-white">
+      When Clients Come To Us
+    </h2>
+    <ul class="mt-10 grid list-none gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-2" aria-label="When clients come to us">
+      {
+        homeWhenClientsComeToUs.map((line) => (
+          <li class="flex gap-3 text-pretty text-base font-extralight leading-relaxed text-brand-white/95 md:text-[1.05rem]">
+            <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-secondary-2" aria-hidden="true" />
+            <span>{line}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-10 md:mt-12">
+      <a
+        href={situationsHref}
+        class="text-sm font-medium text-brand-white underline decoration-brand-white/45 underline-offset-[0.2em] transition-colors hover:decoration-brand-white"
+      >
+        {homeHeroCtas.exploreSituations}
+      </a>
+    </p>
+  </div>
+</section>
+
+<!-- 4. The Schillings Response System -->
+<section
+  class="border-t border-secondary-2/20 bg-utility-1 px-[min(1.25rem,5.5vw)] py-14 md:px-[min(5rem,5.5vw)] md:py-20"
+  aria-labelledby="home-response-heading"
+>
+  <div class="mx-auto max-w-6xl">
+    <h2 id="home-response-heading" class:list={['mt-1', h2Section]}>
+      The Schillings Response System
+    </h2>
+    <div
+      class="mt-10 grid gap-6 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4"
+    >
+      {
+        responseSystem.map((pillar) => (
+          <div class="rounded-sm border border-secondary-2/20 bg-brand-white/80 px-5 py-6 shadow-sm ring-1 ring-secondary-2/10">
+            <p class="font-serif text-lg font-extralight text-secondary-4 md:text-xl">{pillar.label}</p>
+            <p class="mt-2 text-pretty text-sm font-extralight leading-relaxed text-secondary-3 md:text-base">
+              {pillar.line}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="mx-auto mt-10 max-w-3xl text-center font-serif text-lg font-extralight italic leading-relaxed text-secondary-3 md:mt-12 md:text-xl">
+      {homeResponseSystemTagline}
+    </p>
+    <p class="mt-8 text-center">
+      <a
+        href={responseSystemHref}
+        class="text-sm font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.2em] transition-colors hover:decoration-secondary-4"
+      >
+        How the response system works
+      </a>
+    </p>
+  </div>
+</section>
+
+<!-- 5. Institutional Trust -->
+<section
+  class="border-t border-secondary-2/20 bg-utility-2/40 px-[min(1.25rem,5.5vw)] py-14 md:px-[min(5rem,5.5vw)] md:py-20"
+  aria-labelledby="home-trust-heading"
+>
+  <div class="mx-auto max-w-3xl text-center">
+    <h2 id="home-trust-heading" class:list={['mt-1', h2Section]}>
+      {homeInstitutionalTrust.heading}
+    </h2>
+    <div class="mt-8 space-y-5 text-pretty text-base font-extralight leading-[1.65] text-secondary-3 md:mt-10 md:text-[1.05rem]">
+      {homeInstitutionalTrust.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+  </div>
+</section>
+
+<!-- 6. Intelligence -->
+<section
+  class="border-t border-secondary-2/20 bg-utility-1 px-[min(1.25rem,5.5vw)] py-14 md:px-[min(5rem,5.5vw)] md:py-20"
+  aria-labelledby="home-intel-heading"
+>
+  <div class="mx-auto max-w-3xl text-center">
+    <h2 id="home-intel-heading" class:list={['mt-1', h2Section]}>
+      {homeIntelligenceSection.heading}
+    </h2>
+    <p class="mt-6 text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-8 md:text-[1.05rem]">
+      {homeIntelligenceSection.intro}
+    </p>
+    <p class="mt-8 md:mt-10">
+      <a
+        href={newsHref}
+        class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm border border-secondary-4/50 px-6 py-3 text-sm font-normal tracking-wide text-secondary-4 outline-offset-4 transition-colors hover:border-secondary-4 hover:bg-utility-2/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
+      >
+        {homeIntelligenceSection.linkLabel}
+      </a>
+    </p>
+  </div>
+</section>
+
+<!-- 7. Confidential Engagement CTA -->
+<section
+  class="bg-secondary-4 px-[min(1.25rem,5.5vw)] py-16 text-center text-brand-white md:px-[min(5rem,5.5vw)] md:py-24"
+  aria-labelledby="home-cta-heading"
+>
+  <div class="mx-auto max-w-2xl">
+    <h2 id="home-cta-heading" class="font-serif text-pretty text-2xl font-extralight leading-tight tracking-tight text-brand-white md:text-3xl">
+      {homeConfidentialEngagementCta.heading}
+    </h2>
+    <p class="mt-6 text-pretty text-base font-extralight leading-relaxed text-brand-white/90 md:text-lg">
+      {homeConfidentialEngagementCta.body}
+    </p>
+    <p class="mt-10">
+      <a
+        href={contactHref}
+        class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm border border-brand-white/40 bg-transparent px-8 py-3 text-sm font-normal tracking-wide text-brand-white outline-offset-4 transition-colors hover:border-brand-white hover:bg-brand-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-white"
+      >
+        {homeConfidentialEngagementCta.linkLabel}
+      </a>
+    </p>
+  </div>
+</section>
+
+<HomeExploreStrip {locale} />

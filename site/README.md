@@ -20,15 +20,52 @@ npm run verify:launch-urls    # optional live audit — set LAUNCH_VERIFY_URL=ht
 npm run verify:nonprod-indexing  # optional live audit — set INDEXING_VERIFY_URL=https://… (checks noindex + robots block on nonprod)
 npm run test:e2e   # Playwright (starts `astro dev` on port **8787** by default — set `PLAYWRIGHT_DEV_PORT` to override)
 npm run preview
+npm run verify:strategic-crawl   # needs BASE_URL — strategic IA HTTP health (not full SEO); see **Staging verification** below
+npm run verify:strategic-crawl:local   # build + astro dev on 127.0.0.1:4325 + crawl (Vercel adapter: no `astro preview`)
+npm run verify:staging-seo       # needs STAGING_BASE_URL — migrated news canonical/hreflang/sitemap on a live preview
+npm run audit:strategic-copy     # static copy audit for strategic-rebuild-content (no server; fails CI on hard issues)
 npm run import:people
 npm run optimize:people-photos
 npm run import:people:full   # import then optimize (from repo root or site/)
 ```
 
+### Staging verification (preview / pre-launch)
+
+Run these against a **running** site: local dev (`npm run dev`, default **http://localhost:4321**) or a **Vercel preview** URL.
+
+```bash
+# Strategic IA crawl: locale homes + situations / what-we-protect / response-system (+ related paths) — link/HTTP checks only
+BASE_URL=http://localhost:4321 npm run verify:strategic-crawl
+BASE_URL=https://your-preview-url.vercel.app npm run verify:strategic-crawl
+
+# Staging SEO: migrated news article URLs, canonical, hreflang, JSON-LD, sitemap entries
+STAGING_BASE_URL=https://your-preview-url.vercel.app npm run verify:staging-seo
+
+# Editorial/data gates on strategic copy (duplicates, required fields, length & term warnings)
+npm run audit:strategic-copy
+
+# One-shot local crawl (build → dev server on 4325 → strategic crawl; no BASE_URL needed)
+npm run verify:strategic-crawl:local
+```
+
+**`verify:strategic-crawl:local`** runs `npm run build`, then **`astro dev`** on **`127.0.0.1:4325`** (the Vercel adapter does not support **`astro preview`**), waits until `/` responds, runs **`verify:strategic-crawl`** with **`BASE_URL=http://127.0.0.1:4325`**, and stops the dev server afterward—including when the crawl fails.
+
+| Check | What it validates |
+|--------|-------------------|
+| **`verify:strategic-crawl`** | **Strategic route health** (HTTP 200s and internal link consistency for the strategic IA set across **UK / US / IE**). It does **not** replace a full SEO audit (canonical, hreflang on every template, rich results, etc.). |
+| **`verify:staging-seo`** | **News migration** surfaces on the given origin: article status, self-canonical, hreflang alternates, JSON-LD presence, sitemap inclusion for published migrated URLs. |
+| **`audit:strategic-copy`** | **Static** analysis of `src/data/strategic-rebuild-content.ts` — no network. |
+
+**Prerequisites**
+
+- **Auth:** Staging or preview must be **publicly readable** by HTTP, or **Basic Auth disabled** for that deployment (e.g. `DISABLE_SITE_BASIC_AUTH` or a preview host outside `BASIC_AUTH_HOSTS`). Crawlers use unauthenticated `fetch`; gated HTML will fail checks or return challenge pages.
+- **Locale parity:** **`npm run check:locale-parity`** should pass before you treat crawl results as authoritative — strategic paths are expected for **en-gb, en-us, en-ie** mirrors.
+- **Indexing / sitemap before launch:** Confirm **XML sitemap**, **`robots.txt`**, and **`noindex`** / **`X-Robots-Tag`** behaviour for the environment you are validating (non-prod: see **`npm run verify:nonprod-indexing`** and **`vercel.json`** staging rules; production: **`docs/DEPLOY-CHECKLIST.md`** and **`TECHNICAL-SEO-LAUNCH-CHECKLIST.md`**).
+
 ### Local `dev` vs `preview` (footer & HTML sitemap links)
 
 - **`npm run dev`:** Footer **Region** links and the HTML sitemap **Regional sitemaps** block resolve **`Astro.url.origin`**, so absolute `href`s target your dev server (e.g. `http://localhost:4321/us/...`).
-- **`npm run build` + `npm run preview`:** The same markup is **pre-rendered** with the site origin from **`astro.config.mjs`** (`site`: **`PUBLIC_SITE_URL`**, else **`VERCEL_URL`**, else **`http://localhost:4321`**), so those `href`s match the configured deploy origin. **`hreflang`** and **canonical** use the same origin in both modes.
+- **`npm run build` + `npm run preview`:** The same markup is **pre-rendered** with the site origin from **`astro.config.ts`** (`site`: **`PUBLIC_SITE_URL`**, else **`VERCEL_URL`**, else **`http://localhost:4321`**), so those `href`s match the configured deploy origin. **`hreflang`** and **canonical** use the same origin in both modes.
 
 CI (GitHub Actions) runs **`npm ci`**, **`npx playwright install chromium --with-deps`**, and **`npm run verify`** (Vitest → locale parity → build → post-build hreflang check → Playwright HTTP + locale/sitemap + axe on **`/contact/`**) in **`site/`** on push/PR to **`main`**, **`master`**, or **`develop`** (see **`.github/workflows/ci.yml`**).
 
@@ -40,17 +77,19 @@ Set in the Vercel project (or **`.env`** locally — never commit secrets). Line
 
 | Variable | Role |
 |----------|------|
-| **`PUBLIC_SITE_URL`** | Optional; canonical HTTPS origin for **`astro.config.mjs`** `site` (no trailing slash). If unset on Vercel, **`VERCEL_URL`** is used; locally defaults to **`http://localhost:4321`**. See **`docs/DEPLOY-CHECKLIST.md`**. |
+| **`PUBLIC_SITE_URL`** | Optional; canonical HTTPS origin for **`astro.config.ts`** `site` (no trailing slash). If unset on Vercel, **`VERCEL_URL`** is used; locally defaults to **`http://localhost:4321`**. See **`docs/DEPLOY-CHECKLIST.md`**. |
 | **`LEGACY_SITE_ORIGIN`** | Optional; HTTPS origin for **`import:news`** / **`import:people`** when scraping a legacy host (see **`.env.example`**). |
 | **`CONTACT_WEBHOOK_URL`** | Server-only HTTPS URL (Zapier/Make/etc.) receiving JSON from **`api/contact.ts`**. |
 | **`PUBLIC_FORM_ENDPOINT`** | Client form action; production typically **`/api/contact`**. Leave empty in local dev to log payloads to the console. |
 | **`UPSTASH_REDIS_REST_URL`** / **`UPSTASH_REDIS_REST_TOKEN`** | Optional; **global** rate limit for `/api/contact` across Edge isolates. Omit for in-memory limit only. |
 | **`CONTACT_RATE_LIMIT_MAX`** | Optional; max POSTs per IP per minute (default **30**). |
 | **`SITE_USER`** / **`SITE_PASS`** | Optional; when both are set in production, HTTP Basic Auth gates the site (see below). |
+| **`DISABLE_SITE_BASIC_AUTH`** | Optional; set to **`1`** or **`true`** to **turn off** Basic Auth on that deployment (short-lived staging access — remove afterward). |
+| **`BASIC_AUTH_HOSTS`** | Optional; comma-separated hostnames **only** (e.g. `www.example.com,example.com`). When set, the login gate applies **only** on those hosts so **`*.vercel.app`** staging can stay open while credentials remain in the project. |
 
 **Basic Auth and `api/`:** `src/middleware.ts` runs for Astro-rendered routes only. Vercel **`api/*.ts`** handlers are separate Edge functions and **do not** go through that middleware. When you add a new API route and the site is gated, call **`gateSiteBasicAuth(request)`** from **`src/lib/site-basic-auth-gate.ts`** at the top of the handler (same env vars). **`api/contact.ts`** already does this.
 
-**Vercel + Git:** Production should build from the connected Git repo (not only `vercel deploy` from a partial tree), with **Root Directory** set to the folder that contains **`package.json`** and **`astro.config.mjs`** (this repo: **`site`** when the Vercel project root is the monorepo, or **`.`** when the project is linked only to `site/`). Mismatches produce static-only deploys where middleware never runs.
+**Vercel + Git:** Production should build from the connected Git repo (not only `vercel deploy` from a partial tree), with **Root Directory** set to the folder that contains **`package.json`** and **`astro.config.ts`** (this repo: **`site`** when the Vercel project root is the monorepo, or **`.`** when the project is linked only to `site/`). Mismatches produce static-only deploys where middleware never runs.
 
 ## Adding routes & locale mirrors
 
@@ -95,7 +134,7 @@ You can audit this quickly with `npm run verify:nonprod-indexing` (set `INDEXING
 ## Technical SEO (built in)
 
 - **`public/robots.txt`** — `Allow` + `Sitemap` → `sitemap-index.xml` (swap for staging)
-- **`@astrojs/sitemap`** — emits `sitemap-index.xml` / `sitemap-0.xml` (UK homepage **`/`** included; thin migration URLs excluded; see `astro.config.mjs`)
+- **`@astrojs/sitemap`** — emits `sitemap-index.xml` / `sitemap-0.xml` (UK homepage **`/`** included; **indexable** **`/news/{slug}/`** and **`/people/{slug}/`** for UK/US/IE via `customPages` in `src/build/sitemap-news-people.ts`; thin migration URLs excluded; see `astro.config.ts`)
 - **`src/layouts/Base.astro`** — skip link, default meta description, `robots`, canonical, **hreflang** (optional prop **`hreflangLocales`** when a page is not a full three-way alternate), **`og:locale`** + **`og:locale:alternate`** (aligned with hreflang targets), **Open Graph**, **Twitter**, **Organization** JSON-LD (SRA id, London address, `contactPoint` phone, `sameAs` socials)
 - **`vercel.json`** — security headers + **301 redirects** from legacy paths to **UK unprefixed** URLs (e.g. **`/news/:path*`** → **`/news/:path*`**), **`/en-gb/:path*`** → **`/:path*`**, plus **wildcards** for people/news/biography (see `../REDIRECT-MAP.md`)
 - **`api/contact.ts`** — Vercel **Edge** POST handler; env vars in **§ Environment variables** and **`.env.example`**; applies **`gateSiteBasicAuth`** when **`SITE_USER`** / **`SITE_PASS`** are set

@@ -34,23 +34,23 @@ describe('newsListAuthorEntries', () => {
   });
 
   it('builds latest-posts heading for one or many names', () => {
-    expect(latestPostsByAuthorsSectionTitle([])).toBe('Latest posts');
+    expect(latestPostsByAuthorsSectionTitle([])).toBe('Further reading');
     expect(latestPostsByAuthorsSectionTitle([{ type: 'profile', slug: 'a', name: 'Ann', role: 'Partner' }])).toBe(
-      'Latest posts by Ann',
+      'Further analysis from Ann',
     );
     expect(
       latestPostsByAuthorsSectionTitle([
         { type: 'profile', slug: 'a', name: 'Ann', role: 'Partner' },
         { type: 'profile', slug: 'b', name: 'Ben', role: 'Associate' },
       ]),
-    ).toBe('Latest posts by Ann and Ben');
+    ).toBe('Further analysis from Ann and Ben');
     expect(
       latestPostsByAuthorsSectionTitle([
         { type: 'credit', name: 'Guest' },
         { type: 'profile', slug: 'b', name: 'Ben', role: 'Associate' },
         { type: 'profile', slug: 'c', name: 'Cara', role: 'Partner' },
       ]),
-    ).toBe('Latest posts by Guest, Ben and Cara');
+    ).toBe('Further analysis from Guest, Ben and Cara');
   });
 
   it('returns empty when no authors', () => {

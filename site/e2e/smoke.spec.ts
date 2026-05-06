@@ -10,7 +10,7 @@ test.describe('smoke', () => {
     const res = await request.get('/');
     expect(res.ok()).toBeTruthy();
     const html = await res.text();
-    expect(html).toContain('High stakes');
+    expect(html).toContain('Protecting reputation, privacy, security and continuity');
     expect(html).toMatch(/<title[^>]*>[\s\S]*Schillings/i);
   });
 

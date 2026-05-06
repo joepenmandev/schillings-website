@@ -6,7 +6,7 @@ Phased runbook for Vercel + Astro. **Engineering** owns config and headers; **ma
 
 ## If you only have 5 minutes
 
-1. **Production `PUBLIC_SITE_URL`** — Vercel → Environment Variables → Production: set to final `https://your-domain` (no trailing slash). See **`astro.config.mjs`** (resolved as `PUBLIC_SITE_URL` → `https://$VERCEL_URL` → `http://localhost:4321`).
+1. **Production `PUBLIC_SITE_URL`** — Vercel → Environment Variables → Production: set to final `https://your-domain` (no trailing slash). See **`astro.config.ts`** (resolved as `PUBLIC_SITE_URL` → `https://$VERCEL_URL` → `http://localhost:4321`).
 2. **Canonical** — Open production home → view source → `rel="canonical"` must start with that origin.
 3. **`vercel.json` host allowlist** — `site/vercel.json`: both rules that use `"missing"` + `"type": "host"` must list **every hostname that should be indexed** (today includes `schillings-website.vercel.app`; add apex/`www` when DNS points here).
 4. **`/robots.txt`** — On production, must not be the full staging disallow unless intentional (`robots-staging.txt` is used for non-allowlisted hosts).
@@ -85,17 +85,18 @@ Use this alongside Google’s [localized versions](https://developers.google.com
 ### What this stack does well
 
 - **`@astrojs/sitemap`** emits **`sitemap-index.xml`** / **`sitemap-0.xml`** at build time with **`PUBLIC_SITE_URL`** / **`VERCEL_URL`** as the URL prefix (avoid publishing a sitemap full of `http://localhost:4321` — set env on the **build** that deploys).
-- **Filters** in `astro.config.mjs` drop thin migration news/people URLs, `/search`, and `/contact/thank-you` from the XML sitemap (good alignment with “no non-indexable URLs in sitemap”).
+- **`customPages`** (from `src/build/sitemap-news-people.ts`) add every **indexable** news and people detail URL for **UK, US, and IE**. **Filters** in `astro.config.ts` drop thin migration news/people URLs, `/search`, and `/contact/thank-you` from the XML sitemap (good alignment with “no non-indexable URLs in sitemap”).
 - **Canonical + hreflang** on locale templates are enforced post-build via `npm run verify:build-seo` (uses **`astro dev`** locally because **`astro preview`** is unsupported with **`@astrojs/vercel`**).
 
 ### Known gaps to track in SF / GSC (not automatic bugs)
 
 | Topic | Detail |
 |--------|--------|
-| **Sitemap depth** | The generated XML sitemap includes **marketing static routes** (UK + `/us/` + `/ie/` mirrors). It does **not** currently enumerate every **`/news/{slug}/`** or **`/people/{slug}/`** URL. Discovery for articles and bios still relies on **internal links** and GSC; if you want every indexable article in XML, plan a **custom sitemap** or post-process step. |
+| **Sitemap size** | Indexable **`/news/{slug}/`** and **`/people/{slug}/`** for UK/US/IE are included via **`customPages`**. If URL counts grow very large, consider **`entryLimit`** / **`chunks`** in `@astrojs/sitemap` and re-check **`sitemap-index.xml`**. |
 | **`robots.txt` `Sitemap:`** | Production `site/public/robots.txt` may still omit the absolute `Sitemap:` line until the final public origin is fixed — add it for cleaner SF/GSC discovery (see *If you only have 5 minutes*). |
 | **Staging hosts** | Non-allowlisted hosts get **`noindex`** + staging **`robots.txt`** via `vercel.json` — SF should show that on previews; production allowlisted hosts should not. |
 | **RSS URLs** | Feeds live at **`/news/rss.xml`** (no trailing slash); `localeHref` matches that pattern for `news/rss.xml`. |
+| **CI vs Screaming Frog** | **`npm run verify`** includes **axe** on **`/contact/`** (WCAG contrast on section headings / office cards). **SF** still must be run on the real hostname for chains, soft 404s, full hreflang matrix, etc. |
 
 ---
 

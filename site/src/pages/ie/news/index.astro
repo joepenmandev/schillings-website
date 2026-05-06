@@ -23,9 +23,9 @@ const totalPages = newsTotalPages();
 const origin = Astro.site?.origin ?? Astro.url.origin;
 const nextHref = totalPages > 1 ? `${absolutePageUrl(origin, locale, 'news/page/2')}` : null;
 
-const newsTitle = 'News & Insights | Schillings';
+const newsTitle = 'Intelligence | Schillings';
 const newsDescription =
-  'News, views, and analysis from Schillings on reputation, privacy, litigation, and high-stakes matters.';
+  'Analysis, perspective and commentary from Schillings on reputation, privacy, litigation, and high-stakes matters.';
 const newsGraph = buildNewsIndexGraphJsonLd({
   origin,
   locale,
@@ -37,7 +37,7 @@ const newsJsonLd = buildJsonLdGraph(
   ...newsGraph['@graph'],
   breadcrumbListGraphNode([
     { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
-    { name: 'News & Insights', item: `${absolutePageUrl(origin, locale, 'news')}` },
+    { name: 'Intelligence', item: `${absolutePageUrl(origin, locale, 'news')}` },
   ]),
 );
 ---
@@ -54,7 +54,7 @@ const newsJsonLd = buildJsonLdGraph(
     slot="head"
     rel="alternate"
     type="application/rss+xml"
-    title={`Schillings News (${locale})`}
+    title={`Schillings Intelligence (${locale})`}
     href={localeHref(locale, 'news/rss.xml')}
   />
   <SiteHeader {locale} />
@@ -67,7 +67,7 @@ const newsJsonLd = buildJsonLdGraph(
     ) : null}
     {gridArticles.length > 0 ? (
       <>
-        <h2 class="sr-only">More articles</h2>
+        <h2 class="sr-only">More analysis</h2>
         <NewsArticleList
           {locale}
           articles={gridArticles}

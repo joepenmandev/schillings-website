@@ -40,9 +40,9 @@ const prevUrl = pageNum === 2 ? newsIndexUrl : `${absolutePageUrl(origin, locale
 const nextUrl = pageNum < totalPages ? `${absolutePageUrl(origin, locale, `news/page/${pageNum + 1}`)}` : null;
 const pathAfterLocale = `news/page/${pageNum}`;
 const newsDescription =
-  'News, views, and analysis from Schillings on reputation, privacy, litigation, and high-stakes matters.';
+  'Analysis, perspective and commentary from Schillings on reputation, privacy, litigation, and high-stakes matters.';
 const listingPageTitle =
-  pageNum === 2 ? `News & Insights — Page ${pageNum} | Schillings` : `News & Insights — Page ${pageNum} of ${totalPages} | Schillings`;
+  pageNum === 2 ? `Intelligence — Page ${pageNum} | Schillings` : `Intelligence — Page ${pageNum} of ${totalPages} | Schillings`;
 const listingPageUrl = `${absolutePageUrl(origin, locale, `news/page/${pageNum}`)}`;
 const newsGraph = buildNewsPaginatedIndexGraphJsonLd({
   origin,
@@ -56,7 +56,7 @@ const newsJsonLd = buildJsonLdGraph(
   ...newsGraph['@graph'],
   breadcrumbListGraphNode([
     { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
-    { name: 'News & Insights', item: `${absolutePageUrl(origin, locale, 'news')}` },
+    { name: 'Intelligence', item: `${absolutePageUrl(origin, locale, 'news')}` },
     { name: `Page ${pageNum}`, item: listingPageUrl },
   ]),
 );
@@ -75,7 +75,7 @@ const newsJsonLd = buildJsonLdGraph(
   <NewsArchiveIndexHero
     {locale}
     meta={`Page ${pageNum} of ${totalPages}`}
-    metaLinkLabel="Latest posts"
+    metaLinkLabel="Intelligence home"
     metaLinkHref={localeHref(locale, 'news')}
   />
   <DocumentMain contentWidth="wide">

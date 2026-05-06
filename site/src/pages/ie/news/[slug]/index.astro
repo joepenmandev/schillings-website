@@ -81,7 +81,7 @@ if (article) {
   articleLedeParagraphIndex = firstNonemptyParagraphIndex(article.paragraphs);
   breadcrumbJsonLd = breadcrumbListJsonLd([
     { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
-    { name: 'News & Insights', item: `${absolutePageUrl(origin, locale, 'news')}` },
+    { name: 'Intelligence', item: `${absolutePageUrl(origin, locale, 'news')}` },
     { name: article.title, item: pageUrl },
   ]);
 } else {
@@ -122,7 +122,7 @@ if (article) {
           </>
         ) : (
           <>
-            <p class="text-xs font-normal uppercase tracking-wide text-secondary-2">News &amp; Insights</p>
+            <p class="text-xs font-normal uppercase tracking-wide text-secondary-2">Intelligence</p>
             <h1 class="mt-2 text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
               {migrationTitle}
             </h1>
@@ -135,7 +135,7 @@ if (article) {
       }
       <p class="mt-10">
         <a class="text-sm font-medium text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'news')}>
-          ← Back to News & Insights
+          ← Back to Intelligence
         </a>
       </p>
     </article>

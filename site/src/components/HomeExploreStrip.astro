@@ -1,6 +1,6 @@
 ---
 import type { Locale } from '../i18n/config';
-import { contactSegment, localeHref } from '../lib/site-nav';
+import { contactSegment, localeHref, primaryNav } from '../lib/site-nav';
 
 interface Props {
   locale: Locale;
@@ -8,18 +8,12 @@ interface Props {
 
 const { locale } = Astro.props;
 
-const links = [
-  { label: 'Services', segment: 'services' },
-  { label: 'People', segment: 'people' },
-  { label: 'News & Insights', segment: 'news' },
-  { label: 'International', segment: 'international' },
-  { label: 'Contact', segment: contactSegment },
-] as const;
+const links = [...primaryNav.map((item) => ({ label: item.label, segment: item.segment })), { label: 'Contact', segment: contactSegment }];
 ---
 
 <section class="border-t border-secondary-2/20 bg-utility-2/40 px-[min(1.25rem,5.5vw)] py-10 md:px-[min(5rem,5.5vw)] md:py-12" aria-labelledby="home-explore-heading">
   <div class="mx-auto max-w-4xl text-center">
-    <h2 id="home-explore-heading" class="text-xs font-medium uppercase tracking-wide text-secondary-2">Explore</h2>
+    <h2 id="home-explore-heading" class="text-xs font-medium uppercase tracking-wide text-secondary-3">Explore</h2>
     <ul class="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm">
       {
         links.map(({ label, segment }) => (

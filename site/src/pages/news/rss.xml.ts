@@ -13,9 +13,9 @@ export const GET: APIRoute = ({ site, url }) => {
   const sorted = [...publishedNews()].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
   const selfFeedUrl = absolutePageUrl(origin, locale, 'news/rss.xml');
   const xml = buildNewsRssXml({
-    channelTitle: `Schillings — News & Insights (${locale})`,
+    channelTitle: `Schillings — Intelligence (${locale})`,
     channelLink,
-    channelDescription: 'News, views, and analysis from Schillings.',
+    channelDescription: 'Analysis, perspective and commentary from Schillings.',
     selfFeedUrl,
     channelLanguage: rssChannelLanguage(locale),
     items: sorted.map((a) => ({

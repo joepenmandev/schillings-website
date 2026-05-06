@@ -1,0 +1,196 @@
+---
+/**
+ * `/what-we-protect/{slug}/` — full `WhatWeProtectDetailModel`.
+ */
+import type { Locale } from '@/i18n/config';
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { contactSegment, localeHref, localeHrefResponseSystemPillar } from '@/lib/site-nav';
+import {
+  getSituationDetailById,
+  getStrategicHubPageModel,
+  getStrategicResponsePillarById,
+  getWhatWeProtectDetailById,
+  situationPathSlug,
+  whatWeProtectIdFromPathSlug,
+} from '@/data/strategic-rebuild-content';
+import { buildJsonLdGraph, buildPageEntityJsonLd } from '@/lib/jsonld-page';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { absolutePageUrl } from '@/lib/public-url';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const assetId = whatWeProtectIdFromPathSlug(slug);
+if (!assetId) {
+  throw new Error(`WhatWeProtectDetailPage: invalid slug ${slug}`);
+}
+const model = getWhatWeProtectDetailById(assetId);
+const hub = getStrategicHubPageModel('what-we-protect');
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const pathAfterLocale = `what-we-protect/${model.slug}`;
+const pageUrl = absolutePageUrl(origin, locale, pathAfterLocale);
+const indexUrl = absolutePageUrl(origin, locale, 'what-we-protect');
+const homeUrl = absolutePageUrl(origin, locale, '');
+const jsonLd = buildJsonLdGraph(
+  buildPageEntityJsonLd({
+    origin,
+    locale,
+    pathSegment: pathAfterLocale,
+    pageType: 'WebPage',
+    name: model.metaTitle,
+    description: model.metaDescription,
+  }),
+  breadcrumbListGraphNode([
+    { name: 'Home', item: homeUrl },
+    { name: hub.heading, item: indexUrl },
+    { name: model.title, item: pageUrl },
+  ]),
+);
+const contactHref = localeHref(locale, contactSegment);
+
+const crumbClass =
+  'text-secondary-2 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3';
+const sectionTitle = 'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
+---
+
+<Base title={model.metaTitle} description={model.metaDescription} {locale} {pathAfterLocale}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <article class="mx-auto max-w-3xl">
+      <nav aria-label="Breadcrumb" class="text-xs font-normal text-secondary-3">
+        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <li>
+            <a href={localeHref(locale, '')} class={crumbClass}>Home</a>
+          </li>
+          <li class="text-secondary-2/50" aria-hidden="true">/</li>
+          <li>
+            <a href={localeHref(locale, 'what-we-protect')} class={crumbClass}>{hub.heading}</a>
+          </li>
+          <li class="text-secondary-2/50" aria-hidden="true">/</li>
+          <li class="text-secondary-4" aria-current="page">{model.title}</li>
+        </ol>
+      </nav>
+
+      <header class="mt-8 md:mt-10">
+        <h1 class="font-serif text-pretty text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+          {model.title}
+        </h1>
+        <p class="mt-6 max-w-3xl text-pretty text-base font-normal leading-relaxed text-secondary-3 md:text-[1.05rem] md:leading-[1.65]">
+          {model.lead}
+        </p>
+      </header>
+
+      <section class="mt-10 md:mt-12" aria-labelledby="why-matters-heading">
+        <h2 id="why-matters-heading" class={sectionTitle}>Why it matters</h2>
+        <ul class="mt-4 list-none space-y-3 text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem]">
+          {
+            model.whyItMatters.map((line) => (
+              <li class="flex gap-3">
+                <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-secondary-3/70" aria-hidden="true" />
+                <span>{line}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="mt-10 md:mt-12" aria-labelledby="risks-heading">
+        <h2 id="risks-heading" class={sectionTitle}>Common risks</h2>
+        <ul class="mt-4 list-none space-y-3 text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem]">
+          {
+            model.commonRisks.map((line) => (
+              <li class="flex gap-3">
+                <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-secondary-2" aria-hidden="true" />
+                <span>{line}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="mt-10 md:mt-12" aria-labelledby="protects-heading">
+        <h2 id="protects-heading" class={sectionTitle}>How Schillings protects it</h2>
+        <p class="mt-4 text-pretty text-base font-extralight leading-[1.65] text-secondary-3 md:mt-5 md:text-[1.05rem]">
+          {model.howSchillingsProtectsIt}
+        </p>
+      </section>
+
+      <section class="mt-10 md:mt-12" aria-labelledby="related-situations-heading">
+        <h2 id="related-situations-heading" class={sectionTitle}>Related situations</h2>
+        <ul class="mt-4 flex flex-col gap-2 md:mt-5">
+          {
+            model.relatedSituations.map((situationId) => {
+              const tail = `situations/${situationPathSlug(situationId)}`;
+              const label = getSituationDetailById(situationId).title;
+              return (
+                <li>
+                  <a
+                    href={localeHref(locale, tail)}
+                    class="inline-flex text-base font-extralight text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+                  >
+                    {label}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
+
+      <section class="mt-10 md:mt-12" aria-labelledby="pillars-heading">
+        <h2 id="pillars-heading" class={sectionTitle}>Related response pillars</h2>
+        <ul class="mt-4 flex flex-col gap-3 md:mt-5">
+          {
+            model.relatedResponsePillars.map((pillarId) => {
+              const pillar = getStrategicResponsePillarById(pillarId);
+              const line = pillar ? `${pillar.label}: ${pillar.line}` : pillarId;
+              return (
+                <li>
+                  <a
+                    href={localeHrefResponseSystemPillar(locale, pillarId)}
+                    class="inline-flex text-base font-extralight text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+                  >
+                    {line}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
+
+      <section
+        class="mt-12 rounded-sm border border-secondary-2/20 bg-utility-2/35 px-5 py-8 md:mt-14 md:px-8 md:py-10"
+        aria-labelledby="wwp-detail-cta-heading"
+      >
+        <h2 id="wwp-detail-cta-heading" class="sr-only">Confidential enquiry</h2>
+        <p class="text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem]">
+          If this is urgent or you need to understand your options, we can speak in confidence.
+        </p>
+        <p class="mt-6">
+          <a
+            href={contactHref}
+            class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm bg-secondary-4 px-6 py-3 text-center text-sm font-normal tracking-wide text-brand-white outline-offset-4 transition-opacity hover:opacity-92 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
+          >
+            {model.ctaLabel}
+          </a>
+        </p>
+      </section>
+
+      <p class="mt-10 text-sm md:mt-12">
+        <a
+          href={localeHref(locale, 'what-we-protect')}
+          class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.2em] transition-colors hover:decoration-secondary-4"
+        >
+          ← What we protect
+        </a>
+      </p>
+    </article>
+  </DocumentMain>
+</Base>

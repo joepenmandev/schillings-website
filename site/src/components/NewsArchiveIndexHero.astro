@@ -4,6 +4,7 @@
  */
 import type { Locale } from '@/i18n/config';
 import NewsArchiveFilters from '@/components/NewsArchiveFilters.astro';
+import { homeIntelligenceSection } from '@/data/strategic-rebuild-content';
 
 interface Props {
   title?: string;
@@ -18,8 +19,8 @@ interface Props {
 }
 
 const {
-  title = 'News & Insights',
-  subtitle = 'The latest news, views, insights and analysis from Schillings.',
+  title = 'Intelligence',
+  subtitle = homeIntelligenceSection.intro,
   locale,
   activeTopicSlug = '',
   activeAuthorSlug = '',

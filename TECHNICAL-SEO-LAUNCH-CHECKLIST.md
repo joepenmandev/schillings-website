@@ -12,7 +12,7 @@
 |-------|------|
 | **`npm run build`** (repo root or `site/`) completes; page count stable | ☐ |
 | Spot-check **`site/dist/index.html`** (UK homepage): no accidental **`noindex`**; **`lang`** on `<html>` matches locale (**`en-GB`** for UK — see `CONTENT-METADATA-SPEC.md`) | ☐ |
-| Spot-check **`site/dist/sitemap-0.xml`**: migration placeholders (**news/people** not in `news.ts` / `people.ts`) are **absent** (filtered in **`astro.config.mjs`**) | ☐ |
+| Spot-check **`site/dist/sitemap-0.xml`**: migration placeholders (**news/people** thin URLs) are **absent**; indexable article/profile URLs present for UK/US/IE (see **`site/astro.config.ts`** + **`site/src/build/sitemap-news-people.ts`**) | ☐ |
 | **`robots.txt`** in **`site/public/`** — production allows crawl; **staging** must disallow or password-gate | ☐ |
 
 When a **staging URL** exists (e.g. Vercel Preview), re-run **§A–I** against that host, then again on **production** after DNS. For **Screaming Frog** crawl settings and Issues-tab triage mapped to official docs, use **§L**.
@@ -54,7 +54,7 @@ When a **staging URL** exists (e.g. Vercel Preview), re-run **§A–I** against 
 | **XML sitemap(s)** include only **indexable** canonical URLs | ☐ |
 | Sitemap submitted in **Search Console** | ☐ |
 | `lastmod` reflects real changes (avoid noise) | ☐ |
-| **`migrated-unreviewed`** news: currently **indexable** like `published` (routes + sitemap). If policy changes to hold unreviewed pieces out of the index, set **`noindex`** on those templates and exclude them from the sitemap filter in **`astro.config.mjs`** after editorial/SEO sign-off | ☐ |
+| **`migrated-unreviewed`** news: currently **indexable** like `published` (routes + sitemap). If policy changes to hold unreviewed pieces out of the index, set **`noindex`** on those templates and exclude them from the sitemap filter in **`site/astro.config.ts`** / **`sitemap-news-people.ts`** after editorial/SEO sign-off | ☐ |
 
 ---
 
@@ -117,7 +117,7 @@ Google can index **server-rendered / pre-built HTML** without depending on clien
 
 | Topic | Practice for this repo |
 |-------|-------------------------|
-| **Crawl budget / efficiency** | Prefer **clean internal links** to final locale URLs (`IA-URL-SPEC.md`); avoid chains (§B). **XML sitemap** lists only indexable URLs (`astro.config.mjs` filter for thin migration pages). |
+| **Crawl budget / efficiency** | Prefer **clean internal links** to final locale URLs (`IA-URL-SPEC.md`); avoid chains (§B). **XML sitemap** lists only indexable URLs (`site/astro.config.ts` filter + `sitemap-news-people.ts` for article/profile URLs). |
 | **Discovery** | **`robots.txt`** `Sitemap` line; submit sitemap in **Search Console** (§C). **RSS** on news helps discovery but is secondary to sitemaps + internal links. |
 | **Rendering** | Keep **title, meta description, canonical, `robots`, hreflang** in HTML from layouts (e.g. `Base.astro`) — not added solely by late or consent-gated client scripts. |
 | **Rich results** | Structured data in HTML; validate with [Rich Results Test](https://search.google.com/test/rich-results) (§F). |

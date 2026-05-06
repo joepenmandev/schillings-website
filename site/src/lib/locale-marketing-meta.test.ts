@@ -8,6 +8,8 @@ describe('locale-marketing-meta', () => {
     expect(gb.title).not.toBe(us.title);
     expect(gb.description).not.toBe(us.description);
     expect(us.title).toContain('Americas');
+    expect(gb.description).toContain('Schillings combines');
+    expect(us.description).toContain('Schillings combines');
   });
 
   it('differentiates people directory meta for IE', () => {

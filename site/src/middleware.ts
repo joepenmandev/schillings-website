@@ -1,5 +1,9 @@
 import type { APIContext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
+import {
+  isBasicAuthDisabledEnvValue,
+  shouldApplySiteBasicAuthForRequest,
+} from './lib/site-basic-auth-gate';
 
 const REALM = 'Protected Site';
 
@@ -48,9 +52,28 @@ function readSecret(context: APIContext, key: 'SITE_USER' | 'SITE_PASS') {
   return undefined;
 }
 
+/** Same lookup paths as secrets; used so `DISABLE_SITE_BASIC_AUTH` is visible even if only in adapter `runtime.env`. */
+function readDisableBasicAuthFlag(context: APIContext): string | undefined {
+  const key = 'DISABLE_SITE_BASIC_AUTH';
+  const fromAstroEnv = (import.meta.env as Record<string, string | undefined>)[key];
+  if (typeof fromAstroEnv === 'string' && fromAstroEnv.length > 0) return fromAstroEnv;
+  const fromProcess = typeof process !== 'undefined' ? process.env[key] : undefined;
+  if (typeof fromProcess === 'string' && fromProcess.length > 0) return fromProcess;
+  const runtimeEnv = (context.locals as Record<string, unknown>)?.runtime as
+    | { env?: Record<string, string | undefined> }
+    | undefined;
+  const fromRuntime = runtimeEnv?.env?.[key];
+  if (typeof fromRuntime === 'string' && fromRuntime.length > 0) return fromRuntime;
+  return undefined;
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
   // Keep local/staging development friction-free; gate production when credentials are configured.
   if (!import.meta.env.PROD) {
+    return next();
+  }
+
+  if (isBasicAuthDisabledEnvValue(readDisableBasicAuthFlag(context))) {
     return next();
   }
 
@@ -58,6 +81,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const expectedUser = readSecret(context, 'SITE_USER');
   const expectedPass = readSecret(context, 'SITE_PASS');
   if (!expectedUser || !expectedPass) {
+    return next();
+  }
+
+  if (!shouldApplySiteBasicAuthForRequest(context.request)) {
     return next();
   }
 

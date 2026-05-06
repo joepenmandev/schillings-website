@@ -1,14 +1,32 @@
 import type { Locale } from '../i18n/config';
+import {
+  primaryNavigation,
+  type StrategicPrimaryNavId,
+  type StrategicResponseSystemId,
+} from '../data/strategic-rebuild-content';
 import { publicPathname } from './public-url';
 
-/** Primary labels + path segments after `/{locale}/` — aligned with `LIVE-SITE-EXTRACT.md` (legacy public IA). */
-export const primaryNav = [
-  { label: 'People', segment: 'people' },
-  { label: 'Services', segment: 'services' },
-  { label: 'News & Insights', segment: 'news' },
-  { label: 'International', segment: 'international' },
-  { label: 'About', segment: 'about-us' },
-] as const;
+/** URL segment per strategic nav id — hyphens in paths; `intelligence` → `/news/` until IA rename. */
+const STRATEGIC_PRIMARY_NAV_SEGMENT = {
+  situations: 'situations',
+  what_we_protect: 'what-we-protect',
+  response_system: 'response-system',
+  sectors: 'services',
+  people: 'people',
+  intelligence: 'news',
+  about: 'about-us',
+} as const satisfies Record<StrategicPrimaryNavId, string>;
+
+export type PrimaryNavItem = {
+  readonly label: string;
+  readonly segment: string;
+};
+
+/** Primary header/footer nav — sourced from `strategic-rebuild-content` labels + IA segments above. */
+export const primaryNav: readonly PrimaryNavItem[] = primaryNavigation.map((item) => ({
+  label: item.label,
+  segment: STRATEGIC_PRIMARY_NAV_SEGMENT[item.id],
+}));
 
 export const contactSegment = 'contact';
 
@@ -40,4 +58,9 @@ export const utilityFooterNav = [
 export function localeHref(locale: Locale, segment: string) {
   const clean = segment.replace(/^\/+|\/+$/g, '');
   return publicPathname(locale, clean);
+}
+
+/** `/response-system/` plus stable pillar fragment (`#intelligence`, `#legal`, …). */
+export function localeHrefResponseSystemPillar(locale: Locale, pillarId: StrategicResponseSystemId): string {
+  return `${localeHref(locale, 'response-system')}#${pillarId}`;
 }

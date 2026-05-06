@@ -1,0 +1,99 @@
+---
+/**
+ * Homepage mission band — scroll-triggered line reveal (SplitType), similar in spirit to
+ * legacy `boilerplate-text` / `split-line` + GSAP, without pulling in GSAP.
+ */
+interface Props {
+  mission: string;
+}
+
+const { mission } = Astro.props;
+---
+
+<section
+  class="bg-secondary-4 px-[min(1.25rem,5.5vw)] py-24 md:px-[min(5rem,5.5vw)] md:py-32"
+  aria-labelledby="mission-heading"
+  data-home-mission
+>
+  <h2 id="mission-heading" class="sr-only">What we believe</h2>
+  <div
+    data-mission-reveal
+    class="mission-reveal-target mx-auto max-w-4xl text-pretty text-center font-serif text-xl font-extralight leading-snug text-brand-white md:text-2xl md:leading-relaxed [font-kerning:none]"
+  >
+    {mission}
+  </div>
+</section>
+
+<style>
+  /* SplitType defaults `text-align: start` per line; keep centered like the live site. */
+  .mission-reveal-target :global(.line) {
+    display: block;
+    width: 100%;
+    text-align: center !important;
+  }
+</style>
+
+<script>
+  import SplitType from 'split-type';
+
+  const SECTION_SEL = '[data-home-mission]';
+  const TARGET_SEL = '[data-mission-reveal]';
+
+  function initHomeMissionReveal() {
+    const section = document.querySelector(SECTION_SEL);
+    const el = section?.querySelector(TARGET_SEL);
+    if (!section || !el || !(el instanceof HTMLElement)) return;
+
+    if (section.getAttribute('data-mission-anim-ready') === '1') return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      section.setAttribute('data-mission-anim-ready', '1');
+      return;
+    }
+
+    const split = new SplitType(el, {
+      types: 'lines',
+      tagName: 'span',
+    });
+
+    const lines = split.lines?.filter(Boolean) ?? [];
+    if (lines.length === 0) {
+      section.setAttribute('data-mission-anim-ready', '1');
+      return;
+    }
+
+    for (const line of lines) {
+      if (!(line instanceof HTMLElement)) continue;
+      line.style.opacity = '0';
+      line.style.transform = 'translateY(0.85rem)';
+    }
+
+    let triggered = false;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting || triggered) continue;
+          triggered = true;
+          lines.forEach((line, i) => {
+            if (!(line instanceof HTMLElement)) return;
+            const delay = `${i * 0.065}s`;
+            line.style.transition = [
+              `opacity 0.78s cubic-bezier(0.22, 1, 0.36, 1) ${delay}`,
+              `transform 0.78s cubic-bezier(0.22, 1, 0.36, 1) ${delay}`,
+            ].join(', ');
+            line.style.opacity = '1';
+            line.style.transform = 'translateY(0)';
+          });
+          io.disconnect();
+        }
+      },
+      { threshold: 0.18, rootMargin: '0px 0px -6% 0px' },
+    );
+
+    io.observe(section);
+    section.setAttribute('data-mission-anim-ready', '1');
+  }
+
+  initHomeMissionReveal();
+  document.addEventListener('astro:after-swap', initHomeMissionReveal);
+</script>

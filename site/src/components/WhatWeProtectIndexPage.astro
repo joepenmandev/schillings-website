@@ -1,0 +1,145 @@
+---
+/**
+ * `/what-we-protect/` — index with asset grid, response system summary, JSON-LD.
+ */
+import type { Locale } from '@/i18n/config';
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { contactSegment, localeHref } from '@/lib/site-nav';
+import {
+  getStrategicHubPageModel,
+  responseSystemPage,
+  STRATEGIC_WHAT_WE_PROTECT_IDS,
+  whatWeProtectDetailsById,
+} from '@/data/strategic-rebuild-content';
+import { buildJsonLdGraph, buildPageEntityJsonLd } from '@/lib/jsonld-page';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { absolutePageUrl } from '@/lib/public-url';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const hub = getStrategicHubPageModel('what-we-protect');
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const pathAfterLocale = 'what-we-protect';
+const pageUrl = absolutePageUrl(origin, locale, pathAfterLocale);
+const homeUrl = absolutePageUrl(origin, locale, '');
+const jsonLd = buildJsonLdGraph(
+  buildPageEntityJsonLd({
+    origin,
+    locale,
+    pathSegment: pathAfterLocale,
+    pageType: 'WebPage',
+    name: hub.title,
+    description: hub.metaDescription,
+  }),
+  breadcrumbListGraphNode([
+    { name: 'Home', item: homeUrl },
+    { name: hub.heading, item: pageUrl },
+  ]),
+);
+const contactHref = localeHref(locale, contactSegment);
+const responseSystemHref = localeHref(locale, 'response-system');
+
+const crumbClass =
+  'text-secondary-2 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3';
+const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
+---
+
+<Base title={hub.title} description={hub.metaDescription} {locale} {pathAfterLocale}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <article class="mx-auto max-w-6xl">
+      <nav aria-label="Breadcrumb" class="text-xs font-normal text-secondary-3">
+        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <li>
+            <a href={localeHref(locale, '')} class={crumbClass}>Home</a>
+          </li>
+          <li class="text-secondary-2/50" aria-hidden="true">/</li>
+          <li class="text-secondary-4" aria-current="page">{hub.heading}</li>
+        </ol>
+      </nav>
+
+      <header class="mt-8 md:mt-10">
+        <h1 class="font-serif text-pretty text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+          {hub.heading}
+        </h1>
+        <p class="mt-6 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem] md:leading-[1.65]">
+          {hub.intro}
+        </p>
+      </header>
+
+      <section class="mt-12 md:mt-14" aria-labelledby="assets-grid-heading">
+        <h2 id="assets-grid-heading" class={sectionKicker}>
+          {hub.listHeading}
+        </h2>
+        <ul class="mt-8 grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5" aria-label="Protective assets">
+          {
+            STRATEGIC_WHAT_WE_PROTECT_IDS.map((assetId) => {
+              const d = whatWeProtectDetailsById[assetId];
+              const tail = `what-we-protect/${d.slug}`;
+              return (
+                <li>
+                  <a
+                    href={localeHref(locale, tail)}
+                    class="group block rounded-sm border border-secondary-2/20 bg-utility-1/90 px-5 py-5 transition-colors hover:border-secondary-3/35 hover:bg-utility-2/50 md:px-6 md:py-6"
+                  >
+                    <span class="font-serif text-lg font-extralight text-secondary-4 group-hover:text-secondary-3 md:text-xl">
+                      {d.title}
+                    </span>
+                    <span class="mt-2 block text-sm font-extralight text-secondary-3">View overview →</span>
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </section>
+
+      <section
+        class="mt-14 rounded-lg border border-secondary-2/15 bg-utility-1/90 px-5 py-8 md:mt-16 md:px-8 md:py-10"
+        aria-labelledby="response-summary-heading"
+      >
+        <h2 id="response-summary-heading" class={sectionKicker}>
+          The Schillings response system
+        </h2>
+        <p class="mt-4 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem]">
+          {responseSystemPage.lead}
+        </p>
+        <p class="mt-4 max-w-3xl font-serif text-lg font-extralight italic leading-relaxed text-secondary-3 md:text-xl">
+          {responseSystemPage.tagline}
+        </p>
+        <p class="mt-6">
+          <a
+            href={responseSystemHref}
+            class="text-sm font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.2em] transition-colors hover:decoration-secondary-4"
+          >
+            How the response system works
+          </a>
+        </p>
+      </section>
+
+      <section
+        class="mt-12 rounded-sm border border-secondary-2/20 bg-utility-2/35 px-5 py-8 md:mt-14 md:px-8 md:py-10"
+        aria-labelledby="wwp-cta-heading"
+      >
+        <h2 id="wwp-cta-heading" class="sr-only">Confidential enquiry</h2>
+        <p class="text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem]">
+          If you need to protect reputation, privacy, family, or continuity under pressure, we can discuss your context in confidence.
+        </p>
+        <p class="mt-6">
+          <a
+            href={contactHref}
+            class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm bg-secondary-4 px-6 py-3 text-center text-sm font-normal tracking-wide text-brand-white outline-offset-4 transition-opacity hover:opacity-92 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
+          >
+            Speak confidentially
+          </a>
+        </p>
+      </section>
+    </article>
+  </DocumentMain>
+</Base>
