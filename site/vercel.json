@@ -13,6 +13,7 @@
     }
   ],
   "redirects": [
+    { "source": "/people", "destination": "/people/", "permanent": true },
     { "source": "/about", "destination": "/about-us/", "permanent": true },
     { "source": "/about/", "destination": "/about-us/", "permanent": true },
     { "source": "/expertise", "destination": "/services/", "permanent": true },

@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 
 const srcDir = fileURLToPath(new URL('./src', import.meta.url));
@@ -66,6 +67,8 @@ function isThinMigrationPeoplePath(pathname) {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://schillingspartners.com',
+  output: 'server',
+  adapter: vercel(),
   trailingSlash: 'always',
   /** Folder + `index.html` per route — public URLs are `/path/` (no `.html` in the path). */
   build: {

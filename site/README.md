@@ -12,7 +12,7 @@ npm run dev
 npm run build
 npm run test
 npm run verify     # test + check:locale-parity + build + verify:build-seo + test:e2e
-                   # Vitest: CSP `frame-src`, redirect-map ↔ vercel.json, Consent wiring
+                   # Vitest: CSP `frame-src`, Consent wiring
                    # Playwright: HTTP smoke + locale/sitemap/region + Chromium/axe on contact `#main`
 npm run check:locale-parity   # UK static routes must have en-us + en-ie mirrors (see locale-parity-allowlist.json)
 npm run verify:build-seo      # after build: hreflang + canonical on locale home HTML in dist/
@@ -44,6 +44,7 @@ Set in the Vercel project (or **`.env`** locally — never commit secrets). Line
 | **`PUBLIC_FORM_ENDPOINT`** | Client form action; production typically **`/api/contact`**. Leave empty in local dev to log payloads to the console. |
 | **`UPSTASH_REDIS_REST_URL`** / **`UPSTASH_REDIS_REST_TOKEN`** | Optional; **global** rate limit for `/api/contact` across Edge isolates. Omit for in-memory limit only. |
 | **`CONTACT_RATE_LIMIT_MAX`** | Optional; max POSTs per IP per minute (default **30**). |
+| **`SITE_USER`** / **`SITE_PASS`** | Optional; when both are set in a production deployment, Astro middleware enables HTTP Basic Auth for all routes. |
 
 ## Adding routes & locale mirrors
 
@@ -63,7 +64,7 @@ Legacy **`/en-gb/…`** URLs **301** to the same path **without** `/en-gb` (see 
 **Performance & SEO (speed + indexing):** After deploy, use **[PageSpeed Insights](https://pagespeed.web.dev/)** on a **public** production or preview URL for a few key routes — see repo **`TECHNICAL-SEO-LAUNCH-CHECKLIST.md`** §G–**G2** (CrUX vs lab, Astro/Vercel notes, sitemap/indexing alignment).
 
 **Security headers** (production on Vercel): **`Strict-Transport-Security`** includes **`preload`** — only keep that once **all** subdomains and apex serve HTTPS for the preload policy window; otherwise remove `preload` from `site/vercel.json`. **`Content-Security-Policy`** is set there (inline scripts allowed for Astro + form; **`frame-src`** allows the SRA Yoshki iframe in **`SiteFooter`**).
-For non-production hosts (anything other than `schillingspartners.com` / `www.schillingspartners.com`), `site/vercel.json` adds **`X-Robots-Tag: noindex, nofollow, noarchive`** to all responses and rewrites **`/robots.txt`** to **`/robots-staging.txt`** (`Disallow: /`).
+For non-production hosts (anything other than `schillingspartners.com` / `www.schillingspartners.com`), `site/vercel.json` adds **`X-Robots-Tag: noindex, nofollow, noarchive`** to all responses and rewrites **`/robots.txt`** to **`/robots-staging.txt`** (`Disallow: /`). This remains in place when Basic Auth is enabled.
 You can audit this quickly with `npm run verify:nonprod-indexing` (set `INDEXING_VERIFY_URL` and optional `INDEXING_VERIFY_MODE=prod|nonprod`).
 
 **Consent / analytics prep:** **`ConsentModeDefaults.astro`** sets Google **Consent Mode v2** defaults (non-essential denied) before tags load. When marketing ships GA4/GTM + a CMP, follow **`ANALYTICS-CONSENT-SPEC.md`** and call `gtag('consent', 'update', …)` from the CMP.
