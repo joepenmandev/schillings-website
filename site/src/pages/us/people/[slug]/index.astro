@@ -156,8 +156,15 @@ const isThinProfile = Boolean(person && isThinPersonProfile(person));
       {
         person ? (
           <>
-            <header class="mt-6 max-w-6xl md:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
-              <div class="min-w-0 flex-1">
+            <div
+              class:list={[
+                'mt-6 grid max-w-6xl grid-cols-1 gap-y-8 md:mt-8 lg:items-start lg:gap-y-8',
+                person.imagePath
+                  ? 'lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-12 xl:gap-x-16'
+                  : 'lg:grid-cols-1',
+              ]}
+            >
+              <header class="min-w-0 lg:col-start-1 lg:row-start-1">
                 <h1 class={PEOPLE_PROFILE_H1_CLASS}>
                   {person.name}
                 </h1>
@@ -185,10 +192,10 @@ const isThinProfile = Boolean(person && isThinPersonProfile(person));
                     </ul>
                   ) : null
                 }
-              </div>
+              </header>
               {
                 person.imagePath ? (
-                  <div class="mx-auto mt-8 w-full max-w-[20rem] shrink-0 lg:mx-0 lg:mt-1">
+                  <div class="mx-auto w-full max-w-[20rem] shrink-0 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:flex lg:justify-end lg:self-start">
                     <div class="overflow-hidden rounded-sm shadow-md ring-1 ring-secondary-2/20 lg:sticky lg:top-28">
                       <img
                         src={person.imagePath}
@@ -205,16 +212,21 @@ const isThinProfile = Boolean(person && isThinPersonProfile(person));
                   </div>
                 ) : null
               }
-            </header>
-
-            <section class="mt-12 max-w-[52rem] md:mt-14" aria-labelledby="person-bio-heading">
-              <SectionKicker id="person-bio-heading">Biography</SectionKicker>
-              <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
-                {person.paragraphs.map((p) => (
-                  <p>{p}</p>
-                ))}
-              </div>
-            </section>
+              <section
+                class:list={[
+                  'max-w-[52rem]',
+                  person.imagePath ? 'lg:col-start-1 lg:row-start-2' : '',
+                ]}
+                aria-labelledby="person-bio-heading"
+              >
+                <SectionKicker id="person-bio-heading">Biography</SectionKicker>
+                <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
+                  {person.paragraphs.map((p) => (
+                    <p>{p}</p>
+                  ))}
+                </div>
+              </section>
+            </div>
 
             {isThinProfile ? null : <PersonProfileContextSections {locale} person={person} />}
 
