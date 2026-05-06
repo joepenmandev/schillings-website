@@ -2,6 +2,16 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": true,
   "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/robots.txt",
+      "missing": [
+        { "type": "host", "value": "schillingspartners.com" },
+        { "type": "host", "value": "www.schillingspartners.com" }
+      ],
+      "destination": "/robots-staging.txt"
+    }
+  ],
   "redirects": [
     { "source": "/people", "destination": "/people/", "permanent": true },
     { "source": "/people/", "destination": "/people/", "permanent": true },

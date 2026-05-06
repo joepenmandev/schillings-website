@@ -2,10 +2,13 @@
 
 Use this checklist for launch readiness and quarterly reviews.
 
+Reference mapping: `docs/SECURITY-STANDARDS-MAPPING.md`.
+
 ## 1) Access and Identity
 
 - [ ] Production access is restricted by role (least privilege).
 - [ ] Staging and preview are behind deployment protection.
+- [ ] Reviewer access follows `docs/REVIEWER-ACCESS-POLICY.md` (named user, time-bounded, revocable).
 - [ ] Repository enforces MFA for maintainers.
 - [ ] No shared personal accounts for deployment access.
 - [ ] Offboarding process removes access within 24 hours.

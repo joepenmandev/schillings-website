@@ -17,6 +17,7 @@ npm run verify     # test + check:locale-parity + build + verify:build-seo + tes
 npm run check:locale-parity   # UK static routes must have en-us + en-ie mirrors (see locale-parity-allowlist.json)
 npm run verify:build-seo      # after build: hreflang + canonical on locale home HTML in dist/
 npm run verify:launch-urls    # optional live audit — set LAUNCH_VERIFY_URL=https://… (/, /contact/, sitemap, /en-gb/→/)
+npm run verify:nonprod-indexing  # optional live audit — set INDEXING_VERIFY_URL=https://… (checks noindex + robots block on nonprod)
 npm run test:e2e   # Playwright only (needs dist/ — run build first, or use full verify)
 npm run preview
 npm run import:people
@@ -62,7 +63,8 @@ Legacy **`/en-gb/…`** URLs **301** to the same path **without** `/en-gb` (see 
 **Performance & SEO (speed + indexing):** After deploy, use **[PageSpeed Insights](https://pagespeed.web.dev/)** on a **public** production or preview URL for a few key routes — see repo **`TECHNICAL-SEO-LAUNCH-CHECKLIST.md`** §G–**G2** (CrUX vs lab, Astro/Vercel notes, sitemap/indexing alignment).
 
 **Security headers** (production on Vercel): **`Strict-Transport-Security`** includes **`preload`** — only keep that once **all** subdomains and apex serve HTTPS for the preload policy window; otherwise remove `preload` from `site/vercel.json`. **`Content-Security-Policy`** is set there (inline scripts allowed for Astro + form; **`frame-src`** allows the SRA Yoshki iframe in **`SiteFooter`**).
-For non-production hosts (anything other than `schillingspartners.com` / `www.schillingspartners.com`), `site/vercel.json` adds **`X-Robots-Tag: noindex, nofollow, noarchive`** to all responses.
+For non-production hosts (anything other than `schillingspartners.com` / `www.schillingspartners.com`), `site/vercel.json` adds **`X-Robots-Tag: noindex, nofollow, noarchive`** to all responses and rewrites **`/robots.txt`** to **`/robots-staging.txt`** (`Disallow: /`).
+You can audit this quickly with `npm run verify:nonprod-indexing` (set `INDEXING_VERIFY_URL` and optional `INDEXING_VERIFY_MODE=prod|nonprod`).
 
 **Consent / analytics prep:** **`ConsentModeDefaults.astro`** sets Google **Consent Mode v2** defaults (non-essential denied) before tags load. When marketing ships GA4/GTM + a CMP, follow **`ANALYTICS-CONSENT-SPEC.md`** and call `gtag('consent', 'update', …)` from the CMP.
 

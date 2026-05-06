@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+
+# Non-production crawler block.
+# Production robots lives at /robots.txt.

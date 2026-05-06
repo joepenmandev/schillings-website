@@ -118,3 +118,7 @@ Maintain and test:
 - **Marketing/SEO owner**: indexing/canonical governance
 - **Compliance owner**: release approval where required
 
+## Related Policy
+
+- Reviewer access runbook: `docs/REVIEWER-ACCESS-POLICY.md`
+
