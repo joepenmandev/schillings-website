@@ -1,3 +1,4 @@
+import type { APIContext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
 
 const REALM = 'Protected Site';
@@ -28,19 +29,34 @@ function decodeBasicCredentials(authHeader: string) {
   }
 }
 
+function readSecret(context: APIContext, key: 'SITE_USER' | 'SITE_PASS') {
+  // 1) Build-time/private env (works in many server adapters).
+  const fromAstroEnv = import.meta.env[key];
+  if (typeof fromAstroEnv === 'string' && fromAstroEnv.length > 0) return fromAstroEnv;
+
+  // 2) Node/serverless runtime env.
+  const fromProcess = typeof process !== 'undefined' ? process.env[key] : undefined;
+  if (typeof fromProcess === 'string' && fromProcess.length > 0) return fromProcess;
+
+  // 3) Adapter runtime env bag (edge-style runtimes expose env here).
+  const runtimeEnv = (context.locals as Record<string, unknown>)?.runtime as
+    | { env?: Record<string, string | undefined> }
+    | undefined;
+  const fromRuntime = runtimeEnv?.env?.[key];
+  if (typeof fromRuntime === 'string' && fromRuntime.length > 0) return fromRuntime;
+
+  return undefined;
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
   // Keep local/staging development friction-free; gate production when credentials are configured.
   if (!import.meta.env.PROD) {
     return next();
   }
 
-  // Read private env vars in a way that works across Vercel runtimes.
-  const expectedUser =
-    import.meta.env.SITE_USER ??
-    (typeof process !== 'undefined' ? process.env.SITE_USER : undefined);
-  const expectedPass =
-    import.meta.env.SITE_PASS ??
-    (typeof process !== 'undefined' ? process.env.SITE_PASS : undefined);
+  // Read private env vars across node/serverless/edge runtime styles.
+  const expectedUser = readSecret(context, 'SITE_USER');
+  const expectedPass = readSecret(context, 'SITE_PASS');
   if (!expectedUser || !expectedPass) {
     return next();
   }
