@@ -1,0 +1,12 @@
+---
+interface Props {
+  note?: string;
+}
+
+const { note = 'Threat actor references are archetype-only and never identify named individuals.' } = Astro.props;
+---
+
+<section class="platform-card rounded-xl p-5">
+  <h2 class="font-serif text-xl text-brand-white">Adversary lens</h2>
+  <p class="mt-3 text-sm text-utility-2">{note}</p>
+</section>

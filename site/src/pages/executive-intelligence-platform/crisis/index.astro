@@ -1,0 +1,33 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import IntelligenceReport from '@/components/platform/IntelligenceReport.astro';
+import { loadPlatformDoc } from '@/lib/platform-docs';
+import { platformAssessments } from '@/data/platform-assessments';
+import { linkedInsightsFor } from '@/lib/platform/linking-rules';
+import { platformScenarios } from '@/data/platform-scenarios';
+
+const locale = 'en-gb';
+const content = loadPlatformDoc('page-copy/crisis-pillar.md');
+---
+
+<Base
+  title="Crisis Intelligence | Schillings Intelligence"
+  description="Crisis Intelligence pillar overview."
+  {locale}
+  pathAfterLocale="executive-intelligence-platform/crisis"
+  noindex
+>
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <IntelligenceReport
+      title="Crisis Intelligence"
+      subtitle="First-72-hours simulation with intervention leverage planning."
+      content={content}
+      assessment={platformAssessments.default}
+      insights={linkedInsightsFor('headline-risk-assessment')}
+      scenarios={platformScenarios}
+    />
+  </DocumentMain>
+</Base>

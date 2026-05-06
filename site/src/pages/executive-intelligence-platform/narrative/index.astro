@@ -1,0 +1,32 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import IntelligenceReport from '@/components/platform/IntelligenceReport.astro';
+import { loadPlatformDoc } from '@/lib/platform-docs';
+import { platformAssessments } from '@/data/platform-assessments';
+import { linkedInsightsFor } from '@/lib/platform/linking-rules';
+
+const locale = 'en-gb';
+const content = loadPlatformDoc('page-copy/narrative-pillar.md');
+---
+
+<Base
+  title="Narrative Intelligence | Schillings Intelligence"
+  description="Narrative Intelligence pillar overview."
+  {locale}
+  pathAfterLocale="executive-intelligence-platform/narrative"
+  noindex
+>
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <IntelligenceReport
+      title="Narrative Intelligence"
+      subtitle="Interpretation risk, escalation pathways, and audience-lens analysis."
+      content={content}
+      assessment={platformAssessments['headline-risk-assessment']}
+      insights={linkedInsightsFor('headline-risk-assessment')}
+      showAdversaryLens
+    />
+  </DocumentMain>
+</Base>

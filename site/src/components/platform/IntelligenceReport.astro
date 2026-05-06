@@ -1,0 +1,76 @@
+---
+import type { PlatformAssessment } from '@/data/platform-assessments';
+import type { PlatformScenario } from '@/data/platform-scenarios';
+import type { LinkedInsight } from '@/lib/platform/linking-rules';
+import AssessmentShell from '@/components/platform/AssessmentShell.astro';
+import PlatformHeader from '@/components/platform/PlatformHeader.astro';
+import PlatformMarkdown from '@/components/platform/PlatformMarkdown.astro';
+import ConfidencePanel from '@/components/platform/ConfidencePanel.astro';
+import AiProvenancePanel from '@/components/platform/AiProvenancePanel.astro';
+import LinkedInsights from '@/components/platform/LinkedInsights.astro';
+import AnalystReviewCta from '@/components/platform/AnalystReviewCta.astro';
+import ScenarioLibrary from '@/components/platform/ScenarioLibrary.astro';
+import AdversaryLens from '@/components/platform/AdversaryLens.astro';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  content?: string;
+  assessment: PlatformAssessment;
+  insights: LinkedInsight[];
+  scenarios?: PlatformScenario[];
+  showAdversaryLens?: boolean;
+  assessmentMode?: 'standard' | 'deterministic-draft';
+}
+
+const {
+  title,
+  subtitle,
+  content,
+  assessment,
+  insights,
+  scenarios = [],
+  showAdversaryLens = false,
+  assessmentMode = 'standard',
+} = Astro.props;
+---
+
+<AssessmentShell>
+  {assessmentMode === 'deterministic-draft' && (
+    <section class="platform-draft-notice rounded-xl p-4">
+      <h2 class="font-serif text-lg text-brand-white">Deterministic draft output</h2>
+      <p class="mt-2 text-sm text-utility-2">
+        This preview uses fixed platform rules and local fixtures. It is not a live model assessment and does not
+        replace analyst-reviewed output.
+      </p>
+    </section>
+  )}
+  <PlatformHeader title={title} subtitle={subtitle} />
+  <div class="mt-6 grid gap-4 lg:grid-cols-2">
+    <ConfidencePanel confidence={assessment.confidence} assumptions={assessment.assumptions} />
+    <AiProvenancePanel items={assessment.aiProvenance} />
+  </div>
+  {content && (
+    <div class="platform-card mt-6 rounded-xl p-6">
+      <PlatformMarkdown content={content} />
+    </div>
+  )}
+  <div class="mt-6 grid gap-4 lg:grid-cols-2">
+    <LinkedInsights insights={insights} />
+    <AnalystReviewCta state={assessment.analystReviewState} />
+  </div>
+  <section class="platform-card mt-6 rounded-xl p-5">
+    <h2 class="font-serif text-xl text-brand-white">Recommended priorities</h2>
+    <p class="mt-2 text-sm text-utility-2">Three actions, in order of urgency.</p>
+    <ul class="mt-3 space-y-2 text-sm text-utility-2">
+      {assessment.recommendedPriorities.map((priority) => <li>• {priority}</li>)}
+    </ul>
+  </section>
+  <section class="platform-card mt-4 rounded-xl p-5">
+    <h2 class="font-serif text-xl text-brand-white">Methodology version</h2>
+    <p class="mt-2 text-sm text-utility-2">{assessment.methodologyVersion}</p>
+  </section>
+  {showAdversaryLens && <div class="mt-6"><AdversaryLens /></div>}
+  {scenarios.length > 0 && <div class="mt-6"><ScenarioLibrary scenarios={scenarios} /></div>}
+  <slot />
+</AssessmentShell>

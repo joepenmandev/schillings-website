@@ -1,0 +1,77 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import IntelligenceReport from '@/components/platform/IntelligenceReport.astro';
+import RefusalPolicyPanel from '@/components/platform/RefusalPolicyPanel.astro';
+import { loadPlatformDoc, platformTools } from '@/lib/platform-docs';
+import { platformAssessments } from '@/data/platform-assessments';
+import { linkedInsightsFor } from '@/lib/platform/linking-rules';
+
+export function getStaticPaths() {
+  return platformTools.map((tool) => ({
+    params: { toolId: tool.id },
+    props: { tool },
+  }));
+}
+
+const locale = 'en-gb';
+const { tool } = Astro.props;
+const content = loadPlatformDoc(tool.docPath);
+const run = Astro.url.searchParams.get('run') === '1';
+const input = (Astro.url.searchParams.get('input') ?? '').trim();
+const assessmentBase = platformAssessments[tool.id] ?? platformAssessments.default;
+const confidence = !run ? assessmentBase.confidence : input.length > 120 ? 'high' : input.length > 40 ? 'moderate' : ('low' as const);
+const assessment = {
+  ...assessmentBase,
+  confidence,
+  assumptions: run
+    ? [...assessmentBase.assumptions, input ? `Run context captured (${input.length} characters).` : 'No contextual text provided.']
+    : assessmentBase.assumptions,
+};
+---
+
+<Base
+  title={`${tool.title} | Schillings Intelligence`}
+  description={tool.description}
+  {locale}
+  pathAfterLocale={`executive-intelligence-platform/tools/${tool.id}`}
+  noindex
+>
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <section class="rounded-xl border border-secondary-2/30 bg-utility-2/30 p-5">
+      <h2 class="font-serif text-2xl font-extralight text-secondary-4">Assessment input</h2>
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-secondary-3">
+        Deterministic pre-launch shell. This run does not call a model and does not replace analyst review.
+      </p>
+      <form method="get" class="mt-4 space-y-3">
+        <input type="hidden" name="run" value="1" />
+        <label class="block text-sm text-secondary-4" for="platform-tool-input">{tool.fieldLabel}</label>
+        <textarea
+          id="platform-tool-input"
+          name="input"
+          class="min-h-28 w-full rounded-md border border-secondary-2/40 bg-brand-white px-3 py-2 text-sm text-secondary-4"
+          placeholder={tool.fieldPlaceholder}
+        >{input}</textarea>
+        <button
+          type="submit"
+          class="inline-flex rounded-sm border border-secondary-3 px-4 py-2 text-sm text-secondary-4 transition-colors hover:bg-utility-2/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
+        >
+          Generate deterministic draft
+        </button>
+      </form>
+    </section>
+    <IntelligenceReport
+      title={tool.title}
+      subtitle={tool.description}
+      content={content}
+      assessment={assessment}
+      insights={linkedInsightsFor(tool.id)}
+      showAdversaryLens
+      assessmentMode="deterministic-draft"
+    >
+      <RefusalPolicyPanel limits={tool.refusalLimits} />
+    </IntelligenceReport>
+  </DocumentMain>
+</Base>

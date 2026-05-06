@@ -1,0 +1,32 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import IntelligenceReport from '@/components/platform/IntelligenceReport.astro';
+import { loadPlatformDoc } from '@/lib/platform-docs';
+import { platformAssessments } from '@/data/platform-assessments';
+import { linkedInsightsFor } from '@/lib/platform/linking-rules';
+
+const locale = 'en-gb';
+const content = loadPlatformDoc('page-copy/exposure-pillar.md');
+---
+
+<Base
+  title="Exposure Intelligence | Schillings Intelligence"
+  description="Exposure Intelligence pillar overview."
+  {locale}
+  pathAfterLocale="executive-intelligence-platform/exposure"
+  noindex
+>
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <IntelligenceReport
+      title="Exposure Intelligence"
+      subtitle="Public data, AI visibility, traceability, and impersonation susceptibility."
+      content={content}
+      assessment={platformAssessments['executive-exposure-audit']}
+      insights={linkedInsightsFor('executive-exposure-audit')}
+      showAdversaryLens
+    />
+  </DocumentMain>
+</Base>

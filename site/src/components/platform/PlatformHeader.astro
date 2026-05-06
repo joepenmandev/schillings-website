@@ -1,0 +1,15 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  kicker?: string;
+}
+
+const { title, subtitle, kicker = 'Schillings Intelligence' } = Astro.props;
+---
+
+<header class="platform-card rounded-xl p-6 md:p-8">
+  <p class="platform-kicker">{kicker}</p>
+  <h1 class="mt-2 font-serif text-3xl font-extralight tracking-tight text-brand-white md:text-4xl">{title}</h1>
+  {subtitle && <p class="mt-4 max-w-3xl text-pretty leading-relaxed text-utility-2">{subtitle}</p>}
+</header>

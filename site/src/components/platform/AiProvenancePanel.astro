@@ -1,0 +1,14 @@
+---
+interface Props {
+  items: Array<{ label: string; source: 'deterministic' | 'model-inferred' | 'analyst-reviewed' }>;
+}
+
+const { items } = Astro.props;
+---
+
+<section class="platform-card rounded-xl p-5">
+  <h2 class="font-serif text-xl text-brand-white">AI provenance disclosure</h2>
+  <ul class="mt-3 space-y-2 text-sm text-utility-2">
+    {items.map((item) => <li>• {item.label}: {item.source}</li>)}
+  </ul>
+</section>

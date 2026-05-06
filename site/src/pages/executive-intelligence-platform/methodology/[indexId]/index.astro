@@ -1,0 +1,47 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import IntelligenceReport from '@/components/platform/IntelligenceReport.astro';
+import MethodologyChangelog from '@/components/platform/MethodologyChangelog.astro';
+import { loadPlatformDoc, platformMethodologies } from '@/lib/platform-docs';
+import { platformAssessments } from '@/data/platform-assessments';
+import { linkedInsightsFor } from '@/lib/platform/linking-rules';
+import { platformMethodologies as platformMethodologyData } from '@/data/platform-methodologies';
+
+export function getStaticPaths() {
+  return platformMethodologies.map((methodology) => ({
+    params: { indexId: methodology.id },
+    props: { methodology },
+  }));
+}
+
+const locale = 'en-gb';
+const { methodology } = Astro.props;
+const content = loadPlatformDoc(methodology.docPath);
+const methodologyMeta =
+  platformMethodologyData.find((item) => item.id === methodology.id) ?? platformMethodologyData[0];
+---
+
+<Base
+  title={`${methodology.title} | Methodology`}
+  description={`${methodology.title} methodology page.`}
+  {locale}
+  pathAfterLocale={`executive-intelligence-platform/methodology/${methodology.id}`}
+  noindex
+>
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <IntelligenceReport
+      title={methodology.title}
+      subtitle="Methodology reference"
+      content={content}
+      assessment={platformAssessments.default}
+      insights={linkedInsightsFor('default')}
+    >
+      <div class="mt-6">
+        <MethodologyChangelog version={methodologyMeta.version} entries={methodologyMeta.changelog} />
+      </div>
+    </IntelligenceReport>
+  </DocumentMain>
+</Base>

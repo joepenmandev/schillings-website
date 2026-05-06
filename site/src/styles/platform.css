@@ -1,0 +1,21 @@
+.platform-shell {
+  background: linear-gradient(180deg, #160d1d 0%, #1c1324 100%);
+  color: #eeeae4;
+}
+
+.platform-card {
+  border: 1px solid rgba(184, 166, 176, 0.35);
+  background: rgba(33, 24, 39, 0.75);
+}
+
+.platform-kicker {
+  color: #c6b7c0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.platform-draft-notice {
+  border: 1px solid rgba(184, 166, 176, 0.45);
+  background: rgba(84, 45, 88, 0.5);
+}

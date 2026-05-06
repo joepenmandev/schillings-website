@@ -1,0 +1,51 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import IntelligenceReport from '@/components/platform/IntelligenceReport.astro';
+import { platformDecisionDefaults, platformMethodologies } from '@/lib/platform-docs';
+import { platformAssessments } from '@/data/platform-assessments';
+import { linkedInsightsFor } from '@/lib/platform/linking-rules';
+
+const locale = 'en-gb';
+---
+
+<Base
+  title="Methodology | Schillings Intelligence"
+  description="Methodology pages for Schillings Intelligence indexes."
+  {locale}
+  pathAfterLocale="executive-intelligence-platform/methodology"
+  noindex
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <IntelligenceReport
+      title="Methodology"
+      subtitle="Versioned references for all five named indexes."
+      assessment={platformAssessments.default}
+      insights={linkedInsightsFor('default')}
+    >
+      <section class="platform-card mt-6 rounded-xl p-5">
+        <h2 class="font-serif text-xl text-brand-white">Current defaults in force</h2>
+        <ul class="mt-3 space-y-2 text-sm text-utility-2">
+          {platformDecisionDefaults.map((item) => <li>• {item}</li>)}
+        </ul>
+      </section>
+      <ul class="mt-6 space-y-4">
+        {
+          platformMethodologies.map((methodology) => (
+            <li>
+              <a
+                href={`/executive-intelligence-platform/methodology/${methodology.id}/`}
+                class="block rounded-lg border border-secondary-2/30 bg-utility-2/40 px-5 py-4 transition-colors hover:border-secondary-3 hover:bg-utility-2/70"
+              >
+                <span class="block font-serif text-xl font-normal text-secondary-4">{methodology.title}</span>
+                <span class="mt-1 block text-sm text-secondary-3">{methodology.description}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </IntelligenceReport>
+  </DocumentMain>
+</Base>

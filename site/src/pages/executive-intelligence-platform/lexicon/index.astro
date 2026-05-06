@@ -1,0 +1,31 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import IntelligenceReport from '@/components/platform/IntelligenceReport.astro';
+import { loadPlatformDoc } from '@/lib/platform-docs';
+import { platformAssessments } from '@/data/platform-assessments';
+import { linkedInsightsFor } from '@/lib/platform/linking-rules';
+
+const locale = 'en-gb';
+const content = loadPlatformDoc('lexicon.md');
+---
+
+<Base
+  title="Lexicon | Schillings Intelligence"
+  description="Controlled vocabulary for Schillings Intelligence."
+  {locale}
+  pathAfterLocale="executive-intelligence-platform/lexicon"
+  noindex
+>
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <IntelligenceReport
+      title="Platform lexicon"
+      subtitle="Controlled terminology for platform outputs and methodology references."
+      content={content}
+      assessment={platformAssessments.default}
+      insights={linkedInsightsFor('default')}
+    />
+  </DocumentMain>
+</Base>

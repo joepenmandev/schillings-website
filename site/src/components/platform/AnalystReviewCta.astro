@@ -1,0 +1,21 @@
+---
+interface Props {
+  state: 'available' | 'gated-live-engagement';
+}
+
+const { state } = Astro.props;
+---
+
+<section class="platform-card rounded-xl p-5">
+  <h2 class="font-serif text-xl text-brand-white">Analyst review</h2>
+  {state === 'available' ? (
+    <p class="mt-3 text-sm text-utility-2">
+      Request analyst review when this assessment intersects an active matter. A named Schillings partner can return
+      signed observations within the published SLA.
+    </p>
+  ) : (
+    <p class="mt-3 text-sm text-utility-2">
+      Analyst review for this mode is available only during an active live engagement.
+    </p>
+  )}
+</section>

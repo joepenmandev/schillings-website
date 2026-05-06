@@ -1,0 +1,16 @@
+---
+import type { PlatformScenario } from '@/data/platform-scenarios';
+
+interface Props {
+  scenarios: PlatformScenario[];
+}
+
+const { scenarios } = Astro.props;
+---
+
+<section class="platform-card rounded-xl p-5">
+  <h2 class="font-serif text-xl text-brand-white">Scenario library</h2>
+  <ul class="mt-3 space-y-3 text-sm text-utility-2">
+    {scenarios.map((scenario) => <li>• <strong>{scenario.title}</strong> ({scenario.pillar}): {scenario.summary}</li>)}
+  </ul>
+</section>

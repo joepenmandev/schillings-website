@@ -1,0 +1,31 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import IntelligenceReport from '@/components/platform/IntelligenceReport.astro';
+import { loadPlatformDoc } from '@/lib/platform-docs';
+import { platformAssessments } from '@/data/platform-assessments';
+import { linkedInsightsFor } from '@/lib/platform/linking-rules';
+
+const locale = 'en-gb';
+const content = loadPlatformDoc('manifesto.md');
+---
+
+<Base
+  title="Manifesto | Schillings Intelligence"
+  description="The Schillings Intelligence manifesto."
+  {locale}
+  pathAfterLocale="executive-intelligence-platform/manifesto"
+  noindex
+>
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <IntelligenceReport
+      title="Schillings Intelligence manifesto"
+      subtitle="A category statement for digital executive infrastructure."
+      content={content}
+      assessment={platformAssessments.default}
+      insights={linkedInsightsFor('default')}
+    />
+  </DocumentMain>
+</Base>

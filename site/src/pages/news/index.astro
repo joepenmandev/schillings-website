@@ -60,6 +60,21 @@ const newsJsonLd = buildJsonLdGraph(
   <SiteHeader {locale} />
   <NewsArchiveIndexHero {locale} />
   <DocumentMain contentWidth="wide">
+    <section class="rounded-lg border border-secondary-2/30 bg-utility-2/40 px-5 py-5 md:px-6">
+      <h2 class="font-serif text-xl font-normal tracking-tight text-secondary-4 md:text-2xl">
+        Schillings Intelligence
+      </h2>
+      <p class="mt-3 max-w-4xl text-pretty text-sm leading-relaxed text-secondary-3 md:text-base">
+        Use the Executive Intelligence Platform for structured exposure, narrative, and crisis assessments linked to
+        methodology pages and confidence disclosures.
+      </p>
+      <a
+        href="/executive-intelligence-platform/"
+        class="mt-4 inline-flex rounded-sm border border-secondary-3 px-4 py-2 text-sm text-secondary-4 transition-colors hover:bg-utility-2/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
+      >
+        Explore the platform
+      </a>
+    </section>
     {featuredArticle ? (
       <div class="mt-8 md:mt-10">
         <NewsArchiveFeaturedHero {locale} article={featuredArticle} showTopicBadges />
