@@ -1,0 +1,27 @@
+---
+import {
+  HUB_LINK_CARD_ANCHOR_CLASS,
+  HUB_LINK_CARD_DESCRIPTION_CLASS,
+  HUB_LINK_CARD_TITLE_CLASS,
+} from '@/lib/visual-tokens';
+
+interface Props {
+  href: string;
+  class?: string;
+}
+
+const { href, class: className } = Astro.props;
+---
+
+<a href={href} class:list={[HUB_LINK_CARD_ANCHOR_CLASS, className]}>
+  <span class={HUB_LINK_CARD_TITLE_CLASS}>
+    <slot name="title" />
+  </span>
+  {
+    Astro.slots.has('description') ? (
+      <span class={HUB_LINK_CARD_DESCRIPTION_CLASS}>
+        <slot name="description" />
+      </span>
+    ) : null
+  }
+</a>

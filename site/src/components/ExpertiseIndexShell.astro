@@ -1,9 +1,12 @@
 ---
 import Base from '@/layouts/Base.astro';
-import MarketingStubNav from '@/components/MarketingStubNav.astro';
-import SiteHeader from '@/components/SiteHeader.astro';
-import DocumentMain from '@/components/DocumentMain.astro';
 import ExpertiseIndexCards from '@/components/ExpertiseIndexCards.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SectionKicker from '@/components/SectionKicker.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
+import StrategicPageTitle from '@/components/StrategicPageTitle.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
 import { getExpertiseIndexGraphHubEntries } from '@/data/strategic-rebuild-content';
 import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
 import { buildJsonLdGraph, buildExpertiseIndexGraphNodes } from '@/lib/jsonld-page';
@@ -35,9 +38,6 @@ const pageJsonLd = buildJsonLdGraph(
   ]),
 );
 
-const crumbClass =
-  'text-secondary-2 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3';
-const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
 const gridListHeading = 'Areas of expertise';
 ---
 
@@ -46,20 +46,15 @@ const gridListHeading = 'Areas of expertise';
   <SiteHeader {locale} />
   <DocumentMain contentWidth="wide">
     <article class="mx-auto max-w-6xl">
-      <nav aria-label="Breadcrumb" class="text-xs font-normal text-secondary-3">
-        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <li>
-            <a href={localeHref(locale, '')} class={crumbClass}>Home</a>
-          </li>
-          <li class="text-secondary-2/50" aria-hidden="true">/</li>
-          <li class="text-secondary-4" aria-current="page">Expertise</li>
-        </ol>
-      </nav>
+      <StrategicBreadcrumb
+        items={[
+          { label: 'Home', href: localeHref(locale, '') },
+          { label: 'Expertise' },
+        ]}
+      />
 
       <header class="mt-8 md:mt-10">
-        <h1 class="font-serif text-pretty text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
-          Expertise
-        </h1>
+        <StrategicPageTitle>Expertise</StrategicPageTitle>
         <p class="mt-6 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem] md:leading-[1.65]">
           Schillings combines specialist capabilities across legal, intelligence, investigations, communications and digital resilience
           to protect reputation, privacy, security and continuity in high-stakes situations.
@@ -67,9 +62,7 @@ const gridListHeading = 'Areas of expertise';
       </header>
 
       <section class="mt-12 md:mt-14" aria-labelledby="expertise-grid-heading">
-        <h2 id="expertise-grid-heading" class={sectionKicker}>
-          {gridListHeading}
-        </h2>
+        <SectionKicker id="expertise-grid-heading">{gridListHeading}</SectionKicker>
         <ExpertiseIndexCards {locale} />
       </section>
 

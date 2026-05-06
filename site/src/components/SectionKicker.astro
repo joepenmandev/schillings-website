@@ -1,0 +1,14 @@
+---
+import { SECTION_KICKER_CLASS } from '@/lib/visual-tokens';
+
+interface Props {
+  id: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+<h2 id={id} class:list={[SECTION_KICKER_CLASS, className]}>
+  <slot />
+</h2>

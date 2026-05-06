@@ -4,7 +4,12 @@
  */
 import type { Locale } from '@/i18n/config';
 import Base from '@/layouts/Base.astro';
+import CtaConfidentialBand from '@/components/CtaConfidentialBand.astro';
+import HubLinkCard from '@/components/HubLinkCard.astro';
+import SectionKicker from '@/components/SectionKicker.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
+import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
+import StrategicPageTitle from '@/components/StrategicPageTitle.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
 import { contactSegment, localeHref } from '@/lib/site-nav';
 import {
@@ -44,10 +49,6 @@ const jsonLd = buildJsonLdGraph(
   ]),
 );
 const contactHref = localeHref(locale, contactSegment);
-
-const crumbClass =
-  'text-secondary-2 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3';
-const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
 ---
 
 <Base title={page.metaTitle} description={page.metaDescription} {locale} {pathAfterLocale}>
@@ -55,20 +56,15 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
   <SiteHeader {locale} />
   <DocumentMain contentWidth="wide">
     <article class="mx-auto max-w-6xl">
-      <nav aria-label="Breadcrumb" class="text-xs font-normal text-secondary-3">
-        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <li>
-            <a href={localeHref(locale, '')} class={crumbClass}>Home</a>
-          </li>
-          <li class="text-secondary-2/50" aria-hidden="true">/</li>
-          <li class="text-secondary-4" aria-current="page">{hub.heading}</li>
-        </ol>
-      </nav>
+      <StrategicBreadcrumb
+        items={[
+          { label: 'Home', href: localeHref(locale, '') },
+          { label: hub.heading },
+        ]}
+      />
 
       <header class="mt-8 md:mt-10">
-        <h1 class="font-serif text-pretty text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
-          {page.title}
-        </h1>
+        <StrategicPageTitle>{page.title}</StrategicPageTitle>
         <p class="mt-6 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem] md:leading-[1.65]">
           {page.lead}
         </p>
@@ -78,7 +74,7 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
       </header>
 
       <section class="mt-12 md:mt-14" aria-labelledby="framework-heading">
-        <h2 id="framework-heading" class={sectionKicker}>Four-part response framework</h2>
+        <SectionKicker id="framework-heading">Four-part response framework</SectionKicker>
         <ul class="mt-8 grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5" aria-label="Response pillars">
           {
             page.pillars.map((pillar) => (
@@ -96,14 +92,14 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
       </section>
 
       <section class="mt-14 md:mt-16" aria-labelledby="together-heading">
-        <h2 id="together-heading" class={sectionKicker}>How the parts work together</h2>
+        <SectionKicker id="together-heading">How the parts work together</SectionKicker>
         <p class="mt-6 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-8 md:text-[1.05rem] md:leading-[1.65]">
           {page.howItWorks}
         </p>
       </section>
 
       <section class="mt-14 md:mt-16" aria-labelledby="situations-heading">
-        <h2 id="situations-heading" class={sectionKicker}>Situations this supports</h2>
+        <SectionKicker id="situations-heading">Situations this supports</SectionKicker>
         <ul class="mt-8 grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5" aria-label="Related situations">
           {
             page.supportedSituations.map((situationId) => {
@@ -111,15 +107,10 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
               const label = getSituationDetailById(situationId).title;
               return (
                 <li>
-                  <a
-                    href={localeHref(locale, tail)}
-                    class="group block rounded-sm border border-secondary-2/20 bg-utility-1/90 px-5 py-5 transition-colors hover:border-secondary-3/35 hover:bg-utility-2/50 md:px-6 md:py-6"
-                  >
-                    <span class="font-serif text-lg font-extralight text-secondary-4 group-hover:text-secondary-3 md:text-xl">
-                      {label}
-                    </span>
-                    <span class="mt-2 block text-sm font-extralight text-secondary-3">View situation →</span>
-                  </a>
+                  <HubLinkCard href={localeHref(locale, tail)}>
+                    <span slot="title">{label}</span>
+                    <span slot="description">View situation →</span>
+                  </HubLinkCard>
                 </li>
               );
             })
@@ -128,7 +119,7 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
       </section>
 
       <section class="mt-14 md:mt-16" aria-labelledby="assets-heading">
-        <h2 id="assets-heading" class={sectionKicker}>What this protects</h2>
+        <SectionKicker id="assets-heading">What this protects</SectionKicker>
         <ul class="mt-8 grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5" aria-label="Protected assets">
           {
             page.protectedAssets.map((assetId) => {
@@ -136,15 +127,10 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
               const tail = `what-we-protect/${d.slug}`;
               return (
                 <li>
-                  <a
-                    href={localeHref(locale, tail)}
-                    class="group block rounded-sm border border-secondary-2/20 bg-utility-1/90 px-5 py-5 transition-colors hover:border-secondary-3/35 hover:bg-utility-2/50 md:px-6 md:py-6"
-                  >
-                    <span class="font-serif text-lg font-extralight text-secondary-4 group-hover:text-secondary-3 md:text-xl">
-                      {d.title}
-                    </span>
-                    <span class="mt-2 block text-sm font-extralight text-secondary-3">View overview →</span>
-                  </a>
+                  <HubLinkCard href={localeHref(locale, tail)}>
+                    <span slot="title">{d.title}</span>
+                    <span slot="description">View overview →</span>
+                  </HubLinkCard>
                 </li>
               );
             })
@@ -152,23 +138,15 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
         </ul>
       </section>
 
-      <section
-        class="mt-12 rounded-sm border border-secondary-2/20 bg-utility-2/35 px-5 py-8 md:mt-14 md:px-8 md:py-10"
-        aria-labelledby="rs-cta-heading"
+      <CtaConfidentialBand
+        class="mt-12 md:mt-14"
+        headingId="rs-cta-heading"
+        srOnlyHeading="Confidential enquiry"
+        href={contactHref}
+        buttonText={page.ctaLabel}
       >
-        <h2 id="rs-cta-heading" class="sr-only">Confidential enquiry</h2>
-        <p class="text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem]">
-          If you need to protect reputation, privacy, family, or continuity under pressure, we can discuss your context in confidence.
-        </p>
-        <p class="mt-6">
-          <a
-            href={contactHref}
-            class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm bg-secondary-4 px-6 py-3 text-center text-sm font-normal tracking-wide text-brand-white outline-offset-4 transition-opacity hover:opacity-92 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
-          >
-            {page.ctaLabel}
-          </a>
-        </p>
-      </section>
+        If you need to protect reputation, privacy, family, or continuity under pressure, we can discuss your context in confidence.
+      </CtaConfidentialBand>
     </article>
   </DocumentMain>
 </Base>

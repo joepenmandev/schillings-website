@@ -1,0 +1,53 @@
+---
+/**
+ * Breadcrumb for strategic marketing pages — matches inline nav in Situations / WWP / Response / Expertise.
+ * Pass 2 segments (Home + current) or 3 (Home + parent link + current). Last segment must omit `href`.
+ */
+import { STRATEGIC_CRUMB_LINK_CLASS } from '@/lib/visual-tokens';
+
+interface Props {
+  items: readonly { label: string; href?: string }[];
+}
+
+const { items } = Astro.props;
+if (items.length < 2) {
+  throw new Error('StrategicBreadcrumb: at least two segments (Home + current) are required.');
+}
+const last = items[items.length - 1];
+if (last.href != null && String(last.href).length > 0) {
+  throw new Error('StrategicBreadcrumb: the last segment must be the current page (no href).');
+}
+---
+
+<nav aria-label="Breadcrumb" class="text-xs font-normal text-secondary-3">
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+    {
+      items.flatMap((item, index) => {
+        const pieces: JSX.Element[] = [];
+        if (index > 0) {
+          pieces.push(
+            <li class="text-secondary-2/50" aria-hidden="true">
+              /
+            </li>,
+          );
+        }
+        if (item.href) {
+          pieces.push(
+            <li>
+              <a href={item.href} class={STRATEGIC_CRUMB_LINK_CLASS}>
+                {item.label}
+              </a>
+            </li>,
+          );
+        } else {
+          pieces.push(
+            <li class="text-secondary-4" aria-current="page">
+              {item.label}
+            </li>,
+          );
+        }
+        return pieces;
+      })
+    }
+  </ol>
+</nav>

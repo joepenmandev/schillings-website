@@ -4,7 +4,12 @@
  */
 import type { Locale } from '@/i18n/config';
 import Base from '@/layouts/Base.astro';
+import CtaConfidentialBand from '@/components/CtaConfidentialBand.astro';
+import HubLinkCard from '@/components/HubLinkCard.astro';
+import SectionKicker from '@/components/SectionKicker.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
+import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
+import StrategicPageTitle from '@/components/StrategicPageTitle.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
 import { contactSegment, localeHref } from '@/lib/site-nav';
 import {
@@ -46,10 +51,6 @@ const jsonLd = buildJsonLdGraph(
 const contactHref = localeHref(locale, contactSegment);
 const responseSystemHref = localeHref(locale, 'response-system');
 const whatWeProtectHref = localeHref(locale, 'what-we-protect');
-
-const crumbClass =
-  'text-secondary-2 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3';
-const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
 ---
 
 <Base title={hub.title} description={hub.metaDescription} {locale} {pathAfterLocale}>
@@ -57,29 +58,22 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
   <SiteHeader {locale} />
   <DocumentMain contentWidth="wide">
     <article class="mx-auto max-w-6xl">
-      <nav aria-label="Breadcrumb" class="text-xs font-normal text-secondary-3">
-        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <li>
-            <a href={localeHref(locale, '')} class={crumbClass}>Home</a>
-          </li>
-          <li class="text-secondary-2/50" aria-hidden="true">/</li>
-          <li class="text-secondary-4" aria-current="page">{hub.heading}</li>
-        </ol>
-      </nav>
+      <StrategicBreadcrumb
+        items={[
+          { label: 'Home', href: localeHref(locale, '') },
+          { label: hub.heading },
+        ]}
+      />
 
       <header class="mt-8 md:mt-10">
-        <h1 class="font-serif text-pretty text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
-          {hub.heading}
-        </h1>
+        <StrategicPageTitle>{hub.heading}</StrategicPageTitle>
         <p class="mt-6 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem] md:leading-[1.65]">
           {hub.intro}
         </p>
       </header>
 
       <section class="mt-12 md:mt-14" aria-labelledby="situations-grid-heading">
-        <h2 id="situations-grid-heading" class={sectionKicker}>
-          {hub.listHeading}
-        </h2>
+        <SectionKicker id="situations-grid-heading">{hub.listHeading}</SectionKicker>
         <ul class="mt-8 grid list-none gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5" aria-label="Situations">
           {
             STRATEGIC_SITUATION_IDS.map((id) => {
@@ -87,17 +81,10 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
               const tail = `situations/${situationPathSlug(id)}`;
               return (
                 <li>
-                  <a
-                    href={localeHref(locale, tail)}
-                    class="group flex min-h-[8.5rem] flex-col rounded-sm border border-secondary-2/20 bg-utility-1/90 px-5 py-5 transition-colors hover:border-secondary-3/35 hover:bg-utility-2/50 md:min-h-0 md:px-6 md:py-6"
-                  >
-                    <span class="font-serif text-lg font-extralight text-secondary-4 group-hover:text-secondary-3 md:text-xl">
-                      {d.title}
-                    </span>
-                    <span class="mt-2 line-clamp-4 flex-1 text-sm font-extralight leading-snug text-secondary-3 md:line-clamp-3 md:text-[0.9375rem] md:leading-relaxed">
-                      {d.lead}
-                    </span>
-                  </a>
+                  <HubLinkCard href={localeHref(locale, tail)}>
+                    <span slot="title">{d.title}</span>
+                    <span slot="description">{d.lead}</span>
+                  </HubLinkCard>
                 </li>
               );
             })
@@ -109,9 +96,7 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
         class="mt-14 rounded-lg border border-secondary-2/15 bg-utility-1/90 px-5 py-8 md:mt-16 md:px-8 md:py-10"
         aria-labelledby="response-summary-heading"
       >
-        <h2 id="response-summary-heading" class={sectionKicker}>
-          The Schillings response system
-        </h2>
+        <SectionKicker id="response-summary-heading">The Schillings response system</SectionKicker>
         <p class="mt-4 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem]">
           {responseSystemPage.lead}
         </p>
@@ -132,9 +117,7 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
         class="mt-14 rounded-lg border border-secondary-2/15 bg-utility-1/90 px-5 py-8 md:mt-16 md:px-8 md:py-10"
         aria-labelledby="wwp-cross-heading"
       >
-        <h2 id="wwp-cross-heading" class={sectionKicker}>
-          {wwpHub.heading}
-        </h2>
+        <SectionKicker id="wwp-cross-heading">{wwpHub.heading}</SectionKicker>
         <p class="mt-4 max-w-3xl text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem]">
           {wwpHub.intro}
         </p>
@@ -148,23 +131,15 @@ const sectionKicker = 'text-xs font-medium uppercase tracking-[0.18em] text-seco
         </p>
       </section>
 
-      <section
-        class="mt-12 rounded-sm border border-secondary-2/20 bg-utility-2/35 px-5 py-8 md:mt-14 md:px-8 md:py-10"
-        aria-labelledby="situations-cta-heading"
+      <CtaConfidentialBand
+        class="mt-12 md:mt-14"
+        headingId="situations-cta-heading"
+        srOnlyHeading="Confidential enquiry"
+        href={contactHref}
+        buttonText="Speak confidentially"
       >
-        <h2 id="situations-cta-heading" class="sr-only">Confidential enquiry</h2>
-        <p class="text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem]">
-          If you need to protect reputation, privacy, family, or continuity under pressure, we can discuss your context in confidence.
-        </p>
-        <p class="mt-6">
-          <a
-            href={contactHref}
-            class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm bg-secondary-4 px-6 py-3 text-center text-sm font-normal tracking-wide text-brand-white outline-offset-4 transition-opacity hover:opacity-92 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
-          >
-            Speak confidentially
-          </a>
-        </p>
-      </section>
+        If you need to protect reputation, privacy, family, or continuity under pressure, we can discuss your context in confidence.
+      </CtaConfidentialBand>
     </article>
   </DocumentMain>
 </Base>

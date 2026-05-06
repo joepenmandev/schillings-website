@@ -1,6 +1,10 @@
 ---
 import Base from '@/layouts/Base.astro';
+import CtaConfidentialBand from '@/components/CtaConfidentialBand.astro';
+import SectionKicker from '@/components/SectionKicker.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
+import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
+import StrategicPageTitle from '@/components/StrategicPageTitle.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
 import { publishedPeople } from '@/data/people';
 import { EXPERTISE_LABELS, type ExpertiseId } from '@/data/people-taxonomy';
@@ -50,10 +54,6 @@ const hubJsonLd = buildJsonLdGraph(
 );
 
 const contactHref = localeHref(locale, contactSegment);
-const crumbClass =
-  'text-secondary-2 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3';
-const sectionTitle =
-  'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
 ---
 
 <Base title={hubTitle} description={metaDesc} {locale} pathAfterLocale={pathSegment}>
@@ -61,24 +61,16 @@ const sectionTitle =
   <SiteHeader {locale} />
   <DocumentMain contentWidth="wide">
     <article class="mx-auto max-w-3xl">
-      <nav aria-label="Breadcrumb" class="text-xs font-normal text-secondary-3">
-        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <li>
-            <a href={localeHref(locale, '')} class={crumbClass}>Home</a>
-          </li>
-          <li class="text-secondary-2/50" aria-hidden="true">/</li>
-          <li>
-            <a href={expertiseIndexHref} class={crumbClass}>Expertise</a>
-          </li>
-          <li class="text-secondary-2/50" aria-hidden="true">/</li>
-          <li class="text-secondary-4" aria-current="page">{label}</li>
-        </ol>
-      </nav>
+      <StrategicBreadcrumb
+        items={[
+          { label: 'Home', href: localeHref(locale, '') },
+          { label: 'Expertise', href: expertiseIndexHref },
+          { label },
+        ]}
+      />
 
       <header class="mt-8 md:mt-10">
-        <h1 class="font-serif text-pretty text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
-          {label}
-        </h1>
+        <StrategicPageTitle>{label}</StrategicPageTitle>
         <p class="mt-6 max-w-3xl text-pretty text-base font-normal leading-relaxed text-secondary-3 md:text-[1.05rem] md:leading-[1.65]">
           {copy.intro}
         </p>
@@ -87,9 +79,7 @@ const sectionTitle =
       {
         copy.bullets && copy.bullets.length > 0 ? (
           <section class="mt-10 md:mt-12" aria-labelledby="expertise-bullets-heading">
-            <h2 id="expertise-bullets-heading" class={sectionTitle}>
-              Key capabilities
-            </h2>
+            <SectionKicker id="expertise-bullets-heading">Key capabilities</SectionKicker>
             <ul class="mt-4 list-none space-y-3 text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem]">
               {copy.bullets.map((b) => (
                 <li class="flex gap-3">
@@ -113,9 +103,7 @@ const sectionTitle =
       </div>
 
       <section class="mt-10 md:mt-12" aria-labelledby="expertise-hub-people-heading">
-        <h2 id="expertise-hub-people-heading" class={sectionTitle}>
-          People
-        </h2>
+        <SectionKicker id="expertise-hub-people-heading">People</SectionKicker>
         {
           people.length === 0 ? (
             <p class="mt-4 text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem]">
@@ -133,24 +121,16 @@ const sectionTitle =
         }
       </section>
 
-      <section
-        class="mt-12 rounded-sm border border-secondary-2/20 bg-utility-2/35 px-5 py-8 md:mt-14 md:px-8 md:py-10"
-        aria-labelledby="expertise-cta-heading"
+      <CtaConfidentialBand
+        class="mt-12 md:mt-14"
+        headingId="expertise-cta-heading"
+        srOnlyHeading="Confidential enquiry"
+        href={contactHref}
+        buttonText="Speak confidentially"
       >
-        <h2 id="expertise-cta-heading" class="sr-only">Confidential enquiry</h2>
-        <p class="text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem]">
-          If you need to protect reputation, privacy, family, or continuity under pressure, we can discuss your context in
-          confidence.
-        </p>
-        <p class="mt-6">
-          <a
-            href={contactHref}
-            class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm bg-secondary-4 px-6 py-3 text-center text-sm font-normal tracking-wide text-brand-white outline-offset-4 transition-opacity hover:opacity-92 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
-          >
-            Speak confidentially
-          </a>
-        </p>
-      </section>
+        If you need to protect reputation, privacy, family, or continuity under pressure, we can discuss your context in
+        confidence.
+      </CtaConfidentialBand>
 
       <p class="mt-10 text-sm md:mt-12">
         <a

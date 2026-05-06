@@ -4,7 +4,11 @@
  */
 import type { Locale } from '@/i18n/config';
 import Base from '@/layouts/Base.astro';
+import CtaConfidentialBand from '@/components/CtaConfidentialBand.astro';
+import SectionKicker from '@/components/SectionKicker.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
+import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
+import StrategicPageTitle from '@/components/StrategicPageTitle.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
 import { contactSegment, localeHref, localeHrefResponseSystemPillar } from '@/lib/site-nav';
 import {
@@ -50,11 +54,6 @@ const jsonLd = buildJsonLdGraph(
 );
 const contactHref = localeHref(locale, contactSegment);
 const whatWeProtectHubHref = localeHref(locale, 'what-we-protect');
-
-const crumbClass =
-  'text-secondary-2 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3';
-const sectionTitle =
-  'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
 ---
 
 <Base title={model.metaTitle} description={model.metaDescription} {locale} {pathAfterLocale}>
@@ -62,33 +61,23 @@ const sectionTitle =
   <SiteHeader {locale} />
   <DocumentMain contentWidth="wide">
     <article class="mx-auto max-w-3xl">
-      <nav aria-label="Breadcrumb" class="text-xs font-normal text-secondary-3">
-        <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <li>
-            <a href={localeHref(locale, '')} class={crumbClass}>Home</a>
-          </li>
-          <li class="text-secondary-2/50" aria-hidden="true">/</li>
-          <li>
-            <a href={localeHref(locale, 'situations')} class={crumbClass}>Situations</a>
-          </li>
-          <li class="text-secondary-2/50" aria-hidden="true">/</li>
-          <li class="text-secondary-4" aria-current="page">{model.title}</li>
-        </ol>
-      </nav>
+      <StrategicBreadcrumb
+        items={[
+          { label: 'Home', href: localeHref(locale, '') },
+          { label: 'Situations', href: localeHref(locale, 'situations') },
+          { label: model.title },
+        ]}
+      />
 
       <header class="mt-8 md:mt-10">
-        <h1 class="font-serif text-pretty text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
-          {model.title}
-        </h1>
+        <StrategicPageTitle>{model.title}</StrategicPageTitle>
         <p class="mt-6 max-w-3xl text-pretty text-base font-normal leading-relaxed text-secondary-3 md:text-[1.05rem] md:leading-[1.65]">
           {model.lead}
         </p>
       </header>
 
       <section class="mt-10 md:mt-12" aria-labelledby="when-matters-heading">
-        <h2 id="when-matters-heading" class={sectionTitle}>
-          When this matters
-        </h2>
+        <SectionKicker id="when-matters-heading">When this matters</SectionKicker>
         <ul class="mt-4 list-none space-y-3 text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem]">
           {
             model.whenThisMatters.map((line) => (
@@ -102,9 +91,7 @@ const sectionTitle =
       </section>
 
       <section class="mt-10 md:mt-12" aria-labelledby="risks-heading">
-        <h2 id="risks-heading" class={sectionTitle}>
-          Risks if mishandled
-        </h2>
+        <SectionKicker id="risks-heading">Risks if mishandled</SectionKicker>
         <ul class="mt-4 list-none space-y-3 text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem]">
           {
             model.risksIfMishandled.map((line) => (
@@ -118,18 +105,14 @@ const sectionTitle =
       </section>
 
       <section class="mt-10 md:mt-12" aria-labelledby="responds-heading">
-        <h2 id="responds-heading" class={sectionTitle}>
-          How Schillings responds
-        </h2>
+        <SectionKicker id="responds-heading">How Schillings responds</SectionKicker>
         <p class="mt-4 text-pretty text-base font-extralight leading-[1.65] text-secondary-3 md:mt-5 md:text-[1.05rem]">
           {model.howSchillingsResponds}
         </p>
       </section>
 
       <section class="mt-10 md:mt-12" aria-labelledby="assets-heading">
-        <h2 id="assets-heading" class={sectionTitle}>
-          Related protective assets
-        </h2>
+        <SectionKicker id="assets-heading">Related protective assets</SectionKicker>
         <ul class="mt-4 flex flex-col gap-2 md:mt-5">
           {
             model.relatedProtectiveAssets.map((assetId) => {
@@ -150,9 +133,7 @@ const sectionTitle =
       </section>
 
       <section class="mt-10 md:mt-12" aria-labelledby="pillars-heading">
-        <h2 id="pillars-heading" class={sectionTitle}>
-          Related response pillars
-        </h2>
+        <SectionKicker id="pillars-heading">Related response pillars</SectionKicker>
         <ul class="mt-4 flex flex-col gap-3 md:mt-5">
           {
             model.relatedResponsePillars.map((pillarId) => {
@@ -173,23 +154,15 @@ const sectionTitle =
         </ul>
       </section>
 
-      <section
-        class="mt-12 rounded-sm border border-secondary-2/20 bg-utility-2/35 px-5 py-8 md:mt-14 md:px-8 md:py-10"
-        aria-labelledby="cta-heading"
+      <CtaConfidentialBand
+        class="mt-12 md:mt-14"
+        headingId="cta-heading"
+        srOnlyHeading="Confidential enquiry"
+        href={contactHref}
+        buttonText={model.ctaLabel}
       >
-        <h2 id="cta-heading" class="sr-only">Confidential enquiry</h2>
-        <p class="text-pretty text-base font-extralight leading-relaxed text-secondary-3 md:text-[1.05rem]">
-          If this situation is live or imminent, we can discuss next steps in confidence.
-        </p>
-        <p class="mt-6">
-          <a
-            href={contactHref}
-            class="inline-flex min-h-[2.75rem] items-center justify-center rounded-sm bg-secondary-4 px-6 py-3 text-center text-sm font-normal tracking-wide text-brand-white outline-offset-4 transition-opacity hover:opacity-92 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
-          >
-            {model.ctaLabel}
-          </a>
-        </p>
-      </section>
+        If this situation is live or imminent, we can discuss next steps in confidence.
+      </CtaConfidentialBand>
 
       <p class="mt-10 text-sm md:mt-12">
         <a

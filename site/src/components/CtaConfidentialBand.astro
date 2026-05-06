@@ -1,0 +1,35 @@
+---
+import {
+  CTA_CONFIDENTIAL_BODY_CLASS,
+  CTA_CONFIDENTIAL_BUTTON_CLASS,
+  CTA_CONFIDENTIAL_SECTION_BOX_CLASS,
+} from '@/lib/visual-tokens';
+
+interface Props {
+  /** `aria-labelledby` / `<h2 id>` — must be unique on the page. */
+  headingId: string;
+  /** Screen-reader-only heading (e.g. "Confidential enquiry"). */
+  srOnlyHeading: string;
+  href: string;
+  buttonText: string;
+  /** Merge outer spacing (e.g. `mt-12 md:mt-14`) onto the `<section>`. */
+  class?: string;
+}
+
+const { headingId, srOnlyHeading, href, buttonText, class: className } = Astro.props;
+---
+
+<section
+  class:list={[CTA_CONFIDENTIAL_SECTION_BOX_CLASS, className]}
+  aria-labelledby={headingId}
+>
+  <h2 id={headingId} class="sr-only">{srOnlyHeading}</h2>
+  <p class={CTA_CONFIDENTIAL_BODY_CLASS}>
+    <slot />
+  </p>
+  <p class="mt-6">
+    <a href={href} class={CTA_CONFIDENTIAL_BUTTON_CLASS}>
+      {buttonText}
+    </a>
+  </p>
+</section>
