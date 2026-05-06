@@ -4,6 +4,17 @@ Use this list in order. Check off items as you complete them. **Install, scripts
 
 **Domain / SEO / Vercel env sequencing:** run **[`site/docs/DEPLOY-CHECKLIST.md`](./site/docs/DEPLOY-CHECKLIST.md)** in order (5-minute path → T-7 → launch → post-launch).
 
+## Launch reminder (quick TODO)
+
+Use this as a final nudge before go-live; full detail stays in the phases below and **`site/docs/DEPLOY-CHECKLIST.md`**.
+
+- [ ] **Vercel:** Production deploys from **Git** on **`main`** (not ad-hoc `vercel deploy` only). **Root Directory** matches how the repo is linked — folder that contains **`site/package.json`** (see **`site/README.md`** § Basic Auth / Vercel + Git).
+- [ ] **Staging gate:** When the site should be **public**, remove or rotate **`SITE_USER`** / **`SITE_PASS`** in Vercel (disables Basic Auth on pages + **`api/contact`**).
+- [ ] **Form:** **`CONTACT_WEBHOOK_URL`** and **`PUBLIC_FORM_ENDPOINT`** = **`/api/contact`** set for Production; submit a real test from **`/contact/`**.
+- [ ] **Cutover:** Walk **`site/docs/DEPLOY-CHECKLIST.md`** end-to-end (domains, **`robots.txt`**, sitemap, smoke URLs).
+- [ ] **Verify:** **`npm run verify`** from **`site/`**; spot-check **`TECHNICAL-SEO-LAUNCH-CHECKLIST.md`** on the production hostname.
+- [ ] **New `api/` routes:** If you add **`api/*.ts`** handlers while Basic Auth is on, apply **`gateSiteBasicAuth`** (see **`site/README.md`**).
+
 ## Phase A — Run locally (done when you can open the site)
 
 1. **Dependencies installed** — follow **`site/README.md`** (from **`site/`** or repo root with **`--prefix site`**).
