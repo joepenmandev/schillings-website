@@ -1,4 +1,5 @@
 ---
+import SectionKicker from '@/components/SectionKicker.astro';
 import type { Locale } from '../i18n/config';
 import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '../lib/site-nav';
 
@@ -19,9 +20,7 @@ const explore = [
 ---
 
 <section class="mt-14 border-t border-secondary-2/20 pt-10" aria-labelledby="person-explore-heading">
-  <h2 id="person-explore-heading" class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
-    Explore Schillings
-  </h2>
+  <SectionKicker id="person-explore-heading">Explore Schillings</SectionKicker>
   <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2.5 font-serif text-sm md:text-base">
     {
       explore.map(({ href, label }) => (

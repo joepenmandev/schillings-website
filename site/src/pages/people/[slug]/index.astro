@@ -2,10 +2,12 @@
 import Base from '@/layouts/Base.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
+import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
 import PersonTrustSignals from '@/components/PersonTrustSignals.astro';
 import PersonPublicContact from '@/components/PersonPublicContact.astro';
 import PersonProfileContextSections from '@/components/PersonProfileContextSections.astro';
 import PersonRelatedAndExplore from '@/components/PersonRelatedAndExplore.astro';
+import SectionKicker from '@/components/SectionKicker.astro';
 import PersonContactCta from '@/components/PersonContactCta.astro';
 import PersonNewsByline from '@/components/PersonNewsByline.astro';
 import { getPersonBySlug } from '@/data/people';
@@ -27,6 +29,7 @@ import {
 import { peopleDirectoryCardByline, resolvePersonPracticeGroup } from '@/lib/people-directory';
 import { isThinPersonProfile } from '@/lib/person-profile-quality';
 import { locales, isLocale, type Locale } from '@/i18n/config';
+import { PEOPLE_PROFILE_H1_CLASS } from '@/lib/visual-tokens';
 
 export function getStaticPaths() {
   const slugs = getAllPeopleSlugs();
@@ -143,12 +146,19 @@ const isThinProfile = Boolean(person && isThinPersonProfile(person));
   <SiteHeader {locale} deferHeaderLogoPriority={!!(person?.imagePath)} />
   <DocumentMain contentWidth="wide">
     <article>
+      <StrategicBreadcrumb
+        items={[
+          { label: 'Home', href: localeHref(locale, '') },
+          { label: 'People', href: localeHref(locale, 'people') },
+          { label: person ? person.name : migrationTitle },
+        ]}
+      />
       {
         person ? (
           <>
-            <header class="max-w-6xl lg:flex lg:items-start lg:gap-12 xl:gap-16">
+            <header class="mt-6 max-w-6xl md:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
               <div class="min-w-0 flex-1">
-                <h1 class="font-serif text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-4xl md:leading-[1.06] lg:text-[2.75rem]">
+                <h1 class={PEOPLE_PROFILE_H1_CLASS}>
                   {person.name}
                 </h1>
                 <p class="mt-2 max-w-3xl text-pretty font-serif text-xl font-extralight italic leading-snug text-secondary-4 md:text-2xl md:leading-snug">
@@ -198,9 +208,7 @@ const isThinProfile = Boolean(person && isThinPersonProfile(person));
             </header>
 
             <section class="mt-12 max-w-[52rem] md:mt-14" aria-labelledby="person-bio-heading">
-              <h2 id="person-bio-heading" class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
-                Biography
-              </h2>
+              <SectionKicker id="person-bio-heading">Biography</SectionKicker>
               <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
                 {person.paragraphs.map((p) => (
                   <p>{p}</p>
@@ -218,7 +226,7 @@ const isThinProfile = Boolean(person && isThinPersonProfile(person));
           </>
         ) : (
           <>
-            <p class="text-xs font-normal uppercase tracking-wide text-secondary-2">People</p>
+            <p class="mt-6 text-xs font-normal uppercase tracking-wide text-secondary-2 md:mt-8">People</p>
             <h1 class="mt-2 text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
               {migrationTitle}
             </h1>

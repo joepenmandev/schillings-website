@@ -3,7 +3,10 @@ import Base from '@/layouts/Base.astro';
 import MarketingStubNav from '@/components/MarketingStubNav.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
+import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
 import PeopleDirectory from '@/components/PeopleDirectory.astro';
+import { localeHref } from '@/lib/site-nav';
+import { PEOPLE_DIRECTORY_H1_CLASS } from '@/lib/visual-tokens';
 import { publishedPeople } from '@/data/people';
 import { peopleDirectoryMeta } from '@/lib/locale-marketing-meta';
 import { buildPeopleDirectoryGraphJsonLd } from '@/lib/jsonld-page';
@@ -30,7 +33,13 @@ const peopleJsonLd = buildPeopleDirectoryGraphJsonLd({
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(peopleJsonLd)} />
   <SiteHeader {locale} />
   <DocumentMain contentWidth="wide">
-    <h1 class="font-serif text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-4xl md:leading-[1.08] lg:text-[2.875rem]">
+    <StrategicBreadcrumb
+      items={[
+        { label: 'Home', href: localeHref(locale, '') },
+        { label: 'People' },
+      ]}
+    />
+    <h1 class:list={['mt-6 md:mt-8', PEOPLE_DIRECTORY_H1_CLASS]}>
       People
     </h1>
     <p class="mt-4 max-w-3xl text-pretty text-base leading-relaxed text-secondary-3">

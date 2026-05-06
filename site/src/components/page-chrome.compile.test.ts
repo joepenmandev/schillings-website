@@ -33,6 +33,8 @@ describe('visual-tokens', () => {
     expect(visualTokens.CTA_CONFIDENTIAL_BUTTON_CLASS).toContain('bg-secondary-4');
     expect(visualTokens.STRATEGIC_CRUMB_LINK_CLASS).toContain('underline');
     expect(visualTokens.STRATEGIC_PAGE_H1_CLASS).toContain('font-serif');
+    expect(visualTokens.PEOPLE_DIRECTORY_H1_CLASS).toContain('lg:text-[2.875rem]');
+    expect(visualTokens.PEOPLE_PROFILE_H1_CLASS).toContain('lg:text-[2.75rem]');
   });
 });
 

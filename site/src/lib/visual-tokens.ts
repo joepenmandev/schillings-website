@@ -44,3 +44,11 @@ export const STRATEGIC_CRUMB_LINK_CLASS =
 /** Strategic marketing `<h1>` — Situations, WWP, Response, Expertise hubs and details. */
 export const STRATEGIC_PAGE_H1_CLASS =
   'font-serif text-pretty text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]';
+
+/** People directory index `<h1>` — intentionally smaller than {@link STRATEGIC_PAGE_H1_CLASS}. */
+export const PEOPLE_DIRECTORY_H1_CLASS =
+  'font-serif text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-4xl md:leading-[1.08] lg:text-[2.875rem]';
+
+/** Published colleague profile `<h1>` — intentionally smaller than {@link STRATEGIC_PAGE_H1_CLASS}. */
+export const PEOPLE_PROFILE_H1_CLASS =
+  'font-serif text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-4xl md:leading-[1.06] lg:text-[2.75rem]';

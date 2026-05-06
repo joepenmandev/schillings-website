@@ -9,6 +9,7 @@ import { strategicSituationIdsForPersonExpertise } from '@/data/person-expertise
 import { getSituationDetailById, situationPathSlug } from '@/data/strategic-rebuild-content';
 import { expertisePathSlug } from '@/lib/expertise-paths';
 import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
+import SectionKicker from '@/components/SectionKicker.astro';
 
 interface Props {
   locale: Locale;
@@ -19,8 +20,6 @@ const { locale, person } = Astro.props;
 const expertise = (person.expertise ?? []) as ExpertiseId[];
 const relatedSituationIds = strategicSituationIdsForPersonExpertise(expertise);
 
-const sectionTitle =
-  'text-xs font-medium uppercase tracking-[0.18em] text-secondary-2';
 const body = 'mt-2 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3';
 const linkList = 'mt-4 flex flex-col gap-2 sm:gap-2.5';
 const linkClass =
@@ -30,9 +29,7 @@ const linkClass =
 {
   expertise.length > 0 ? (
     <section class="mt-12 border-t border-secondary-2/20 pt-10 md:mt-14" aria-labelledby="person-helps-heading">
-      <h2 id="person-helps-heading" class={sectionTitle}>
-        Helps clients with
-      </h2>
+      <SectionKicker id="person-helps-heading">Helps clients with</SectionKicker>
       <p class={body}>
         Expertise hubs that match this colleague’s directory tags — useful for context, not a complete list of how they
         practise.
@@ -56,9 +53,7 @@ const linkClass =
       class="mt-10 border-t border-secondary-2/20 pt-10 md:mt-12"
       aria-labelledby="person-related-situations-heading"
     >
-      <h2 id="person-related-situations-heading" class={sectionTitle}>
-        Related situations
-      </h2>
+      <SectionKicker id="person-related-situations-heading">Related situations</SectionKicker>
       <p class={body}>
         Typical entry points on our site that often sit alongside these practice areas.
       </p>
@@ -81,9 +76,7 @@ const linkClass =
 {
   expertise.length > 0 ? (
     <section class="mt-10 border-t border-secondary-2/20 pt-10 md:mt-12" aria-labelledby="person-related-expertise-heading">
-      <h2 id="person-related-expertise-heading" class={sectionTitle}>
-        Related expertise
-      </h2>
+      <SectionKicker id="person-related-expertise-heading">Related expertise</SectionKicker>
       <p class={body}>Browse all expertise and how colleagues are organised across the firm.</p>
       <p class="mt-4">
         <a href={localeHref(locale, EXPERTISE_PUBLIC_SEGMENT)} class={linkClass}>
