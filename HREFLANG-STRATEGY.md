@@ -27,7 +27,7 @@ Use these as the canonical guidance (bookmark for audits and GSC triage):
 
 ## Global `/` vs locale URLs and filtering
 
-- **UK** uses **unprefixed** paths (`/`, `/people/`, `/news/`, …). **US** and **Ireland** use **`/en-us/…`** and **`/en-ie/…`**. Do not add a second indexable UK path that duplicates the same intent (e.g. both `/people/` and `/en-gb/people/` as 200 OK); legacy **`/en-gb/…`** should **301** to the unprefixed UK URL.
+- **UK** uses **unprefixed** paths (`/`, `/people/`, `/news/`, …). **US** and **Ireland** use **`/us/…`** and **`/ie/…`** (internal locale keys remain `en-us` / `en-ie`). Do not add a second indexable UK path that duplicates the same intent (e.g. both `/people/` and `/en-gb/people/` as 200 OK); legacy **`/en-gb/…`** and **`/en-us/…`** / **`/en-ie/…`** **301** to these URLs (see `site/vercel.json`).
 - **Filtering** belongs on **each locale’s** people index (client-side and/or query params). The **directory dataset** can be global in *code* (`people.ts` + JSON), but **public URLs** stay per locale with **hreflang** between them when the pages are **equivalent alternates**.
 - If **`en-ie`** people content later **differs materially** from **`en-gb`** (not just office order / intro copy), reassess whether a **full** reciprocal hreflang set is still accurate; Google’s guidance is to avoid pointing `hreflang` at URLs that are not true localized equivalents.
 
@@ -53,8 +53,8 @@ Optional **`en`** (language-only): Google suggests a generic English alternate w
 | URL | Locale (internal) | `hreflang` (markup) |
 |-----|-------------------|---------------------|
 | `/` | `en-gb` | `en-GB` |
-| `/en-us/` | `en-us` | `en-US` |
-| `/en-ie/` | `en-ie` | `en-IE` |
+| `/us/` | `en-us` | `en-US` |
+| `/ie/` | `en-ie` | `en-IE` |
 
 Legacy **`/en-gb/…`** URLs **301** to the same path without the segment. **Option — geo in path** (e.g. `/uk/`) is **not** used here; if you ever add it, map **`hreflang`** explicitly — values are **not** inferred from words like “uk” in the path.
 
