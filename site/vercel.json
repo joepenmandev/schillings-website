@@ -86,6 +86,16 @@
   "headers": [
     {
       "source": "/(.*)",
+      "missing": [
+        { "type": "host", "value": "schillingspartners.com" },
+        { "type": "host", "value": "www.schillingspartners.com" }
+      ],
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }
+      ]
+    },
+    {
+      "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
