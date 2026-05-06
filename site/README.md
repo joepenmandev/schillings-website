@@ -2,7 +2,7 @@
 
 Marketing site scaffold aligned with repo **`IA-URL-SPEC.md`** and **`HREFLANG-STRATEGY.md`**.
 
-**This file is the canonical engineering reference** for install, scripts, CI, security headers, routes, and environment variables. Planning specs and stakeholder tables live in **`../`**; use **`../STATUS.md`** for an ordered launch checklist (it points here for commands).
+**This file is the canonical engineering reference** for install, scripts, CI, security headers, routes, and environment variables. Planning specs and stakeholder tables live in **`../`**; use **`../STATUS.md`** for an ordered launch checklist (it points here for commands). For **domain cutover, indexing, and env sequencing**, follow **`docs/DEPLOY-CHECKLIST.md`** in order.
 
 ## Commands
 
@@ -40,6 +40,8 @@ Set in the Vercel project (or **`.env`** locally — never commit secrets). Line
 
 | Variable | Role |
 |----------|------|
+| **`PUBLIC_SITE_URL`** | Optional; canonical HTTPS origin for **`astro.config.mjs`** `site` (no trailing slash). If unset on Vercel, **`VERCEL_URL`** is used; locally defaults to **`http://localhost:4321`**. See **`docs/DEPLOY-CHECKLIST.md`**. |
+| **`LEGACY_SITE_ORIGIN`** | Optional; HTTPS origin for **`import:news`** / **`import:people`** when scraping a legacy host (see **`.env.example`**). |
 | **`CONTACT_WEBHOOK_URL`** | Server-only HTTPS URL (Zapier/Make/etc.) receiving JSON from **`api/contact.ts`**. |
 | **`PUBLIC_FORM_ENDPOINT`** | Client form action; production typically **`/api/contact`**. Leave empty in local dev to log payloads to the console. |
 | **`UPSTASH_REDIS_REST_URL`** / **`UPSTASH_REDIS_REST_TOKEN`** | Optional; **global** rate limit for `/api/contact` across Edge isolates. Omit for in-memory limit only. |

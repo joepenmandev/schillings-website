@@ -2,6 +2,8 @@
 
 Use this list in order. Check off items as you complete them. **Install, scripts, and CI** are documented once in **[`site/README.md`](./site/README.md)** (including **`npm run verify`** and Playwright).
 
+**Domain / SEO / Vercel env sequencing:** run **[`site/docs/DEPLOY-CHECKLIST.md`](./site/docs/DEPLOY-CHECKLIST.md)** in order (5-minute path → T-7 → launch → post-launch).
+
 ## Phase A — Run locally (done when you can open the site)
 
 1. **Dependencies installed** — follow **`site/README.md`** (from **`site/`** or repo root with **`--prefix site`**).
@@ -48,8 +50,9 @@ Run in order when preparing a release (complements phases above).
 | 1 | **`PROJECT-ANSWERS.md`** + **`ENTITY-SERVICES-MATRIX.md`** | Keep in sync; matrix filled from public answers **2026-05-04** — re-validate entity rows with compliance before cutover. |
 | 2 | **`FOOTER-REGULATORY-CHECKLIST.md`** §7 | QA rendered footer vs checklist; **`regulatory-footer.ts`** vs live legal text. |
 | 3 | **`TECHNICAL-SEO-LAUNCH-CHECKLIST.md`** | §0 locally; full §A–I on **staging** then **production**. |
-| 4 | **`redirect-map.csv`** + **`REDIRECT-MAP.md`** | Merge **GSC** top pages + link export; keep **`site/vercel.json`** aligned. Vitest **`audit-redirect-map-vercel.test.ts`** catches CSV ↔ `vercel.json` drift. |
-| 5 | **`npm run verify`** | Includes CSP/Yoshki (`audit-security-csp`), redirect audit, consent wire-up, Playwright smoke (Yoshki in HTML, migration news **noindex**). **On Vercel:** still check DevTools console once for CSP violations (headers do not apply to `astro preview`). |
+| 3b | **`site/docs/DEPLOY-CHECKLIST.md`** | Env, **`vercel.json`** hosts, **`robots.txt`** / sitemap, smoke tests, GSC — run in order at cutover. |
+| 4 | **`redirect-map.csv`** + **`REDIRECT-MAP.md`** | Merge **GSC** top pages + link export; keep **`site/vercel.json`** aligned. Reconcile CSV ↔ `vercel.json` manually or via your own checks (redirect-map audit test removed). |
+| 5 | **`npm run verify`** | Includes CSP/Yoshki (`audit-security-csp`), consent wire-up, Playwright smoke (Yoshki in HTML, migration news **noindex**). **On Vercel:** still check DevTools console once for CSP violations (headers do not apply to `astro preview`). |
 
 **Last engineering pass (public HTTP + doc sync):** **2026-05-04** — live `sitemap.xml` **200**; **`/law`** **404**; live **`/privacy-notice/`** broken chain documented in **`PROJECT-ANSWERS.md`**; legacy redirects added for **`/privacy-notice`**, **`/complaints-handling`**, **`/standard-terms-of-business*`** (see CSV + `vercel.json`).
 
