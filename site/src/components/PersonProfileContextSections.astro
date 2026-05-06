@@ -7,7 +7,7 @@ import type { PersonProfile } from '@/data/people';
 import { EXPERTISE_LABELS, type ExpertiseId } from '@/data/people-taxonomy';
 import { strategicSituationIdsForPersonExpertise } from '@/data/person-expertise-strategic-situations';
 import { getSituationDetailById, situationPathSlug } from '@/data/strategic-rebuild-content';
-import { localeHref } from '@/lib/site-nav';
+import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
 
 interface Props {
   locale: Locale;
@@ -33,13 +33,13 @@ const linkClass =
         Helps clients with
       </h2>
       <p class={body}>
-        Practice hubs that match this colleague’s directory tags — useful for context, not a complete list of how they
+        Expertise hubs that match this colleague’s directory tags — useful for context, not a complete list of how they
         practise.
       </p>
       <ul class={`${linkList} list-none`}>
         {expertise.map((id) => (
           <li>
-            <a href={localeHref(locale, `services/${id}`)} class={linkClass}>
+            <a href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${id}`)} class={linkClass}>
               {EXPERTISE_LABELS[id]}
             </a>
           </li>
@@ -83,10 +83,10 @@ const linkClass =
       <h2 id="person-related-expertise-heading" class={sectionTitle}>
         Related expertise
       </h2>
-      <p class={body}>Browse all practice hubs and how colleagues are organised across the firm.</p>
+      <p class={body}>Browse all expertise and how colleagues are organised across the firm.</p>
       <p class="mt-4">
-        <a href={localeHref(locale, 'services')} class={linkClass}>
-          All practice hubs →
+        <a href={localeHref(locale, EXPERTISE_PUBLIC_SEGMENT)} class={linkClass}>
+          All expertise →
         </a>
       </p>
     </section>

@@ -1,17 +1,21 @@
 import type { Locale } from '../i18n/config';
 import {
+  EXPERTISE_INDEX_PATH_SEGMENT,
   primaryNavigation,
   type StrategicPrimaryNavId,
   type StrategicResponseSystemId,
 } from '../data/strategic-rebuild-content';
 import { publicPathname } from './public-url';
 
+/** Canonical public path segment for expertise hubs (`/expertise/`, `/expertise/{id}/`). */
+export const EXPERTISE_PUBLIC_SEGMENT = EXPERTISE_INDEX_PATH_SEGMENT;
+
 /** URL segment per strategic nav id — hyphens in paths; `intelligence` → `/news/` until IA rename. */
 const STRATEGIC_PRIMARY_NAV_SEGMENT = {
   situations: 'situations',
   what_we_protect: 'what-we-protect',
   response_system: 'response-system',
-  sectors: 'services',
+  sectors: EXPERTISE_PUBLIC_SEGMENT,
   people: 'people',
   intelligence: 'news',
   about: 'about-us',

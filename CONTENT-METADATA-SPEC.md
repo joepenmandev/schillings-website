@@ -36,24 +36,24 @@
 | Meta | Who you help + differentiators; no unqualified “best” unless substantiated. |
 | H1 | Firm-facing welcome or flagship proposition (one clear message). |
 
-### `T-services-index`
+### `T-expertise-index` (capability index; legacy label `T-services-index`)
 
 | Field | Guidance |
 |-------|----------|
-| Title | “Services” or “What we do” + brand. |
-| Meta | Overview of capabilities; links mentally to top practices. |
-| H1 | Matches nav label (“Services” / “What we do”). |
+| Title | “Expertise” + brand (or equivalent approved nav wording). |
+| Meta | Overview of capabilities; links mentally to top hubs. |
+| H1 | Matches nav label (“Expertise”). |
 
-### `T-service-hub`
+### `T-expertise-hub` (practice / capability hub; legacy label `T-service-hub`)
 
 | Field | Guidance |
 |-------|----------|
-| Title | Practice name + “ \| ” + brand. |
+| Title | Capability name + “ \| ” + brand. |
 | Meta | Specific outcomes and client types; avoid generic filler. |
-| H1 | Practice name (plain language). |
-| Compliance | Link **price/service transparency** pages if SRA rules apply to that service. |
+| H1 | Capability name (plain language). |
+| Compliance | Link **price/service transparency** pages if SRA rules apply to that regulated **service** offering. |
 
-### `T-service-article` / deep topic
+### `T-expertise-article` / deep topic (legacy label `T-service-article`)
 
 | Field | Guidance |
 |-------|----------|

@@ -117,24 +117,29 @@ export function buildPeopleDirectoryGraphNodes(options: {
   return [...g['@graph']];
 }
 
-export function buildServicesIndexGraphJsonLd(options: {
+/** Expertise index — CollectionPage + ItemList of hub WebPages (`/expertise/`). */
+export function buildExpertiseIndexGraphJsonLd(options: {
   origin: string;
   locale: Locale;
-  hubs: { id: string; label: string }[];
+  /** Index path segment (e.g. `expertise`). */
+  collectionSegment: string;
+  /** `pathAfterLocale` overrides full tail under locale (e.g. `expertise` vs `expertise/reputation_privacy`). */
+  hubs: { id: string; label: string; pathAfterLocale?: string }[];
   pageTitle: string;
   pageDescription: string;
 }) {
   const o = options.origin.replace(/\/$/, '');
-  const pageUrl = canonicalPageUrl(o, options.locale, 'services');
+  const seg = options.collectionSegment;
+  const pageUrl = canonicalPageUrl(o, options.locale, seg);
   const pageId = `${pageUrl}#webpage`;
-  const listId = `${pageUrl}#service-hubs-itemlist`;
+  const listId = `${pageUrl}#expertise-hubs-itemlist`;
   const itemListElement = options.hubs.map((h, i) => ({
     '@type': 'ListItem',
     position: i + 1,
     item: {
       '@type': 'WebPage',
       name: h.label,
-      url: absolutePageUrl(o, options.locale, `services/${h.id}`),
+      url: absolutePageUrl(o, options.locale, h.pathAfterLocale ?? `${seg}/${h.id}`),
     },
   }));
 
@@ -160,14 +165,15 @@ export function buildServicesIndexGraphJsonLd(options: {
   return buildJsonLdGraph(collectionPage, itemList);
 }
 
-export function buildServicesIndexGraphNodes(options: {
+export function buildExpertiseIndexGraphNodes(options: {
   origin: string;
   locale: Locale;
-  hubs: { id: string; label: string }[];
+  collectionSegment: string;
+  hubs: { id: string; label: string; pathAfterLocale?: string }[];
   pageTitle: string;
   pageDescription: string;
 }): Record<string, unknown>[] {
-  const g = buildServicesIndexGraphJsonLd(options) as { '@graph': Record<string, unknown>[] };
+  const g = buildExpertiseIndexGraphJsonLd(options) as { '@graph': Record<string, unknown>[] };
   return [...g['@graph']];
 }
 

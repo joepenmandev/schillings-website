@@ -4,6 +4,8 @@
  * Path keys (`id`) are stable for future routes and CMS mapping.
  */
 
+import type { ExpertiseId } from './people-taxonomy';
+
 export const STRATEGIC_PRIMARY_NAV_IDS = [
   'situations',
   'what_we_protect',
@@ -26,11 +28,14 @@ export const primaryNavigation = [
   { id: 'situations', label: 'Situations' },
   { id: 'what_we_protect', label: 'What We Protect' },
   { id: 'response_system', label: 'Response System' },
-  { id: 'sectors', label: 'Sectors' },
+  { id: 'sectors', label: 'Expertise' },
   { id: 'people', label: 'People' },
   { id: 'intelligence', label: 'Intelligence' },
   { id: 'about', label: 'About' },
 ] as const satisfies readonly StrategicPrimaryNavItem[];
+
+/** Public URL segment for the expertise index and hubs — must match `EXPERTISE_PUBLIC_SEGMENT` in `site-nav`. */
+export const EXPERTISE_INDEX_PATH_SEGMENT = 'expertise' as const;
 
 export const STRATEGIC_SITUATION_IDS = [
   'media_exposure_scrutiny',
@@ -96,6 +101,103 @@ export const responseSystem = [
 /** Join pillar label and line as a single display string (e.g. hero or list). */
 export function formatResponseSystemPillar(pillar: StrategicResponseSystemPillar): string {
   return `${pillar.label}: ${pillar.line}`;
+}
+
+// --- Public expertise & internal department mapping (IA; URLs unchanged) ---
+
+/**
+ * Internal org / routing codes → human-readable capability names.
+ * Use for CMS and internal linking — not as primary nav labels.
+ */
+export const STRATEGIC_INTERNAL_DEPARTMENT_CODES = ['ISD', 'DR', 'SCOM', 'Legal'] as const;
+export type StrategicInternalDepartmentCode = (typeof STRATEGIC_INTERNAL_DEPARTMENT_CODES)[number];
+
+export const STRATEGIC_INTERNAL_DEPARTMENT_LABELS = {
+  ISD: 'Intelligence & Investigations',
+  DR: 'Digital Resilience & Security',
+  SCOM: 'Strategic Communications',
+  Legal: 'Legal Protection & Disputes',
+} as const satisfies Record<StrategicInternalDepartmentCode, string>;
+
+/** Canonical public-facing expertise catalogue (stable ids for future hub / cross-linking). */
+export const STRATEGIC_PUBLIC_EXPERTISE = [
+  { id: 'reputation_defamation', label: 'Reputation & Defamation' },
+  { id: 'privacy_confidentiality', label: 'Privacy & Confidentiality' },
+  { id: 'strategic_communications', label: 'Strategic Communications' },
+  { id: 'intelligence_investigations', label: 'Intelligence & Investigations' },
+  { id: 'digital_resilience_security', label: 'Digital Resilience & Security' },
+  { id: 'legal_protection_disputes', label: 'Legal Protection & Disputes' },
+  { id: 'crisis_response', label: 'Crisis Response' },
+  { id: 'family_personal_protection', label: 'Family & Personal Protection' },
+] as const;
+
+export type StrategicPublicExpertiseId = (typeof STRATEGIC_PUBLIC_EXPERTISE)[number]['id'];
+
+export interface StrategicPublicExpertiseItem {
+  readonly id: StrategicPublicExpertiseId;
+  readonly label: string;
+}
+
+/** Labels indexed by public expertise id — safe for `/expertise/` and internal linking layers. */
+export const STRATEGIC_PUBLIC_EXPERTISE_LABELS: Record<StrategicPublicExpertiseId, string> =
+  Object.fromEntries(STRATEGIC_PUBLIC_EXPERTISE.map((e) => [e.id, e.label])) as Record<
+    StrategicPublicExpertiseId,
+    string
+  >;
+
+export function getStrategicPublicExpertiseById(
+  id: StrategicPublicExpertiseId,
+): StrategicPublicExpertiseItem | undefined {
+  return STRATEGIC_PUBLIC_EXPERTISE.find((e) => e.id === id);
+}
+
+export function getStrategicInternalDepartmentLabel(
+  code: StrategicInternalDepartmentCode,
+): string {
+  return STRATEGIC_INTERNAL_DEPARTMENT_LABELS[code];
+}
+
+/**
+ * Closest existing directory hub slug for each public expertise row (`null` when none).
+ * Uses only real directory `ExpertiseId` values — no invented slugs.
+ */
+export const STRATEGIC_PUBLIC_EXPERTISE_SERVICE_HUB_BY_ID = {
+  reputation_defamation: 'reputation_privacy',
+  privacy_confidentiality: 'reputation_privacy',
+  strategic_communications: 'communications',
+  intelligence_investigations: 'intelligence_security',
+  digital_resilience_security: null,
+  legal_protection_disputes: 'litigation_disputes',
+  crisis_response: null,
+  family_personal_protection: 'reputation_privacy',
+} as const satisfies Record<StrategicPublicExpertiseId, ExpertiseId | null>;
+
+export interface ServicesIndexPublicExpertiseCard {
+  readonly id: StrategicPublicExpertiseId;
+  readonly label: string;
+  readonly linkedExpertiseId: ExpertiseId | null;
+}
+
+export function getServicesIndexPublicExpertiseCards(): readonly ServicesIndexPublicExpertiseCard[] {
+  return STRATEGIC_PUBLIC_EXPERTISE.map((e) => ({
+    id: e.id,
+    label: e.label,
+    linkedExpertiseId: STRATEGIC_PUBLIC_EXPERTISE_SERVICE_HUB_BY_ID[e.id],
+  }));
+}
+
+/** Graph hubs for expertise index JSON-LD and cards (`/expertise/`, `/expertise/{id}/`). */
+export function getExpertiseIndexGraphHubEntries(): {
+  id: string;
+  label: string;
+  pathAfterLocale: string;
+}[] {
+  const base = EXPERTISE_INDEX_PATH_SEGMENT;
+  return getServicesIndexPublicExpertiseCards().map((c) => ({
+    id: c.id,
+    label: c.label,
+    pathAfterLocale: c.linkedExpertiseId ? `${base}/${c.linkedExpertiseId}` : base,
+  }));
 }
 
 // --- Typed detail models (editorial / IA source of truth) ---

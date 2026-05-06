@@ -13,7 +13,7 @@ import { getNewsForPersonSlug, type NewsArticle } from '@/data/news';
 import { EXPERTISE_LABELS } from '@/data/people-taxonomy';
 import { getAllPeopleSlugs } from '@/lib/people-paths';
 import { personBioLocaleNote } from '@/lib/person-locale-notes';
-import { localeHref } from '@/lib/site-nav';
+import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
 import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
 import { extendJsonLdGraph } from '@/lib/jsonld-page';
 import { absolutePageUrl } from '@/lib/public-url';
@@ -164,7 +164,7 @@ const isThinProfile = Boolean(person && isThinPersonProfile(person));
                       {person.expertise.map((id) => (
                         <li>
                           <a
-                            href={localeHref(locale, `services/${id}`)}
+                            href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${id}`)}
                             class="inline-block rounded-full border border-secondary-2/40 px-3 py-1 text-xs font-normal text-secondary-3 transition-colors hover:border-secondary-3 hover:bg-utility-2/60"
                           >
                             {EXPERTISE_LABELS[id]}

@@ -1,0 +1,53 @@
+---
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import ExpertiseIndexCards from '@/components/ExpertiseIndexCards.astro';
+import { getExpertiseIndexGraphHubEntries } from '@/data/strategic-rebuild-content';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { buildJsonLdGraph, buildExpertiseIndexGraphNodes } from '@/lib/jsonld-page';
+import { absolutePageUrl } from '@/lib/public-url';
+import { EXPERTISE_PUBLIC_SEGMENT } from '@/lib/site-nav';
+import type { Locale } from '@/i18n/config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const origin = Astro.site?.origin ?? Astro.url.origin;
+const pageTitle = 'Expertise | Schillings';
+const pageDescription =
+  'Schillings combines specialist capabilities across legal, intelligence, investigations, communications and digital resilience to protect reputation, privacy, security and continuity in high-stakes situations.';
+const pageJsonLd = buildJsonLdGraph(
+  ...buildExpertiseIndexGraphNodes({
+    origin,
+    locale,
+    collectionSegment: EXPERTISE_PUBLIC_SEGMENT,
+    hubs: getExpertiseIndexGraphHubEntries(),
+    pageTitle,
+    pageDescription,
+  }),
+  breadcrumbListGraphNode([
+    { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
+    { name: 'Expertise', item: `${absolutePageUrl(origin, locale, EXPERTISE_PUBLIC_SEGMENT)}` },
+  ]),
+);
+---
+
+<Base title={pageTitle} description={pageDescription} {locale} pathAfterLocale={EXPERTISE_PUBLIC_SEGMENT}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(pageJsonLd)} />
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Expertise
+    </h1>
+    <p class="mt-4 max-w-3xl text-pretty text-base leading-relaxed text-secondary-3">
+      Schillings combines specialist capabilities across legal, intelligence, investigations, communications and digital resilience
+      to protect reputation, privacy, security and continuity in high-stakes situations.
+    </p>
+    <ExpertiseIndexCards {locale} />
+    <MarketingStubNav {locale} currentSegment={EXPERTISE_PUBLIC_SEGMENT} />
+  </DocumentMain>
+</Base>

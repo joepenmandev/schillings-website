@@ -38,7 +38,7 @@ The CSV now includes **initial** rows for legacy paths → **UK unprefixed** URL
 
 **Implementation:** Edge/host redirects should mirror the CSV; `site/vercel.json` is kept in sync for the Vercel deployment.
 
-**Wildcards (Vercel only, not in CSV):** e.g. ` /people/:path* ` → ` /people/:path* `, ` /news/:path* ` → ` /news/:path* `, ` /services/:path* ` → ` /services/:path* `, ` /expertise/:path* ` → ` /services/:path* `, ` /en-us/expertise/:path* ` → ` /en-us/services/:path* ` (and **`en-ie`**), ` /keith-schilling-biography/:path* ` → ` /keith-schilling-biography/:path* `, plus **`/en-gb/:path*`** → **`/:path*`** for legacy prefixed UK URLs — see `site/vercel.json`. Replicate on other CDNs if not using Vercel.
+**Wildcards (Vercel only, not in CSV):** Current `site/vercel.json` includes stable-path rules such as **`/people/:path*`** → **`/people/:path*`**, **`/news/:path*`** → **`/news/:path*`**, **`/keith-schilling-biography/:path*`** → **`/keith-schilling-biography/:path*`**, locale unprefixed UK (**`/en-gb/:path*`** → **`/:path*`**), and **`/en-us` / `/en-ie`** → **`/us` / `/ie`**. There are **no** rules that send **`/expertise/…`** to **`/services/…`** or treat **`/services/…`** as canonical — the Astro build does not publish **`/services/…`**. Replicate on other CDNs if not using Vercel.
 
 ---
 
@@ -46,7 +46,7 @@ The CSV now includes **initial** rows for legacy paths → **UK unprefixed** URL
 
 **2026-05-04 — live `sitemap.xml` top segments:** `news`, `people`, `keith-schilling-biography`, `compliance`, `search`, `keith-schilling-founder`, `international`, `expertise`, `contact`, `about-us`, `24-7-immediate-response` (plus root). All non-locale **index** paths in that set are covered by **`vercel.json`** + CSV except paths that only exist as **legacy** shortcuts (e.g. **`/privacy-notice`**, **`/complaints-handling`**, **`/standard-terms-of-business*`** — added to CSV + Vercel **2026-05-04**).
 
-**`expertise` → `services`:** Live **`/expertise`** and locale **`/…/expertise/`** URLs **301** to the matching **`/…/services/`** index (`site/vercel.json` + **`redirect-map.csv`**). IA source of truth: **`IA-URL-SPEC.md`** §2 / §2.1.
+**Expertise IA:** Public capability hubs on the new stack live under **`/expertise/…`** (UK), **`/us/expertise/…`**, **`/ie/expertise/…`** — see **`IA-URL-SPEC.md`** §2. **`/services/…`** was removed from this codebase. **No** production redirect rows were added here for **`/services` → `/expertise`** while the new site remains off the live domain; add explicit **`redirect-map.csv`** (and hosting) entries at cutover when mapping the legacy host to this IA.
 
 **Google Search Console:** export **Top pages** and **External links** → add a CSV row (or wildcard pattern on your CDN) for every URL with meaningful traffic that is **not** already on the **canonical UK or locale-prefixed** path or wildcard-covered. Mark `implementation_status` → `verified` after a crawl.
 

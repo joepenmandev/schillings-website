@@ -21,16 +21,9 @@ old_url,new_url,redirect_type,priority,backlinks_or_traffic_notes,content_owner,
 /compliance/schillings-sra/,/compliance/schillings-sra/,301,high,,,pending,
 /compliance/candidate-privacy-notice,/compliance/candidate-privacy-notice/,301,medium,,,pending,
 /compliance/candidate-privacy-notice/,/compliance/candidate-privacy-notice/,301,medium,,,pending,
-/services,/services/,301,medium,,,pending,Non-locale → default locale (mirrors site/vercel.json)
-/services/,/services/,301,medium,,,pending,
-/expertise,/services/,301,medium,,,pending,Aligned with site/vercel.json (Services IA)
-/expertise/,/services/,301,medium,,,pending,
-/expertise,/services/,301,medium,,,pending,Mirrors site/vercel.json
-/expertise/,/services/,301,medium,,,pending,
-/us/expertise,/us/services/,301,medium,,,pending,Mirrors site/vercel.json
-/us/expertise/,/us/services/,301,medium,,,pending,
-/ie/expertise,/ie/services/,301,medium,,,pending,Mirrors site/vercel.json
-/ie/expertise/,/ie/services/,301,medium,,,pending,
+/expertise,/expertise/,301,medium,,,pending,Trailing slash canonical
+/us/expertise,/us/expertise/,301,medium,,,pending,
+/ie/expertise,/ie/expertise/,301,medium,,,pending,
 /search,/search/,301,low,,,pending,
 /search/,/search/,301,low,,,pending,
 /keith-schilling-founder,/keith-schilling-founder/,301,medium,,,pending,
@@ -211,12 +204,12 @@ old_url,new_url,redirect_type,priority,backlinks_or_traffic_notes,content_owner,
 /news/why-work-in-media-law-privacy-defamation,/news/why-work-in-media-law-privacy-defamation/,301,high,,,pending,news migration import
 /news/why-you-might-be-accepting-fake-news-without-realising-it,/news/why-you-might-be-accepting-fake-news-without-realising-it/,301,high,,,pending,news migration import
 /news/youll-hand-email-scammers-your-money-and-smile,/news/youll-hand-email-scammers-your-money-and-smile/,301,high,,,pending,news migration import
-/en-us/expertise,/us/services/,301,high,,,pending,Legacy en-us expertise → US services (one hop; mirrors vercel.json)
-/en-us/expertise/,/us/services/,301,high,,,pending,
-/en-us/expertise/reputation_privacy,/us/services/reputation_privacy/,301,medium,,,pending,Sample hub; /en-us/expertise/:path* → /us/services/:path*
-/en-ie/expertise,/ie/services/,301,high,,,pending,Legacy en-ie expertise → IE services (one hop)
-/en-ie/expertise/,/ie/services/,301,high,,,pending,
-/en-ie/expertise/reputation_privacy,/ie/services/reputation_privacy/,301,medium,,,pending,Sample hub; /en-ie/expertise/:path* → /ie/services/:path*
+/en-us/expertise,/us/expertise/,301,high,,,pending,Legacy en-us path → US /us/expertise/
+/en-us/expertise/,/us/expertise/,301,high,,,pending,
+/en-us/expertise/reputation_privacy,/us/expertise/reputation_privacy/,301,medium,,,pending,Sample hub
+/en-ie/expertise,/ie/expertise/,301,high,,,pending,Legacy en-ie path → IE /ie/expertise/
+/en-ie/expertise/,/ie/expertise/,301,high,,,pending,
+/en-ie/expertise/reputation_privacy,/ie/expertise/reputation_privacy/,301,medium,,,pending,Sample hub
 /en-us,/us/,301,high,,,pending,Legacy locale URL segment → /us/ (internal Locale key en-us unchanged)
 /en-us/,/us/,301,high,,,pending,
 /en-us/contact,/us/contact/,301,high,,,pending,Sample deep link; all /en-us/* covered by vercel /en-us/:path*

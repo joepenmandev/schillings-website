@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildStrategicCrawlPathnames, isStrategicInternalPathname } from './strategic-crawl-lib';
 import { getAllSituationPathSlugs, getAllWhatWeProtectPathSlugs } from '../src/data/strategic-rebuild-content';
+import { EXPERTISE_IDS } from '../src/data/people-taxonomy';
 import { locales } from '../src/i18n/config';
 
 describe('strategic-crawl-lib', () => {
@@ -9,7 +10,7 @@ describe('strategic-crawl-lib', () => {
     const perLocale = locales.length;
     const situations = getAllSituationPathSlugs().length;
     const wwp = getAllWhatWeProtectPathSlugs().length;
-    const expectedPerLocale = 1 + 1 + situations + 1 + wwp + 1 + 1 + 1;
+    const expectedPerLocale = 1 + 1 + situations + 1 + wwp + 1 + 1 + EXPERTISE_IDS.length + 1 + 1;
     expect(rows).toHaveLength(perLocale * expectedPerLocale);
   });
 
@@ -19,6 +20,6 @@ describe('strategic-crawl-lib', () => {
     expect(isStrategicInternalPathname('/us/news/')).toBe(true);
     expect(isStrategicInternalPathname('/ie/what-we-protect/reputation/')).toBe(true);
     expect(isStrategicInternalPathname('/contact/')).toBe(false);
-    expect(isStrategicInternalPathname('/services/reputation_privacy/')).toBe(false);
+    expect(isStrategicInternalPathname('/expertise/reputation_privacy/')).toBe(true);
   });
 });

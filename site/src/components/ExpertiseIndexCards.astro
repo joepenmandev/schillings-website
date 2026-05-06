@@ -1,0 +1,39 @@
+---
+import { getServicesIndexPublicExpertiseCards } from '@/data/strategic-rebuild-content';
+import type { Locale } from '@/i18n/config';
+import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const cards = getServicesIndexPublicExpertiseCards();
+
+const cardClass =
+  'block rounded-lg border border-secondary-2/30 bg-utility-2/40 px-4 py-4 transition-colors hover:border-secondary-3 hover:bg-utility-2/70';
+const staticCardClass =
+  'block rounded-lg border border-secondary-2/30 bg-utility-2/40 px-4 py-4';
+---
+
+<ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+  {
+    cards.map((card) => {
+      const hub = card.linkedExpertiseId;
+      return (
+        <li>
+          {hub ? (
+            <a href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${hub}`)} class={cardClass}>
+              <span class="font-medium text-secondary-4">{card.label}</span>
+              <span class="mt-1 block text-xs leading-relaxed text-secondary-3">Related people and work</span>
+            </a>
+          ) : (
+            <div class={staticCardClass}>
+              <span class="font-medium text-secondary-4">{card.label}</span>
+            </div>
+          )}
+        </li>
+      );
+    })
+  }
+</ul>

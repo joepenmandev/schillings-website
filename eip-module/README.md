@@ -16,7 +16,7 @@ This folder holds the EIP implementation that was removed from the main Astro si
 1. Copy each `src/` subtree into `site/src/` (merge, do not duplicate top-level folders).
 2. Copy `docs/EXECUTIVE-INTELLIGENCE-PLATFORM/` into `site/docs/`.
 3. In `site/`: `npm install marked` (used by `PlatformMarkdown.astro`).
-4. Restore navigation and promos: `SiteHeader.astro`, home/services/people/news pages (all locales), as needed.
+4. Restore navigation and promos: `SiteHeader.astro`, home/expertise/people/news pages (all locales), as needed.
 5. Run `npm test` and `npm run build` from `site/`.
 
 Tests for this module live under `src/lib/platform/` and `src/data/platform-assessments.test.ts`; they expect the same relative paths inside `site/src/`.

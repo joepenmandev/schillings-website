@@ -4,6 +4,7 @@
  */
 import newsSitemapSlugs from '../data/news-sitemap-slugs.json';
 import peopleSitemapSlugs from '../data/people-sitemap-slugs.json';
+import { EXPERTISE_IDS } from '../data/people-taxonomy';
 import { getNewsBySlug, publishedNews } from '../data/news';
 import { getPersonBySlug, publishedPeople } from '../data/people';
 import { locales } from '../i18n/config';
@@ -82,6 +83,18 @@ export function indexableNewsAndPeopleAbsoluteUrls(siteOrigin: string): string[]
     }
     for (const p of peopleForSitemap) {
       urls.push(origin + publicPathname(locale, `people/${p.slug}`));
+    }
+  }
+  return urls;
+}
+
+/** Absolute URLs for every expertise hub detail page (`/expertise/{id}/`, `/us/…`, `/ie/…`) — SSR routes omitted from auto-discovery. */
+export function expertiseHubAbsoluteUrls(siteOrigin: string): string[] {
+  const origin = siteOrigin.replace(/\/$/, '');
+  const urls: string[] = [];
+  for (const locale of locales) {
+    for (const expertiseId of EXPERTISE_IDS) {
+      urls.push(origin + publicPathname(locale, `expertise/${expertiseId}`));
     }
   }
   return urls;

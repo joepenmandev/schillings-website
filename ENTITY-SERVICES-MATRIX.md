@@ -40,7 +40,7 @@
 
 ## C. Services and regulatory mapping
 
-Homepage **capability labels** on the current public site (editorial pillars — not separate `/law` URL on live). Future detailed hubs may follow **`/services/{slug}/`** (§2 of this spec).
+Homepage **capability labels** on the current public site (editorial pillars — not separate `/law` URL on live). Detailed capability hubs on the new stack use **`/expertise/{expertiseId}/`** (see **`IA-URL-SPEC.md`** §2).
 
 | Service / practice name (public) | URL slug (proposed) | Entity(ies) that deliver (E1, E2…) | Primary office(s) | *Compliance:* SRA Transparency Rules in scope? (Y/N/verify) | *Compliance:* claims / credentials allowed on page (brief note) |
 |----------------------------------|---------------------|------------------------------------|--------------------|----------------------------------------------------------------|-------------------------------------------------------------------|

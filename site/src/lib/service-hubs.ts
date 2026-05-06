@@ -1,5 +1,5 @@
 import type { ExpertiseId } from '../data/people-taxonomy';
-import { EXPERTISE_IDS, EXPERTISE_LABELS } from '../data/people-taxonomy';
+import { EXPERTISE_IDS } from '../data/people-taxonomy';
 import type { PersonProfile } from '../data/people';
 
 export function isExpertiseId(value: string): value is ExpertiseId {

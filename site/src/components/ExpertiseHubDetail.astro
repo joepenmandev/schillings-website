@@ -3,64 +3,57 @@ import Base from '@/layouts/Base.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
 import { publishedPeople } from '@/data/people';
-import { EXPERTISE_IDS, EXPERTISE_LABELS, type ExpertiseId } from '@/data/people-taxonomy';
+import { EXPERTISE_LABELS, type ExpertiseId } from '@/data/people-taxonomy';
 import PersonColleagueCard from '@/components/PersonColleagueCard.astro';
 import ServiceHubInternalNav from '@/components/ServiceHubInternalNav.astro';
 import { getServiceHubCopy } from '@/lib/service-hub-copy';
 import { clipPlainText } from '@/lib/person-jsonld';
-import { isExpertiseId, peopleForExpertise } from '@/lib/service-hubs';
+import { peopleForExpertise } from '@/lib/service-hubs';
 import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
 import { buildJsonLdGraph, buildPageEntityJsonLd } from '@/lib/jsonld-page';
 import { absolutePageUrl } from '@/lib/public-url';
-import { localeHref } from '@/lib/site-nav';
-import { locales, isLocale, type Locale } from '@/i18n/config';
+import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
+import type { Locale } from '@/i18n/config';
 
-export function getStaticPaths() {
-  return EXPERTISE_IDS.map((expertiseId) => ({ params: { expertiseId } }));
+interface Props {
+  locale: Locale;
+  expertiseId: ExpertiseId;
 }
 
-const expertiseIdRaw = Astro.params.expertiseId;
-if (typeof expertiseIdRaw !== 'string' || !isExpertiseId(expertiseIdRaw)) {
-  return new Response(null, { status: 404 });
-}
-const locale = 'en-ie';
-const expertiseId = expertiseIdRaw as ExpertiseId;
+const { locale, expertiseId } = Astro.props;
+
 const label = EXPERTISE_LABELS[expertiseId];
 const people = peopleForExpertise(publishedPeople(), expertiseId);
-const servicesIndex = localeHref(locale, 'services');
+const expertiseIndexHref = localeHref(locale, EXPERTISE_PUBLIC_SEGMENT);
 const copy = getServiceHubCopy(expertiseId);
 const metaDesc = clipPlainText(`${label}: ${copy.intro}`, 158);
 const origin = Astro.site?.origin ?? Astro.url.origin;
-const hubUrl = `${absolutePageUrl(origin, locale, `services/${expertiseId}`)}`;
-const hubTitle = `${label} | Services | Schillings`;
+const hubUrl = `${absolutePageUrl(origin, locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertiseId}`)}`;
+const hubTitle = `${label} | Expertise | Schillings`;
+const pathSegment = `${EXPERTISE_PUBLIC_SEGMENT}/${expertiseId}`;
 const hubJsonLd = buildJsonLdGraph(
   buildPageEntityJsonLd({
     origin,
     locale,
-    pathSegment: `services/${expertiseId}`,
+    pathSegment,
     pageType: 'WebPage',
     name: hubTitle,
     description: metaDesc,
   }),
   breadcrumbListGraphNode([
     { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
-    { name: 'Services', item: `${absolutePageUrl(origin, locale, 'services')}` },
+    { name: 'Expertise', item: `${absolutePageUrl(origin, locale, EXPERTISE_PUBLIC_SEGMENT)}` },
     { name: label, item: hubUrl },
   ]),
 );
 ---
 
-<Base
-  title={hubTitle}
-  description={metaDesc}
-  {locale}
-  pathAfterLocale={`services/${expertiseId}`}
->
+<Base title={hubTitle} description={metaDesc} {locale} pathAfterLocale={pathSegment}>
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(hubJsonLd)} />
   <SiteHeader {locale} />
   <DocumentMain>
     <p class="text-xs font-normal uppercase tracking-wide text-secondary-2">
-      <a href={servicesIndex} class="text-secondary-4 underline hover:text-secondary-3">Services</a>
+      <a href={expertiseIndexHref} class="text-secondary-4 underline hover:text-secondary-3">Expertise</a>
       <span aria-hidden="true"> / </span>
       <span>{label}</span>
     </p>
@@ -83,8 +76,8 @@ const hubJsonLd = buildJsonLdGraph(
 
     <ServiceHubInternalNav {locale} />
 
-    <section class="mt-12" aria-labelledby="svc-people-heading">
-      <h2 id="svc-people-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">
+    <section class="mt-12" aria-labelledby="expertise-hub-people-heading">
+      <h2 id="expertise-hub-people-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">
         People
       </h2>
       {
@@ -103,7 +96,9 @@ const hubJsonLd = buildJsonLdGraph(
     </section>
 
     <p class="mt-10">
-      <a class="text-sm font-medium text-secondary-4 underline hover:text-secondary-3" href={servicesIndex}>← All services</a>
+      <a class="text-sm font-medium text-secondary-4 underline hover:text-secondary-3" href={expertiseIndexHref}>
+        ← Expertise
+      </a>
     </p>
   </DocumentMain>
 </Base>

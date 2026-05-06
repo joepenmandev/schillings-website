@@ -14,7 +14,7 @@ export function getServiceHubCopy(id: ExpertiseId): ServiceHubBlock {
     hub[id] ?? {
       intro: 'Practice hub — replace this copy with partnership- and compliance-approved narrative.',
       legalNote:
-        'Migration scaffold — not legal advice. Partnership and compliance must approve final service descriptions before go-live.',
+        'Migration scaffold — not legal advice. Partnership and compliance must approve final expertise descriptions before go-live.',
     }
   );
 }

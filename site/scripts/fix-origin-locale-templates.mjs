@@ -49,8 +49,8 @@ for (const file of walk(pagesDir)) {
     "${absolutePageUrl(origin, locale, 'news/page/2')}",
   );
   c = c.replace(
-    /\$\{origin\}\/\$\{locale\}\/services\/\$\{expertiseId\}\//g,
-    '${absolutePageUrl(origin, locale, `services/${expertiseId}`)}',
+    /\$\{origin\}\/\$\{locale\}\/expertise\/\$\{expertiseId\}\//g,
+    '${absolutePageUrl(origin, locale, `expertise/${expertiseId}`)}',
   );
   c = c.replace(
     /\$\{origin\}\/\$\{locale\}\/people\/\$\{person\.slug\}\//g,
@@ -69,7 +69,7 @@ for (const file of walk(pagesDir)) {
     '${absolutePageUrl(origin, locale, pathAfterLocale)}',
   );
   c = c.replace(/\$\{origin\}\/\$\{locale\}\/news\//g, "${absolutePageUrl(origin, locale, 'news')}");
-  c = c.replace(/\$\{origin\}\/\$\{locale\}\/services\//g, "${absolutePageUrl(origin, locale, 'services')}");
+  c = c.replace(/\$\{origin\}\/\$\{locale\}\/expertise\//g, "${absolutePageUrl(origin, locale, 'expertise')}");
   c = c.replace(/\$\{origin\}\/\$\{locale\}\/about-us\//g, "${absolutePageUrl(origin, locale, 'about-us')}");
   c = c.replace(/\$\{origin\}\/\$\{locale\}\/people\//g, "${absolutePageUrl(origin, locale, 'people')}");
   c = c.replace(/\$\{origin\}\/\$\{locale\}\//g, "${absolutePageUrl(origin, locale, '')}");

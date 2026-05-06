@@ -50,31 +50,21 @@ Path suffixes below are **relative to the locale root**:
 
 ---
 
-## 2. Services / practices
+## 2. Expertise / practice hubs
 
-**Pattern:** UK **`/services/{slug}/`**; US/IE **`/en-us/services/{slug}/`**, **`/en-ie/services/{slug}/`**.
+**Canonical pattern (this Astro build):** UK **`/expertise/`** and **`/expertise/{expertiseId}/`** (no locale prefix); US **`/us/expertise/`** and **`/us/expertise/{expertiseId}/`**; Ireland **`/ie/expertise/`** and **`/ie/expertise/{expertiseId}/`**. Controlled **`expertiseId`** slugs live in **`site/src/data/people-taxonomy.ts`** (`EXPERTISE_IDS`). Legacy **`/en-us/…`** and **`/en-ie/…`** URLs **301** to **`/us/…`** and **`/ie/…`** (`site/vercel.json`).
 
-| Path suffix | Public title | Template | In sitemap | Transparency link? |
+| Path suffix (UK examples) | Public title | Template | In sitemap | Transparency link? |
 |-------------|--------------|----------|------------|-------------------|
-| `/services/` | Services index | `T-services-index` | Yes | |
-| `/services/{slug}/` | Practice hub | `T-service-hub` | Yes | Per compliance |
-| `/services/{slug}/{sub}/` | Deep topic | `T-service-article` | Yes | Only if distinct |
+| `/expertise/` | Expertise index | `T-expertise-index` | Yes | |
+| `/expertise/{expertiseId}/` | Capability hub | `T-expertise-hub` | Yes | Per compliance |
+| `/expertise/{expertiseId}/{sub}/` | Deep topic (if used) | `T-expertise-article` | Yes | Only if distinct |
 
-### 2.1 Legacy `/expertise` → Services
+**Retired on this site:** Public **`/services/…`** routes are **not** implemented; the XML sitemap and internal links use **`/expertise/…`** only.
 
-The live sitemap historically exposed **`/expertise`**. Redirects (see `site/vercel.json`):
+**Production cutover:** The new stack is **not** live on the production domain yet, so this repo does **not** define redirects from legacy **`/services/…`** (or other old-host paths) to **`/expertise/…`**. When DNS and hosting cut over, add **`redirect-map.csv`** / CDN rules so bookmarks and inbound links land on the correct **`/expertise/{expertiseId}/`** (or index) URLs.
 
-| Source (examples) | Destination |
-|-------------------|-------------|
-| `/expertise`, `/expertise/` | `/services/` (UK) |
-| `/en-gb/expertise`, `/en-gb/expertise/` | `/services/` |
-| `/en-us/expertise`, `/en-us/expertise/` | `/en-us/services/` |
-| `/en-ie/expertise`, `/en-ie/expertise/` | `/en-ie/services/` |
-| `/services/:path*` (no locale) | `/services/:path*` | Legacy non-locale **`/services/…`** → UK |
-| `/expertise/:path*` (no locale) | `/services/:path*` | Deep legacy **`/expertise/…`** → Services hub path (slug may still 404 if unmigrated) |
-| `/{locale}/expertise/:path*` | `/{locale}/services/:path*` | Preserves locale segment (`en-us`, `en-ie`; UK has no segment) |
-
-**Implementation:** `site/vercel.json` and root **`redirect-map.csv`** (keep them aligned). New internal links must target **`localeHref(locale, 'services/…')`** — do not ship new `/expertise/` URLs.
+**Implementation:** New internal links must target the **`expertise`** segment (e.g. **`localeHref` / `publicPathname`** with paths under **`expertise/…`**), not **`services/…`**.
 
 ---
 

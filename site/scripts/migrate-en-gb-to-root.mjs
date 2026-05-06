@@ -115,7 +115,7 @@ const locale = '${fixedLocale}';`,
     );
 }
 
-function fixServicesHub(content, fixedLocale) {
+function fixExpertiseHub(content, fixedLocale) {
   return content
     .replace(
       /export function getStaticPaths\(\) \{\s*const paths: \{ params: \{ locale: Locale; expertiseId: string \} \}\[\] = \[\];\s*for \(const locale of locales\) \{\s*for \(const expertiseId of EXPERTISE_IDS\) \{\s*paths\.push\(\{ params: \{ locale, expertiseId \} \}\);\s*\}\s*\}\s*return paths;\s*\}/,
@@ -199,8 +199,8 @@ function transformFile(absPath, fixedLocale, pagesRoot) {
     content = fixNewsPagePaginated(content, fixedLocale);
   } else if (absPath.includes(`${path.sep}news${path.sep}topic${path.sep}[topic]${path.sep}`)) {
     content = fixNewsTopic(content, fixedLocale);
-  } else if (absPath.includes(`${path.sep}services${path.sep}[expertiseId]${path.sep}`)) {
-    content = fixServicesHub(content, fixedLocale);
+  } else if (absPath.includes(`${path.sep}expertise${path.sep}[expertiseId]${path.sep}`)) {
+    content = fixExpertiseHub(content, fixedLocale);
   } else if (absPath.includes(`${path.sep}keith-schilling-biography${path.sep}[slug]${path.sep}`)) {
     content = fixKeithBio(content, fixedLocale);
   } else if (isRootHome) {

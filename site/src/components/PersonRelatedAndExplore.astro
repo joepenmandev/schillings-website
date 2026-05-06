@@ -1,6 +1,6 @@
 ---
 import type { Locale } from '../i18n/config';
-import { localeHref } from '../lib/site-nav';
+import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '../lib/site-nav';
 
 /** Post-bio links only — no “related people” grid on profile pages. */
 interface Props {
@@ -11,7 +11,7 @@ const { locale } = Astro.props;
 
 const explore = [
   { href: localeHref(locale, 'people'), label: 'All people' },
-  { href: localeHref(locale, 'services'), label: 'Services' },
+  { href: localeHref(locale, EXPERTISE_PUBLIC_SEGMENT), label: 'Expertise' },
   { href: localeHref(locale, 'news'), label: 'Intelligence' },
   { href: localeHref(locale, 'international'), label: 'International' },
   { href: localeHref(locale, 'contact'), label: 'Contact' },

@@ -47,7 +47,7 @@ export const LEADERSHIP_DIRECTORY_FILTER_VALUE = '__leadership__';
 /** @deprecated URL-only alias; normalized to `LEADERSHIP_DIRECTORY_FILTER_VALUE` in the directory script. */
 export const LEGACY_EXECUTIVES_DIRECTORY_FILTER_VALUE = '__executives__';
 
-/** Main directory pillar (Legal, ISD, Schillings Communications / SCOM, Digital Resilience) — inferred from role, tags, and bio. */
+/** Main directory pillar (`legal` / `isd` / `scom` / `dr`) — inferred from role, tags, and bio; see `PRACTICE_GROUP_LABELS` for public wording. */
 export const PRACTICE_GROUP_IDS = ['legal', 'isd', 'scom', 'dr'] as const;
 export type PracticeGroupId = (typeof PRACTICE_GROUP_IDS)[number];
 
@@ -85,18 +85,20 @@ export const SENIORITY_LABELS: Record<SeniorityId, string> = {
   other: 'Other',
 };
 
+/** Directory filter labels — public language aligned with capability pillars (no ISD / DR / SCOM codes). */
 export const PRACTICE_GROUP_LABELS: Record<PracticeGroupId, string> = {
-  legal: 'Legal',
-  isd: 'ISD',
-  scom: 'Schillings Communications',
-  dr: 'Digital Resilience',
+  legal: 'Legal Protection & Disputes',
+  isd: 'Intelligence & Investigations',
+  scom: 'Strategic Communications',
+  dr: 'Digital Resilience & Security',
 };
 
+/** Public labels for expertise tags, hubs, and directory filters. */
 export const EXPERTISE_LABELS: Record<ExpertiseId, string> = {
   reputation_privacy: 'Reputation & privacy',
-  litigation_disputes: 'Litigation & disputes',
-  intelligence_security: 'Intelligence & security',
-  communications: 'Communications',
+  litigation_disputes: 'Legal Protection & Disputes',
+  intelligence_security: 'Intelligence & Investigations',
+  communications: 'Strategic Communications',
   corporate_transactions: 'Corporate & transactions',
   international: 'International',
   regulatory: 'Regulatory',

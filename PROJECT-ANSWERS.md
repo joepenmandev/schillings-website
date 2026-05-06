@@ -88,7 +88,7 @@ Source: [SRA warning notice — marketing](https://www.sra.org.uk/solicitors/gui
 |-------|--------|
 | **Placeholder copy** | **Astro build** (`site/`): homepage editorial strips use **live headline pairs** — no Lorem in shipped templates (spot-check **`HomeEditorialStrips.astro`**). The **legacy Webflow** homepage may still show filler until DNS cuts to the new stack. |
 | **Sitemap** | `/sitemap.xml` — **HTTP 200** verified **2026-05-04** (curl). Re-check before launch. |
-| **Sample URL** | **`/law`** — **404** on live **2026-05-04**. IA: future practice hubs under **`/services/{slug}/`** in **`IA-URL-SPEC.md`** §2; homepage pillars are not a substitute for a dedicated law URL until published. |
+| **Sample URL** | **`/law`** — **404** on live **2026-05-04**. IA: practice hubs on the new build use **`/expertise/{expertiseId}/`** per **`IA-URL-SPEC.md`** §2; homepage pillars are not a substitute for a dedicated law URL until published. |
 | **Legacy privacy URL** | **`/privacy-notice/`** on live **301 → `/privacy-notice` → 404`** (broken chain) **2026-05-04**. New stack: **`vercel.json`** + **`redirect-map.csv`** send **`/privacy-notice`** to **`/compliance/privacy-disclaimer/`** (UK unprefixed). |
 | **Standard terms** | Live uses **`/compliance/standard-terms-of-business`** (and legacy long slug → short slug). Astro stub + locale redirects added **2026-05-04** — replace stub with approved HTML/PDF parity. |
 

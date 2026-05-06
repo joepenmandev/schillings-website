@@ -96,12 +96,12 @@ describe('compareDirectoryPeopleBySeniorityThenName', () => {
 
 describe('peopleDirectoryCardByline', () => {
   it('formats seniority and department for directory cards', () => {
-    expect(peopleDirectoryCardByline('director', 'scom')).toBe('Director, Schillings Communications');
-    expect(peopleDirectoryCardByline('senior_associate', 'dr')).toBe('Senior Associate, Digital Resilience');
-    expect(peopleDirectoryCardByline('associate', 'legal')).toBe('Associate, Legal');
+    expect(peopleDirectoryCardByline('director', 'scom')).toBe('Director, Strategic Communications');
+    expect(peopleDirectoryCardByline('senior_associate', 'dr')).toBe('Senior Associate, Digital Resilience & Security');
+    expect(peopleDirectoryCardByline('associate', 'legal')).toBe('Associate, Legal Protection & Disputes');
     expect(peopleDirectoryCardByline('advisory_board', 'legal')).toBe('Advisory Board');
-    expect(peopleDirectoryCardByline('founder', 'legal')).toBe('Founder, Legal');
-    expect(peopleDirectoryCardByline('ceo', 'legal')).toBe('CEO, Legal');
-    expect(peopleDirectoryCardByline('ciso', 'isd')).toBe('CISO, ISD');
+    expect(peopleDirectoryCardByline('founder', 'legal')).toBe('Founder, Legal Protection & Disputes');
+    expect(peopleDirectoryCardByline('ceo', 'legal')).toBe('CEO, Legal Protection & Disputes');
+    expect(peopleDirectoryCardByline('ciso', 'isd')).toBe('CISO, Intelligence & Investigations');
   });
 });

@@ -43,6 +43,7 @@ describe('pickBestStaticTail', () => {
 describe('labelForStaticTail', () => {
   it('uses site-nav labels when present', () => {
     expect(labelForStaticTail('about-us')).toBe('About');
+    expect(labelForStaticTail('expertise')).toBe('Expertise');
     expect(labelForStaticTail('')).toBe('Home');
   });
 

@@ -8,7 +8,7 @@ import {
   buildNewsPaginatedIndexGraphJsonLd,
   buildNewsTopicHubGraphJsonLd,
   buildNewsAuthorHubGraphJsonLd,
-  buildServicesIndexGraphJsonLd,
+  buildExpertiseIndexGraphJsonLd,
   extendJsonLdGraph,
 } from './jsonld-page';
 
@@ -70,17 +70,43 @@ describe('jsonld-page', () => {
     expect(list.itemListElement[1].item.name).toBe('B');
   });
 
-  it('services index graph lists hub WebPages', () => {
-    const g = buildServicesIndexGraphJsonLd({
+  it('expertise index graph lists hub WebPages', () => {
+    const g = buildExpertiseIndexGraphJsonLd({
       origin: 'https://x.com',
       locale: 'en-gb',
+      collectionSegment: 'expertise',
       hubs: [{ id: 'reputation_privacy', label: 'Reputation & privacy' }],
-      pageTitle: 'Services | Schillings',
+      pageTitle: 'Expertise | Schillings',
       pageDescription: 'Desc.',
     }) as { '@graph': Record<string, unknown>[] };
     expect(g['@graph'][1]).toMatchObject({
       numberOfItems: 1,
     });
+  });
+
+  it('expertise index graph respects pathAfterLocale for index-only items', () => {
+    const g = buildExpertiseIndexGraphJsonLd({
+      origin: 'https://x.com',
+      locale: 'en-gb',
+      collectionSegment: 'expertise',
+      hubs: [
+        { id: 'crisis_response', label: 'Crisis Response', pathAfterLocale: 'expertise' },
+        {
+          id: 'reputation_privacy',
+          label: 'Reputation & Defamation',
+          pathAfterLocale: 'expertise/reputation_privacy',
+        },
+      ],
+      pageTitle: 'Expertise | Schillings',
+      pageDescription: 'Desc.',
+    }) as {
+      '@graph': Record<string, unknown>[];
+    };
+    const list = g['@graph'][1] as {
+      itemListElement: { item: { url: string } }[];
+    };
+    expect(list.itemListElement[0].item.url).toBe('https://x.com/expertise/');
+    expect(list.itemListElement[1].item.url).toBe('https://x.com/expertise/reputation_privacy/');
   });
 
   it('buildJsonLdGraph merges nodes', () => {

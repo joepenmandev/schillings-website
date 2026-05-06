@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 import {
+  expertiseHubAbsoluteUrls,
   indexableNewsAndPeopleAbsoluteUrls,
   isExcludedPeopleProfileFromSitemap,
   isThinMigrationNewsPath,
@@ -29,7 +30,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      customPages: indexableNewsAndPeopleAbsoluteUrls(siteUrl),
+      customPages: [...indexableNewsAndPeopleAbsoluteUrls(siteUrl), ...expertiseHubAbsoluteUrls(siteUrl)],
       // Exclude non-canonical or thin migration URLs.
       filter: (page) => {
         try {
@@ -46,6 +47,10 @@ export default defineConfig({
           }
           if (isThinMigrationNewsPath(pathname)) return false;
           if (isExcludedPeopleProfileFromSitemap(page)) return false;
+          // /expertise/ is canonical; never emit retired /services/ URLs in the XML sitemap.
+          if (pathname === '/services' || pathname.startsWith('/services/')) return false;
+          if (pathname === '/us/services' || pathname.startsWith('/us/services/')) return false;
+          if (pathname === '/ie/services' || pathname.startsWith('/ie/services/')) return false;
           return true;
         } catch {
           return true;
