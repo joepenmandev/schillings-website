@@ -1,0 +1,198 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { contactSegment, localeHref, primaryNav } from '@/lib/site-nav';
+import type { Locale } from '@/i18n/config';
+
+const locale = 'en-gb' as const satisfies Locale;
+const description =
+  'The page you requested is not on schillingspartners.com. Choose a region, search the site, or contact Schillings.';
+
+const regions = [
+  {
+    label: 'United Kingdom',
+    href: localeHref('en-gb', ''),
+    hint: 'Default site',
+    featured: true,
+  },
+  {
+    label: 'United States',
+    href: localeHref('en-us', ''),
+    hint: '/us/',
+    featured: false,
+  },
+  {
+    label: 'Ireland & EU gateway',
+    href: localeHref('en-ie', ''),
+    hint: '/ie/',
+    featured: false,
+  },
+] as const;
+
+const contacts = [
+  { label: 'Contact — UK', href: localeHref('en-gb', contactSegment) },
+  { label: 'Contact — US', href: localeHref('en-us', contactSegment) },
+  { label: 'Contact — Ireland', href: localeHref('en-ie', contactSegment) },
+] as const;
+
+const navLinkClass =
+  'font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.2em] transition-colors hover:decoration-secondary-4';
+---
+
+<Base
+  title="Page not found | Schillings"
+  {description}
+  {locale}
+  pathAfterLocale=""
+  noindex
+  noindexFollow
+  errorPage
+  hreflangLocales={[locale]}
+>
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">404</p>
+      <h1
+        class="mt-4 font-serif text-pretty text-3xl font-extralight leading-[1.1] tracking-tight text-secondary-4 md:text-4xl lg:text-[2.75rem]"
+      >
+        <span class="block">This page could not</span>
+        <span class="mt-2 block font-serif italic text-secondary-3">be found.</span>
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-secondary-3 md:text-[1.05rem]">
+        The link may be out of date, or the page may have moved. Try search, a regional homepage, or contact — we can
+        point you in the right direction.
+      </p>
+      <p id="err-path" class="mx-auto mt-5 hidden max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3">
+        <span class="font-medium text-secondary-2">Requested path</span>
+        <code
+          id="err-path-value"
+          class="mt-1 block break-all rounded-sm bg-utility-2/90 px-2.5 py-2 text-left font-mono text-[0.8125rem] text-secondary-4 ring-1 ring-secondary-2/15"
+        ></code>
+      </p>
+    </div>
+
+    <section class="mx-auto mt-14 max-w-4xl" aria-labelledby="404-region-heading">
+      <h2 id="404-region-heading" class="text-center text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
+        Regional sites
+      </h2>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-3">
+        {
+          regions.map(({ label, href, hint, featured }) => (
+            <li>
+              <a
+                href={href}
+                class:list={[
+                  'group flex h-full flex-col rounded-md border p-5 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-4',
+                  featured
+                    ? 'border-secondary-4 bg-secondary-4 text-brand-white shadow-md ring-1 ring-secondary-4/20'
+                    : 'border-secondary-2/35 bg-brand-white hover:border-secondary-3 hover:bg-utility-2/50',
+                ]}
+              >
+                <span
+                  class:list={[
+                    'text-[0.65rem] font-medium uppercase tracking-[0.14em]',
+                    featured ? 'text-brand-white/85' : 'text-secondary-2',
+                  ]}
+                >
+                  {label}
+                </span>
+                <span
+                  class:list={[
+                    'mt-2 font-serif text-lg font-normal leading-snug',
+                    featured ? 'text-brand-white' : 'text-secondary-4',
+                  ]}
+                >
+                  Homepage
+                </span>
+                <span
+                  class:list={[
+                    'mt-3 text-xs font-extralight',
+                    featured ? 'text-brand-white/75' : 'text-secondary-3',
+                  ]}
+                >
+                  {hint}
+                </span>
+                <span
+                  class:list={[
+                    'mt-auto pt-4 text-sm font-medium',
+                    featured ? 'text-brand-white' : 'text-secondary-4',
+                  ]}
+                >
+                  <span class="inline-flex items-center gap-1">
+                    Enter site
+                    <span aria-hidden="true" class="transition-transform group-hover:translate-x-0.5">→</span>
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section
+      class="mx-auto mt-12 max-w-4xl border-t border-secondary-2/20 pt-10"
+      aria-labelledby="404-search-heading"
+    >
+      <h2 id="404-search-heading" class="text-center text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
+        Search
+      </h2>
+      <p class="mx-auto mt-4 max-w-xl text-center text-sm leading-relaxed text-secondary-3">
+        <a href={localeHref(locale, 'search')} class={navLinkClass}>Site search</a>
+        <span class="mx-2 text-secondary-2/50" aria-hidden="true">·</span>
+        <a href={localeHref(locale, 'sitemap')} class={navLinkClass}>HTML sitemap</a>
+      </p>
+    </section>
+
+    <section class="mx-auto mt-10 max-w-4xl" aria-labelledby="404-contact-heading">
+      <h2 id="404-contact-heading" class="text-center text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
+        Contact
+      </h2>
+      <ul class="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+        {
+          contacts.map(({ label, href }) => (
+            <li>
+              <a {href} class={navLinkClass}>
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section
+      class="mx-auto mt-12 max-w-4xl border-t border-secondary-2/20 bg-utility-2/35 px-4 py-10 md:rounded-sm md:px-8"
+      aria-labelledby="404-explore-heading"
+    >
+      <h2 id="404-explore-heading" class="text-center text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
+        Explore
+      </h2>
+      <ul class="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm md:text-base">
+        {
+          primaryNav.map(({ label, segment }) => (
+            <li>
+              <a href={localeHref(locale, segment)} class={navLinkClass}>
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </DocumentMain>
+  <script is:inline>
+    (function () {
+      var wrap = document.getElementById('err-path');
+      var val = document.getElementById('err-path-value');
+      if (!wrap || !val) return;
+      var path = window.location.pathname || '';
+      var low = path.toLowerCase();
+      if (!path || low === '/404' || low === '/404/' || low.endsWith('/404.html')) return;
+      wrap.classList.remove('hidden');
+      val.textContent = path;
+    })();
+  </script>
+</Base>

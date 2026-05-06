@@ -1,0 +1,67 @@
+---
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { EXPERTISE_IDS, EXPERTISE_LABELS } from '@/data/people-taxonomy';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { buildJsonLdGraph, buildServicesIndexGraphNodes } from '@/lib/jsonld-page';
+import { absolutePageUrl } from '@/lib/public-url';
+import { localeHref } from '@/lib/site-nav';
+import { locales, isLocale, type Locale } from '@/i18n/config';
+
+const locale = 'en-gb';
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const servicesTitle = 'Services | Schillings';
+const servicesDescription =
+  'Practice hubs linking Schillings expertise to people and capabilities — reputation, privacy, litigation, intelligence, communications, and more.';
+const servicesJsonLd = buildJsonLdGraph(
+  ...buildServicesIndexGraphNodes({
+    origin,
+    locale,
+    hubs: EXPERTISE_IDS.map((id) => ({ id, label: EXPERTISE_LABELS[id] })),
+    pageTitle: servicesTitle,
+    pageDescription: servicesDescription,
+  }),
+  breadcrumbListGraphNode([
+    { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
+    { name: 'Services', item: `${absolutePageUrl(origin, locale, 'services')}` },
+  ]),
+);
+---
+
+<Base
+  title={servicesTitle}
+  description={servicesDescription}
+  {locale}
+  pathAfterLocale="services"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(servicesJsonLd)} />
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Services
+    </h1>
+    <p class="mt-4 max-w-3xl text-pretty text-base leading-relaxed text-secondary-3">
+      Our work spans reputation and privacy, disputes, intelligence and security, strategic communications, corporate and
+      transactions, international matters, and regulatory issues. Each hub outlines the capability and highlights
+      colleagues with that expertise. Partnership and compliance approve final service messaging before go-live.
+    </p>
+    <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        EXPERTISE_IDS.map((id) => (
+          <li>
+            <a
+              href={localeHref(locale, `services/${id}`)}
+              class="block rounded-lg border border-secondary-2/30 bg-utility-2/40 px-4 py-4 transition-colors hover:border-secondary-3 hover:bg-utility-2/70"
+            >
+              <span class="font-medium text-secondary-4">{EXPERTISE_LABELS[id]}</span>
+              <span class="mt-1 block text-xs text-secondary-3">View people and hub</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <MarketingStubNav {locale} currentSegment="services" />
+  </DocumentMain>
+</Base>

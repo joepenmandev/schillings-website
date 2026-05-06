@@ -1,0 +1,423 @@
+---
+/**
+ * Multi-step gate: £25k minimum — compliance to approve final wording.
+ * Set PUBLIC_FORM_ENDPOINT to POST JSON (Zapier, Make, custom API).
+ */
+import type { Locale } from '../i18n/config';
+import { localeHref } from '../lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  /** Pre-selects “Where is the issue centred?” (step 2); user can change. */
+  defaultRegion?: 'uk' | 'us' | 'ie';
+  /** Sent in the JSON payload so submissions can be routed to an office inbox. */
+  preferredOffice?: string;
+  /** Why the region is pre-filled — copy on step 2. */
+  regionPresetReason?: 'office' | 'site';
+}
+
+const { locale, defaultRegion, preferredOffice, regionPresetReason } = Astro.props;
+const privacyHref = localeHref(locale, 'compliance/privacy-disclaimer');
+---
+
+<form
+  class="relative space-y-6"
+  data-form-root
+  data-locale={locale}
+  data-thank-you-href={localeHref(locale, 'contact/thank-you')}
+  data-preferred-office={preferredOffice ?? ''}
+  aria-describedby="min-engagement"
+>
+  <div
+    id="min-engagement"
+    class="rounded-lg border border-primary-1 bg-utility-2 px-4 py-3 text-sm text-secondary-4"
+  >
+    <p class="font-medium">Minimum engagement</p>
+    <p class="mt-1 text-secondary-3">
+      We typically act where total legal fees for the matter are from <strong>£25,000</strong> (or
+      currency equivalent). This form helps us assess fit before you share full contact details.
+    </p>
+  </div>
+
+  <ol class="flex gap-2 text-xs font-medium text-secondary-3" aria-label="Progress">
+    {
+      ['Matter', 'Region', 'Budget', 'Urgency', 'Details'].map((label, i) => (
+        <li class="flex flex-1 items-center gap-2" data-step-indicator={i}>
+          <span
+            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-secondary-2/60 bg-brand-white text-[11px] text-secondary-3"
+            data-step-dot
+          >
+            {i + 1}
+          </span>
+          <span class="hidden sm:inline">{label}</span>
+        </li>
+      ))
+    }
+  </ol>
+
+  <div data-panel="0" class="space-y-4">
+    <fieldset>
+      <legend class="text-base font-semibold text-secondary-4">What do you need help with?</legend>
+      <div class="mt-3 space-y-2">
+        {
+          [
+            ['reputation', 'Reputation, defamation, or media crisis'],
+            ['privacy', 'Privacy, data, or confidentiality'],
+            ['litigation', 'Litigation or regulatory dispute'],
+            ['platform', 'Platform / social content or takedowns'],
+            ['intelligence', 'Intelligence or investigations'],
+            ['security', 'Physical or cyber security'],
+            ['other', 'Other / not sure'],
+          ].map(([value, label]) => (
+            <label class="flex cursor-pointer items-start gap-3 rounded-lg border border-secondary-2/40 px-3 py-2 hover:bg-utility-2 has-[:checked]:border-secondary-4 has-[:checked]:bg-utility-2">
+              <input type="radio" name="matter" value={value} class="mt-1" required />
+              <span class="text-sm text-secondary-4">{label}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <button type="button" class="rounded-md bg-secondary-4 px-4 py-2.5 text-sm font-medium text-brand-white hover:bg-secondary-3" data-next>
+      Continue
+    </button>
+  </div>
+
+  <div data-panel="1" class="hidden space-y-4">
+    <fieldset>
+      <legend class="text-base font-semibold text-secondary-4">Where is the issue centred?</legend>
+      {
+        defaultRegion ? (
+          <p class="mt-2 text-sm text-secondary-3">
+            {regionPresetReason === 'office' ? (
+              <>
+                We've suggested a region based on the office you viewed. Change it if your issue is centred
+                elsewhere.
+              </>
+            ) : (
+              <>
+                We've suggested a region to match this Schillings site. Change it if your issue is centred
+                elsewhere.
+              </>
+            )}
+          </p>
+        ) : null
+      }
+      <div class="mt-3 space-y-2">
+        {
+          [
+            ['uk', 'United Kingdom'],
+            ['us', 'United States'],
+            ['ie', 'Ireland / EU cross-border'],
+            ['other', 'Other / multiple regions'],
+          ].map(([value, label]) => (
+            <label class="flex cursor-pointer items-start gap-3 rounded-lg border border-secondary-2/40 px-3 py-2 hover:bg-utility-2 has-[:checked]:border-secondary-4 has-[:checked]:bg-utility-2">
+              <input
+                type="radio"
+                name="region"
+                value={value}
+                class="mt-1"
+                required
+                checked={defaultRegion === value}
+              />
+              <span class="text-sm text-secondary-4">{label}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <div class="flex gap-3">
+      <button type="button" class="rounded-md border border-secondary-2/60 px-4 py-2.5 text-sm font-medium text-secondary-4 hover:bg-utility-2" data-back>
+        Back
+      </button>
+      <button type="button" class="rounded-md bg-secondary-4 px-4 py-2.5 text-sm font-medium text-brand-white hover:bg-secondary-3" data-next>
+        Continue
+      </button>
+    </div>
+  </div>
+
+  <div data-panel="2" class="hidden space-y-4">
+    <fieldset>
+      <legend class="text-base font-semibold text-secondary-4">Expected legal spend for this matter</legend>
+      <p class="mt-1 text-sm text-secondary-3">Indicative bands — final costs depend on scope.</p>
+      <div class="mt-3 space-y-2">
+        {
+          [
+            ['under', 'Under £25,000'],
+            ['25-75', '£25,000 – £75,000'],
+            ['75-150', '£75,000 – £150,000'],
+            ['150plus', '£150,000+'],
+            ['unknown', 'Not sure yet'],
+          ].map(([value, label]) => (
+            <label class="flex cursor-pointer items-start gap-3 rounded-lg border border-secondary-2/40 px-3 py-2 hover:bg-utility-2 has-[:checked]:border-secondary-4 has-[:checked]:bg-utility-2">
+              <input type="radio" name="budget" value={value} class="mt-1" required />
+              <span class="text-sm text-secondary-4">{label}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <div class="flex gap-3">
+      <button type="button" class="rounded-md border border-secondary-2/60 px-4 py-2.5 text-sm font-medium text-secondary-4 hover:bg-utility-2" data-back>
+        Back
+      </button>
+      <button type="button" class="rounded-md bg-secondary-4 px-4 py-2.5 text-sm font-medium text-brand-white hover:bg-secondary-3" data-next>
+        Continue
+      </button>
+    </div>
+  </div>
+
+  <div data-panel="3" class="hidden space-y-4">
+    <label class="block">
+      <span class="text-base font-semibold text-secondary-4">How urgent is this?</span>
+      <select name="urgency" class="mt-2 w-full rounded-md border border-secondary-2/60 bg-brand-white px-3 py-2.5 text-sm text-secondary-4" required>
+        <option value="">Select…</option>
+        <option value="immediate">Immediate (24–48 hours)</option>
+        <option value="week">This week</option>
+        <option value="month">This month</option>
+        <option value="planning">Planning ahead</option>
+      </select>
+    </label>
+    <div class="flex gap-3">
+      <button type="button" class="rounded-md border border-secondary-2/60 px-4 py-2.5 text-sm font-medium text-secondary-4 hover:bg-utility-2" data-back>
+        Back
+      </button>
+      <button type="button" class="rounded-md bg-secondary-4 px-4 py-2.5 text-sm font-medium text-brand-white hover:bg-secondary-3" data-next>
+        Continue
+      </button>
+    </div>
+  </div>
+
+  <div data-panel="4" class="hidden space-y-4">
+    <p class="text-sm text-secondary-3">Almost done. We use this to route your enquiry to the right team.</p>
+    <label class="block">
+      <span class="text-sm font-medium text-secondary-4">Full name</span>
+      <input type="text" name="fullName" autocomplete="name" class="mt-1 w-full rounded-md border border-secondary-2/60 bg-brand-white px-3 py-2 text-sm text-secondary-4" required />
+    </label>
+    <label class="block">
+      <span class="text-sm font-medium text-secondary-4">Work email</span>
+      <input type="email" name="email" autocomplete="email" class="mt-1 w-full rounded-md border border-secondary-2/60 bg-brand-white px-3 py-2 text-sm text-secondary-4" required />
+    </label>
+    <label class="block">
+      <span class="text-sm font-medium text-secondary-4">Organisation (optional)</span>
+      <input type="text" name="organisation" autocomplete="organization" class="mt-1 w-full rounded-md border border-secondary-2/60 bg-brand-white px-3 py-2 text-sm text-secondary-4" />
+    </label>
+    <label class="block">
+      <span class="text-sm font-medium text-secondary-4">Phone (optional)</span>
+      <input type="tel" name="phone" autocomplete="tel" class="mt-1 w-full rounded-md border border-secondary-2/60 bg-brand-white px-3 py-2 text-sm text-secondary-4" />
+    </label>
+    <label class="absolute -left-[9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+      Company website
+      <input type="text" name="company_website" tabindex="-1" autocomplete="off" />
+    </label>
+    <label class="flex items-start gap-2 text-sm text-secondary-3">
+      <input type="checkbox" name="privacy" required class="mt-1" />
+      <span>
+        I have read the <a href={privacyHref} class="underline hover:text-secondary-4">privacy notice</a>. I understand Schillings will use my details to respond to this enquiry only.
+      </span>
+    </label>
+    <div class="flex gap-3">
+      <button type="button" class="rounded-md border border-secondary-2/60 px-4 py-2.5 text-sm font-medium text-secondary-4 hover:bg-utility-2" data-back>
+        Back
+      </button>
+      <button
+        type="submit"
+        data-submit
+        class="rounded-md bg-secondary-4 px-4 py-2.5 text-sm font-medium text-brand-white hover:bg-secondary-3 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        Submit enquiry
+      </button>
+    </div>
+  </div>
+
+  <div data-exit class="hidden rounded-lg border border-secondary-2/40 bg-utility-2 px-4 py-6 text-sm text-secondary-4">
+    <p class="font-semibold text-secondary-4">We are unlikely to be the right fit on budget.</p>
+    <p class="mt-2 leading-relaxed">
+      Schillings typically takes on matters where legal fees are expected to be from <strong>£25,000</strong> upwards.
+      If your situation changes, you are welcome to return to this form.
+    </p>
+    <p class="mt-4">
+      <a href={localeHref(locale, '')} class="font-medium text-secondary-3 underline hover:text-secondary-4">Return to home</a>
+    </p>
+  </div>
+
+  <div data-success class="hidden rounded-lg border border-primary-1 bg-utility-2 px-4 py-6 text-sm text-secondary-4">
+    <p class="font-semibold">Thank you — enquiry received.</p>
+    <p class="mt-2">We will assess fit and respond as soon as we can.</p>
+    <p class="mt-4">
+      <a data-thank-you-link class="font-medium text-secondary-3 underline hover:text-secondary-4" href="#">
+        What happens next
+      </a>
+    </p>
+  </div>
+
+  <p class="text-xs text-secondary-3" role="status" data-status aria-live="polite" />
+</form>
+
+<script>
+  const form = document.querySelector('[data-form-root]');
+  if (!(form instanceof HTMLFormElement)) {
+    console.warn('[QualifyingForm] form root not found');
+  } else {
+    const root = form;
+    const thankYouHref = root.dataset.thankYouHref ?? '/contact/thank-you/';
+    const thankLink = root.querySelector('[data-thank-you-link]');
+    if (thankLink instanceof HTMLAnchorElement) thankLink.href = thankYouHref;
+
+    const panels = [...root.querySelectorAll('[data-panel]')].filter((el): el is HTMLElement => el instanceof HTMLElement);
+    const exit = root.querySelector('[data-exit]');
+    const success = root.querySelector('[data-success]');
+    const status = root.querySelector('[data-status]');
+    const indicators = [...root.querySelectorAll('[data-step-indicator]')].filter((el): el is HTMLElement => el instanceof HTMLElement);
+    const submitBtn = root.querySelector('[data-submit]');
+
+    let step = 0;
+    const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined;
+
+    function isValidEmail(value) {
+      const v = value.trim();
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    }
+
+    function setStep(n: number) {
+      step = n;
+      panels.forEach((p, i) => p.classList.toggle('hidden', i !== n));
+      exit?.classList.add('hidden');
+      indicators.forEach((ind, i) => {
+        const dot = ind.querySelector('[data-step-dot]');
+        if (!(dot instanceof HTMLElement)) return;
+        if (i < n) {
+          dot.className =
+            'flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-secondary-3 bg-secondary-3 text-[11px] text-brand-white';
+          dot.textContent = '✓';
+        } else if (i === n) {
+          dot.className =
+            'flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-secondary-4 bg-secondary-4 text-[11px] text-brand-white';
+          dot.textContent = String(i + 1);
+        } else {
+          dot.className =
+            'flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-secondary-2/60 bg-brand-white text-[11px] text-secondary-3';
+          dot.textContent = String(i + 1);
+        }
+      });
+      if (status) status.textContent = `Step ${n + 1} of ${panels.length}`;
+    }
+
+    function readRadio(name: string) {
+      const el = root.querySelector(`input[name="${name}"]:checked`);
+      return el instanceof HTMLInputElement ? el.value : '';
+    }
+
+    function validateStep(n: number): boolean {
+      if (n === 0) return Boolean(readRadio('matter'));
+      if (n === 1) return Boolean(readRadio('region'));
+      if (n === 2) {
+        const b = readRadio('budget');
+        if (b === 'under') {
+          panels.forEach((p) => p.classList.add('hidden'));
+          exit?.classList.remove('hidden');
+          if (status) status.textContent = 'Not a match on budget.';
+          return false;
+        }
+        return Boolean(b);
+      }
+      if (n === 3) {
+        const sel = root.querySelector('select[name="urgency"]');
+        return sel instanceof HTMLSelectElement && Boolean(sel.value);
+      }
+      return true;
+    }
+
+    root.addEventListener('click', (e) => {
+      const t = e.target;
+      if (!(t instanceof HTMLElement)) return;
+      if (t.hasAttribute('data-next')) {
+        if (!validateStep(step)) return;
+        if (step < panels.length - 1) setStep(step + 1);
+      }
+      if (t.hasAttribute('data-back') && step > 0) setStep(step - 1);
+    });
+
+    root.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (step !== panels.length - 1) return;
+      const hp = root.querySelector('input[name="company_website"]');
+      if (hp instanceof HTMLInputElement && hp.value.trim()) return;
+
+      const fullNameEl = root.querySelector('input[name="fullName"]') as HTMLInputElement | null;
+      const emailEl = root.querySelector('input[name="email"]') as HTMLInputElement | null;
+      const fullName = fullNameEl?.value.trim() ?? '';
+      const email = emailEl?.value.trim() ?? '';
+      if (fullName.length < 2) {
+        if (status) status.textContent = 'Please enter your full name.';
+        fullNameEl?.focus();
+        return;
+      }
+      if (!isValidEmail(email)) {
+        if (status) status.textContent = 'Please enter a valid work email.';
+        emailEl?.focus();
+        return;
+      }
+
+      const preferredOffice = (root.dataset.preferredOffice ?? '').trim();
+      const payload = {
+        locale: root.dataset.locale ?? '',
+        matter: readRadio('matter'),
+        region: readRadio('region'),
+        budget: readRadio('budget'),
+        urgency: (root.querySelector('select[name="urgency"]') as HTMLSelectElement)?.value ?? '',
+        fullName,
+        email,
+        organisation: ((root.querySelector('input[name="organisation"]') as HTMLInputElement)?.value ?? '').trim(),
+        phone: ((root.querySelector('input[name="phone"]') as HTMLInputElement)?.value ?? '').trim(),
+        submittedAt: new Date().toISOString(),
+        ...(preferredOffice ? { preferredOffice } : {}),
+      };
+
+      if (submitBtn instanceof HTMLButtonElement) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+      }
+      root.setAttribute('aria-busy', 'true');
+      if (status) status.textContent = 'Submitting…';
+
+      const controller = new AbortController();
+      const t = window.setTimeout(() => controller.abort(), 15000);
+
+      try {
+        if (endpoint) {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: controller.signal,
+          });
+          if (!res.ok) {
+            if (status) status.textContent = 'Something went wrong. Please try again or call us.';
+            return;
+          }
+        }
+
+        panels.forEach((p) => p.classList.add('hidden'));
+        success?.classList.remove('hidden');
+        if (status) status.textContent = endpoint ? 'Submitted.' : 'Recorded locally — set PUBLIC_FORM_ENDPOINT to POST.';
+        if (!endpoint) console.info('[QualifyingForm] payload', payload);
+        success?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (err) {
+        if (status)
+          status.textContent =
+            err instanceof DOMException && err.name === 'AbortError'
+              ? 'Request timed out. Please try again or call us.'
+              : 'Network error. Please try again or call us.';
+      } finally {
+        window.clearTimeout(t);
+        if (submitBtn instanceof HTMLButtonElement) {
+          submitBtn.disabled = false;
+          submitBtn.removeAttribute('aria-busy');
+        }
+        root.removeAttribute('aria-busy');
+      }
+    });
+
+    setStep(0);
+  }
+</script>

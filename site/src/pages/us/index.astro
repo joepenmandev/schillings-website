@@ -1,0 +1,61 @@
+---
+import Base from '@/layouts/Base.astro';
+import HomeCapabilities from '@/components/HomeCapabilities.astro';
+import HomeEditorialStrips from '@/components/HomeEditorialStrips.astro';
+import HomeExploreStrip from '@/components/HomeExploreStrip.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import { homePageMeta } from '@/lib/locale-marketing-meta';
+import { buildJsonLdGraph, buildPageEntityJsonLd } from '@/lib/jsonld-page';
+const locale = 'en-us';
+
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const { title: homeTitle, description: mission } = homePageMeta(locale);
+const homeWebPageJsonLd = buildJsonLdGraph(
+  buildPageEntityJsonLd({
+    origin,
+    locale,
+    pathSegment: '',
+    pageType: 'WebPage',
+    name: homeTitle,
+    description: mission,
+  }),
+);
+---
+
+<Base
+  title={homeTitle}
+  description={mission}
+  {locale}
+  pathAfterLocale=""
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(homeWebPageJsonLd)} />
+  <SiteHeader {locale} />
+  <main id="main">
+    <section
+      class="flex min-h-[50vh] flex-col justify-center bg-utility-1 px-[min(1.25rem,5.5vw)] pb-16 pt-10 text-center md:min-h-[60vh] md:px-[min(5rem,5.5vw)] md:pb-24 md:pt-16"
+    >
+      <div class="mx-auto max-w-5xl">
+        <h1
+          class="font-serif text-pretty font-extralight leading-[1.05] tracking-tight text-secondary-4 [font-size:clamp(2.75rem,7.5vw,9rem)]"
+        >
+          <span class="block">High stakes,</span>
+          <span class="mt-1 block font-serif italic text-secondary-3">handled.</span>
+        </h1>
+      </div>
+    </section>
+
+    <section class="bg-secondary-4 px-[min(1.25rem,5.5vw)] py-16 md:px-[min(5rem,5.5vw)] md:py-24" aria-labelledby="mission-heading">
+      <h2 id="mission-heading" class="sr-only">What we believe</h2>
+      <p
+        class="mx-auto max-w-4xl text-pretty text-center font-serif text-xl font-extralight leading-snug text-brand-white md:text-2xl md:leading-relaxed"
+      >
+        {mission}
+      </p>
+    </section>
+
+    <HomeCapabilities />
+    <HomeEditorialStrips />
+
+    <HomeExploreStrip {locale} />
+  </main>
+</Base>

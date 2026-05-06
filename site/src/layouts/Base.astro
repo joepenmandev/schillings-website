@@ -1,0 +1,142 @@
+---
+import '../styles/global.css';
+import ConsentModeDefaults from '../components/ConsentModeDefaults.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { locales, defaultLocale, htmlLang, ogLocale, type Locale } from '../i18n/config';
+import { buildSiteWideJsonLdGraph } from '../lib/jsonld-organization';
+import { publicPathname } from '../lib/public-url';
+
+interface Props {
+  title: string;
+  description?: string;
+  locale: Locale;
+  /** Path after locale, e.g. `contact` or `legal/privacy-notice` — no leading/trailing slashes */
+  pathAfterLocale?: string;
+  /** Absolute or site-root image URL for og:image (optional until brand asset exists) */
+  ogImage?: string;
+  /** Set on utility pages (thank-you, internal search) */
+  noindex?: boolean;
+  /** When `noindex` is true, allow crawlers to follow links (e.g. global 404 recovery links). Default: false. */
+  noindexFollow?: boolean;
+  /**
+   * Global 404 (and similar): do not emit canonical or hreflang — the requested URL is unknown at build time
+   * and must not be folded into the homepage for SEO.
+   */
+  errorPage?: boolean;
+  /** Open Graph type; use `profile` for people bio pages (see ogp.me). Default: website */
+  ogType?: string;
+  /**
+   * Subset of locales for `<link rel="alternate" hreflang>`. Omit = all `locales`.
+   * Emits alternates only when **≥2** URLs (Google: true alternate sets). Include `locale` when passing a subset.
+   */
+  hreflangLocales?: readonly Locale[];
+}
+
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+/** Request host — use for same-origin links in the shell (footer region URLs work on localhost and in prod). */
+const siteOrigin = Astro.url.origin;
+const {
+  title,
+  description,
+  locale,
+  pathAfterLocale = '',
+  ogImage,
+  noindex = false,
+  noindexFollow = false,
+  errorPage = false,
+  hreflangLocales,
+  ogType = 'website',
+} = Astro.props;
+const tail = pathAfterLocale.replace(/^\/+|\/+$/g, '');
+const selfUrl = origin + publicPathname(locale, tail);
+
+function absoluteForHreflang(l: Locale) {
+  return origin + publicPathname(l, tail);
+}
+
+const hreflangTargets: Locale[] = hreflangLocales?.length
+  ? [...new Set(hreflangLocales)]
+  : [...locales];
+const emitHreflang =
+  !errorPage && hreflangTargets.length >= 2 && hreflangTargets.includes(locale);
+const ogLocaleAlternates = emitHreflang ? hreflangTargets.filter((l) => l !== locale) : [];
+const pageOgUrl = errorPage ? `${origin}/` : selfUrl;
+
+const metaDescription =
+  description ??
+  'Schillings — reputation, privacy, law, intelligence, communications, security, and diplomacy.';
+const ogImagePath = ogImage ?? '/og-default.svg';
+const ogImageUrl = ogImagePath.startsWith('http')
+  ? ogImagePath
+  : origin + (ogImagePath.startsWith('/') ? ogImagePath : `/${ogImagePath}`);
+
+const siteWideJsonLd = buildSiteWideJsonLdGraph(origin, locale);
+---
+
+<!doctype html>
+<html lang={htmlLang[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <ConsentModeDefaults />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={metaDescription} />
+    {noindex && (
+      <meta name="robots" content={noindexFollow ? 'noindex, follow' : 'noindex, nofollow'} />
+    )}
+    {!noindex && <meta name="robots" content="index, follow" />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="dns-prefetch" href="https://cdn.yoshki.com" />
+    <!-- Small above-the-fold asset on most templates; avoids waiting on parser-discovered order. -->
+    <link rel="preload" href="/brand/schillings-logo-rgb.svg" as="image" type="image/svg+xml" />
+    <slot name="head" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Schillings" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={pageOgUrl} />
+    <meta property="og:locale" content={ogLocale[locale]} />
+    {ogLocaleAlternates.map((l) => (
+      <meta property="og:locale:alternate" content={ogLocale[l]} />
+    ))}
+    <meta property="og:image" content={ogImageUrl} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {
+      emitHreflang ? (
+        <>
+          {hreflangTargets.map((l) => (
+            <link rel="alternate" hreflang={htmlLang[l]} href={absoluteForHreflang(l)} />
+          ))}
+          {hreflangTargets.includes(defaultLocale) ? (
+            <link rel="alternate" hreflang="x-default" href={absoluteForHreflang(defaultLocale)} />
+          ) : null}
+        </>
+      ) : null
+    }
+    {!errorPage && <link rel="canonical" href={selfUrl} />}
+
+    <script type="application/ld+json" set:html={JSON.stringify(siteWideJsonLd)} />
+  </head>
+  <body
+    class="flex min-h-dvh flex-col bg-utility-1 font-sans text-xl font-extralight leading-[1.3] text-brand-black antialiased"
+  >
+    <a
+      href="#main"
+      class="sr-only rounded-sm bg-secondary-4 px-4 py-2 text-brand-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:inline-block"
+    >
+      Skip to main content
+    </a>
+    <slot />
+    <SiteFooter locale={locale} pathAfterLocale={tail} siteOrigin={siteOrigin} />
+  </body>
+</html>

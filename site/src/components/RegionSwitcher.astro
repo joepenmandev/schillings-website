@@ -1,0 +1,111 @@
+---
+import type { Locale } from '../i18n/config';
+import { htmlLang } from '../i18n/config';
+import { getRegionSwitchTargets } from '../lib/page-route-discovery';
+
+interface Props {
+  locale: Locale;
+  pathAfterLocale?: string;
+  siteOrigin: string;
+}
+
+const { locale, pathAfterLocale = '', siteOrigin } = Astro.props;
+const targets = getRegionSwitchTargets(locale, pathAfterLocale).map((row) => ({
+  ...row,
+  hrefResolved: new URL(row.href, siteOrigin).href,
+}));
+const current = targets.find((t) => t.isCurrent)!;
+const others = targets.filter((t) => !t.isCurrent);
+const anyFallback = others.some((r) => r.showFallbackHint);
+
+const flagEmoji: Record<Locale, string> = {
+  'en-gb': '🇬🇧',
+  'en-us': '🇺🇸',
+  'en-ie': '🇮🇪',
+};
+---
+
+<nav
+  aria-label="Choose region"
+  class="w-full text-sm font-extralight tracking-tight text-brand-white md:text-right"
+>
+  <details class="region-switcher relative inline-block w-full text-left md:w-auto md:min-w-[12rem]">
+    <summary
+      class="flex cursor-pointer list-none items-center gap-x-2 gap-y-1 outline-offset-4 [&::-webkit-details-marker]:hidden focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-white md:inline-flex md:max-w-full md:flex-nowrap"
+    >
+      <span class="text-base leading-none" aria-hidden="true">{flagEmoji[locale]}</span>
+      <span class="text-secondary-2">Region</span>
+      <span
+        class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-brand-white/35"
+        aria-hidden="true"
+      >
+        <svg
+          class="region-chevron h-2.5 w-2.5 text-brand-white transition-transform duration-200"
+          viewBox="0 0 12 12"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 4.5 6 7.5 9 4.5" />
+        </svg>
+      </span>
+      <span class="min-w-0 truncate font-normal underline decoration-secondary-2/80 underline-offset-4 md:max-w-[11rem]">
+        {current.label}
+      </span>
+      <span class="sr-only"> ({htmlLang[locale]})</span>
+    </summary>
+    <div
+      class="absolute left-0 right-0 top-[calc(100%+0.375rem)] z-30 rounded-md border border-brand-white/25 bg-secondary-4 p-3 shadow-[0_0.5rem_1.5rem_rgba(0,0,0,0.25)] md:left-auto md:right-0 md:min-w-[15rem]"
+    >
+      <ul class="flex flex-col gap-2">
+        {
+          others.map((row) => (
+            <li>
+              <a
+                href={row.hrefResolved}
+                hreflang={htmlLang[row.locale]}
+                class="block text-brand-white underline decoration-secondary-2/80 underline-offset-4 transition-colors hover:text-secondary-2"
+                title={
+                  row.showFallbackHint
+                    ? 'Nearest section in this region — full page may differ'
+                    : undefined
+                }
+              >
+                <span class="font-normal">{row.label}</span>
+                <span class="text-xs font-normal normal-case text-brand-white/60"> ({htmlLang[row.locale]})</span>
+                {row.showFallbackHint ? (
+                  <span class="ml-0.5 text-[0.85em] font-normal text-brand-white/60" aria-hidden="true">
+                    *
+                  </span>
+                ) : null}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-3 border-t border-brand-white/15 pt-3 text-xs leading-snug text-brand-white/75">
+        {
+          anyFallback ? (
+            <>
+              <span class="font-normal text-brand-white/85" aria-hidden="true">
+                *
+              </span>
+              <span class="sr-only">Asterisk: </span>
+              Nearest match when this page is not published in that region.
+            </>
+          ) : (
+            <>Same section on the other regional site when that URL exists.</>
+          )
+        }
+      </p>
+    </div>
+  </details>
+</nav>
+
+<style>
+  .region-switcher[open] .region-chevron {
+    transform: rotate(180deg);
+  }
+</style>

@@ -1,0 +1,20 @@
+{
+  "createdAt": "2026-05-05T13:57:22.197Z",
+  "baseUrl": "http://localhost:4510",
+  "owners": {
+    "engineering": "",
+    "seo": ""
+  },
+  "totals": {
+    "imported": 164,
+    "published": 0,
+    "checkedPages": 0,
+    "failures": 0,
+    "warnings": 0,
+    "sitemapsChecked": 1,
+    "sitemapUrlCount": 399
+  },
+  "failures": [],
+  "warnings": [],
+  "pages": []
+}

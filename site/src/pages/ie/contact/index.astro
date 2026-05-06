@@ -1,0 +1,52 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import ContactPageBody from '@/components/ContactPageBody.astro';
+import QualifyingForm from '@/components/QualifyingForm.astro';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { buildJsonLdGraph, buildPageEntityJsonLd } from '@/lib/jsonld-page';
+import { contactPageMeta } from '@/lib/locale-marketing-meta';
+import { contactQualifyingDefaults } from '@/lib/offices';
+import { absolutePageUrl } from '@/lib/public-url';
+
+const locale = 'en-ie';
+const contactDefaults = contactQualifyingDefaults(locale);
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const { title: contactTitle, description: contactDescription, pageEntityName: contactPageEntityName } =
+  contactPageMeta(locale);
+const contactJsonLd = buildJsonLdGraph(
+  buildPageEntityJsonLd({
+    origin,
+    locale,
+    pathSegment: 'contact',
+    pageType: 'ContactPage',
+    name: contactPageEntityName,
+    description: contactDescription,
+  }),
+  breadcrumbListGraphNode([
+    { name: 'Home', item: absolutePageUrl(origin, locale, '') },
+    { name: 'Contact', item: absolutePageUrl(origin, locale, 'contact') },
+  ]),
+);
+---
+
+<Base
+  title={contactTitle}
+  description={contactDescription}
+  locale={locale}
+  pathAfterLocale="contact"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(contactJsonLd)} />
+  <SiteHeader locale={locale} />
+  <DocumentMain class="max-w-3xl">
+    <ContactPageBody {locale}>
+      <QualifyingForm
+        locale={locale}
+        defaultRegion={contactDefaults.defaultRegion}
+        preferredOffice={contactDefaults.preferredOffice}
+        regionPresetReason="site"
+      />
+    </ContactPageBody>
+  </DocumentMain>
+</Base>

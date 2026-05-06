@@ -1,0 +1,108 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/people", "destination": "/people/", "permanent": true },
+    { "source": "/people/", "destination": "/people/", "permanent": true },
+    { "source": "/news", "destination": "/news/", "permanent": true },
+    { "source": "/news/", "destination": "/news/", "permanent": true },
+    { "source": "/international", "destination": "/international/", "permanent": true },
+    { "source": "/international/", "destination": "/international/", "permanent": true },
+    { "source": "/about-us", "destination": "/about-us/", "permanent": true },
+    { "source": "/about-us/", "destination": "/about-us/", "permanent": true },
+    { "source": "/about", "destination": "/about-us/", "permanent": true },
+    { "source": "/about/", "destination": "/about-us/", "permanent": true },
+    { "source": "/contact", "destination": "/contact/", "permanent": true },
+    { "source": "/contact/", "destination": "/contact/", "permanent": true },
+    { "source": "/careers", "destination": "/careers/", "permanent": true },
+    { "source": "/careers/", "destination": "/careers/", "permanent": true },
+    { "source": "/accessibility", "destination": "/accessibility/", "permanent": true },
+    { "source": "/accessibility/", "destination": "/accessibility/", "permanent": true },
+    { "source": "/24-7-immediate-response", "destination": "/24-7-immediate-response/", "permanent": true },
+    { "source": "/24-7-immediate-response/", "destination": "/24-7-immediate-response/", "permanent": true },
+    { "source": "/compliance/privacy-disclaimer", "destination": "/compliance/privacy-disclaimer/", "permanent": true },
+    { "source": "/compliance/privacy-disclaimer/", "destination": "/compliance/privacy-disclaimer/", "permanent": true },
+    { "source": "/compliance/complaints-handling", "destination": "/compliance/complaints-handling/", "permanent": true },
+    { "source": "/compliance/complaints-handling/", "destination": "/compliance/complaints-handling/", "permanent": true },
+    { "source": "/compliance/schillings-sra", "destination": "/compliance/schillings-sra/", "permanent": true },
+    { "source": "/compliance/schillings-sra/", "destination": "/compliance/schillings-sra/", "permanent": true },
+    { "source": "/compliance/candidate-privacy-notice", "destination": "/compliance/candidate-privacy-notice/", "permanent": true },
+    { "source": "/compliance/candidate-privacy-notice/", "destination": "/compliance/candidate-privacy-notice/", "permanent": true },
+    { "source": "/services", "destination": "/services/", "permanent": true },
+    { "source": "/services/", "destination": "/services/", "permanent": true },
+    { "source": "/services/:path*", "destination": "/services/:path*", "permanent": true },
+    { "source": "/expertise", "destination": "/services/", "permanent": true },
+    { "source": "/expertise/", "destination": "/services/", "permanent": true },
+    { "source": "/expertise/:path*", "destination": "/services/:path*", "permanent": true },
+    { "source": "/en-gb/expertise", "destination": "/services/", "permanent": true },
+    { "source": "/en-gb/expertise/", "destination": "/services/", "permanent": true },
+    { "source": "/en-gb/expertise/:path*", "destination": "/services/:path*", "permanent": true },
+    { "source": "/us/expertise", "destination": "/us/services/", "permanent": true },
+    { "source": "/us/expertise/", "destination": "/us/services/", "permanent": true },
+    { "source": "/us/expertise/:path*", "destination": "/us/services/:path*", "permanent": true },
+    { "source": "/ie/expertise", "destination": "/ie/services/", "permanent": true },
+    { "source": "/ie/expertise/", "destination": "/ie/services/", "permanent": true },
+    { "source": "/ie/expertise/:path*", "destination": "/ie/services/:path*", "permanent": true },
+    { "source": "/search", "destination": "/search/", "permanent": true },
+    { "source": "/search/", "destination": "/search/", "permanent": true },
+    { "source": "/keith-schilling-founder", "destination": "/keith-schilling-founder/", "permanent": true },
+    { "source": "/keith-schilling-founder/", "destination": "/keith-schilling-founder/", "permanent": true },
+    { "source": "/complaints-handling", "destination": "/compliance/complaints-handling/", "permanent": true },
+    { "source": "/complaints-handling/", "destination": "/compliance/complaints-handling/", "permanent": true },
+    { "source": "/privacy-notice", "destination": "/compliance/privacy-disclaimer/", "permanent": true },
+    { "source": "/privacy-notice/", "destination": "/compliance/privacy-disclaimer/", "permanent": true },
+    { "source": "/standard-terms-of-business", "destination": "/compliance/standard-terms-of-business/", "permanent": true },
+    { "source": "/standard-terms-of-business/", "destination": "/compliance/standard-terms-of-business/", "permanent": true },
+    {
+      "source": "/standard-terms-of-business-and-privacy-notice",
+      "destination": "/compliance/standard-terms-of-business/",
+      "permanent": true
+    },
+    {
+      "source": "/standard-terms-of-business-and-privacy-notice/",
+      "destination": "/compliance/standard-terms-of-business/",
+      "permanent": true
+    },
+    { "source": "/people/:path*", "destination": "/people/:path*", "permanent": true },
+    { "source": "/news/:path*", "destination": "/news/:path*", "permanent": true },
+    { "source": "/keith-schilling-biography/:path*", "destination": "/keith-schilling-biography/:path*", "permanent": true },
+    { "source": "/en-us/expertise", "destination": "/us/services/", "permanent": true },
+    { "source": "/en-us/expertise/", "destination": "/us/services/", "permanent": true },
+    { "source": "/en-us/expertise/:path*", "destination": "/us/services/:path*", "permanent": true },
+    { "source": "/en-ie/expertise", "destination": "/ie/services/", "permanent": true },
+    { "source": "/en-ie/expertise/", "destination": "/ie/services/", "permanent": true },
+    { "source": "/en-ie/expertise/:path*", "destination": "/ie/services/:path*", "permanent": true },
+    { "source": "/en-us", "destination": "/us/", "permanent": true },
+    { "source": "/en-us/", "destination": "/us/", "permanent": true },
+    { "source": "/en-us/:path*", "destination": "/us/:path*", "permanent": true },
+    { "source": "/en-ie", "destination": "/ie/", "permanent": true },
+    { "source": "/en-ie/", "destination": "/ie/", "permanent": true },
+    { "source": "/en-ie/:path*", "destination": "/ie/:path*", "permanent": true },
+    { "source": "/en-gb", "destination": "/", "permanent": true },
+    { "source": "/en-gb/", "destination": "/", "permanent": true },
+    { "source": "/en-gb/:path*", "destination": "/:path*", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; media-src 'self' https: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'self' https://cdn.yoshki.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+---
+import type { Locale } from '../i18n/config';
+import type { PersonProfile } from '../data/people';
+import { OFFICE_LABELS, type OfficeId, type SeniorityId } from '../data/people-taxonomy';
+import { localeHref } from '../lib/site-nav';
+import { peopleDirectoryCardByline, resolvePersonPracticeGroup } from '../lib/people-directory';
+
+interface Props {
+  locale: Locale;
+  person: PersonProfile;
+  authorSlug: string;
+  /** Shown in the card when the hub lists articles (omitted on thin hubs). */
+  articleCount?: number;
+}
+
+const { locale, person, authorSlug, articleCount } = Astro.props;
+
+/** Long lists only: short pages don’t need a sticky rail; centre the card in the viewport while scrolling. */
+const useStickyAside = typeof articleCount === 'number' && articleCount > 3;
+
+const seniority = person.seniority ?? 'other';
+const practiceGroup = resolvePersonPracticeGroup(person);
+const positionByline = peopleDirectoryCardByline(seniority as SeniorityId, practiceGroup);
+const officeLabel =
+  person.office?.trim() ||
+  (person.officeId && person.officeId in OFFICE_LABELS ? OFFICE_LABELS[person.officeId as OfficeId] : '');
+---
+
+<aside
+  class="order-1 mb-10 flex flex-col md:order-2 md:mb-0 md:h-full md:min-h-0 md:max-w-[20rem] md:justify-self-end"
+  aria-labelledby="author-archive-aside-heading"
+>
+  <div
+    class:list={[
+      'rounded-lg border border-secondary-2/20 bg-utility-2/55 p-5 shadow-sm ring-1 ring-secondary-2/10 md:min-w-0 md:p-6 md:shadow-md',
+      useStickyAside
+        ? 'md:sticky md:z-10 md:self-start md:overflow-y-auto md:max-h-[min(40rem,calc(100dvh-6.5rem))] md:top-[max(6.5rem,calc(50dvh-17rem))] lg:top-[max(7.25rem,calc(50dvh-17.5rem))]'
+        : '',
+    ]}
+  >
+    <h2 id="author-archive-aside-heading" class="sr-only">About the author</h2>
+    {
+      person.imagePath ? (
+        <div class="overflow-hidden rounded-md ring-1 ring-secondary-2/12">
+          <img
+            src={person.imagePath}
+            alt={person.name}
+            width="320"
+            height="320"
+            class="aspect-square w-full object-cover"
+            loading="lazy"
+            decoding="async"
+            sizes="(max-width: 768px) 100vw, 320px"
+          />
+        </div>
+      ) : null
+    }
+    <p class="mt-4 font-serif text-xl font-extralight leading-snug text-secondary-4">{person.name}</p>
+    <p class="mt-2 text-sm font-normal italic leading-snug text-secondary-3">{positionByline}</p>
+    {officeLabel ? <p class="mt-1 text-xs font-normal uppercase tracking-wide text-secondary-2">{officeLabel}</p> : null}
+    {
+      typeof articleCount === 'number' && articleCount > 0 ? (
+        <p class="mt-3 text-xs font-medium tabular-nums text-secondary-2">
+          {articleCount} {articleCount === 1 ? 'article' : 'articles'} on this list
+        </p>
+      ) : null
+    }
+    <p class="mt-4 text-pretty text-sm leading-relaxed text-secondary-3">
+      For practice background, expertise, and how to get in touch, open the full profile.
+    </p>
+    <div class="mt-5 flex flex-col gap-2 text-sm font-medium">
+      <a
+        href={localeHref(locale, `people/${authorSlug}`)}
+        class="text-secondary-4 underline decoration-secondary-2/50 underline-offset-2 transition-colors hover:decoration-secondary-4"
+      >
+        Full profile →
+      </a>
+      <a
+        href={localeHref(locale, 'news')}
+        class="text-secondary-4 underline decoration-secondary-2/50 underline-offset-2 transition-colors hover:decoration-secondary-4"
+      >
+        All news & insights →
+      </a>
+    </div>
+  </div>
+</aside>

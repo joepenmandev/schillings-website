@@ -1,0 +1,144 @@
+---
+/**
+ * Full author bios below article body (editorial pattern: byline in hero, credentials + bio after content).
+ */
+import type { Locale } from '@/i18n/config';
+import type { NewsArticle } from '@/data/news';
+import { getPersonBySlug, publicContactEmailForPersonSlug } from '@/data/people';
+import { newsListAuthorEntries } from '@/lib/news-list-authors';
+import { localeHref } from '@/lib/site-nav';
+import RecognitionBadges from '@/components/RecognitionBadges.astro';
+
+interface Props {
+  locale: Locale;
+  article: NewsArticle;
+}
+
+const { locale, article } = Astro.props;
+const entries = newsListAuthorEntries(article);
+const profiles = entries.filter((e): e is Extract<typeof e, { type: 'profile' }> => e.type === 'profile');
+const credits = entries.filter((e): e is Extract<typeof e, { type: 'credit' }> => e.type === 'credit');
+const showProfiles = profiles.length > 0;
+const show = showProfiles || credits.length > 0;
+const heading = profiles.length > 1 ? 'About the authors' : 'About the author';
+const singleProfile = profiles.length === 1;
+---
+
+{
+  show ? (
+    <aside
+      class="article-authors-foot mt-12 border-t border-secondary-2/25 pt-10 md:mt-14 md:pt-12"
+      aria-labelledby={showProfiles ? 'article-authors-foot-heading' : undefined}
+    >
+      {showProfiles ? (
+        <h2 id="article-authors-foot-heading" class="font-serif text-lg font-normal tracking-tight text-secondary-4 md:text-xl">
+          {heading}
+        </h2>
+      ) : null}
+      {
+        showProfiles ? (
+          <div class:list={[singleProfile ? 'mt-6' : 'mt-8 grid gap-10 md:grid-cols-2 md:gap-x-12 md:gap-y-10']}>
+            {profiles.map((entry) => {
+              const p = getPersonBySlug(entry.slug);
+              if (!p) return null;
+              const email = publicContactEmailForPersonSlug(entry.slug);
+              const profileHref = localeHref(locale, `people/${entry.slug}`);
+              const authorArchiveHref = localeHref(locale, `news/author/${entry.slug}`);
+              const img = entry.imagePath ?? p.imagePath;
+              return (
+                <section
+                  class:list={[
+                    'min-w-0',
+                    singleProfile
+                      ? 'rounded-lg border border-secondary-2/20 bg-utility-1/85 p-5 ring-1 ring-secondary-2/10 md:p-7'
+                      : '',
+                  ]}
+                  id={`author-bio-${entry.slug}`}
+                  aria-labelledby={`author-name-${entry.slug}`}
+                >
+                  <div class="flex flex-col gap-4 sm:flex-row sm:gap-5">
+                    {img ? (
+                      <a
+                        href={profileHref}
+                        class="shrink-0 self-start rounded-full ring-2 ring-secondary-2/15 ring-offset-2 ring-offset-utility-1 transition hover:ring-secondary-3"
+                        aria-label={`${p.name} — profile`}
+                      >
+                        <img
+                          src={img}
+                          alt=""
+                          width="96"
+                          height="96"
+                          loading="lazy"
+                          decoding="async"
+                          class="h-20 w-20 rounded-full object-cover sm:h-24 sm:w-24"
+                        />
+                      </a>
+                    ) : (
+                      <span
+                        class="flex h-20 w-20 shrink-0 items-center justify-center rounded-full border border-secondary-2/25 bg-utility-2/50 font-serif text-xl text-secondary-4 sm:h-24 sm:w-24"
+                        aria-hidden="true"
+                      >
+                        {p.name
+                          .split(/\s+/)
+                          .filter(Boolean)
+                          .slice(0, 2)
+                          .map((w) => w[0]?.toUpperCase() ?? '')
+                          .join('')}
+                      </span>
+                    )}
+                    <div class="min-w-0 flex-1">
+                      <h3 id={`author-name-${entry.slug}`} class="font-serif text-xl font-normal text-secondary-4 md:text-[1.4rem]">
+                        <a href={profileHref} class="underline decoration-secondary-2/40 underline-offset-2 transition-colors hover:text-secondary-3">
+                          {p.name}
+                        </a>
+                      </h3>
+                      <p class="mt-1 text-sm text-secondary-3">{entry.role}</p>
+                      {email ? (
+                        <p class="mt-2 text-sm">
+                          <a href={`mailto:${email}`} class="text-secondary-3 underline decoration-secondary-2/35 underline-offset-2 hover:text-secondary-4">
+                            {email}
+                          </a>
+                        </p>
+                      ) : null}
+                      {p.recognitions && p.recognitions.length > 0 ? (
+                        <div class="mt-3">
+                          <RecognitionBadges items={p.recognitions.slice(0, 2)} compact />
+                        </div>
+                      ) : null}
+                      <div class:list={[singleProfile ? 'mt-4 max-w-4xl space-y-3 text-pretty text-sm leading-relaxed text-secondary-3 md:text-[1.02rem]' : 'mt-4 space-y-3 text-pretty text-sm leading-relaxed text-secondary-3 md:text-base']}>
+                        {p.paragraphs.map((para) => (
+                          <p>{para}</p>
+                        ))}
+                      </div>
+                      <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                        <a
+                          href={profileHref}
+                          class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:text-secondary-3"
+                        >
+                          View full professional profile
+                        </a>
+                        <a
+                          href={authorArchiveHref}
+                          class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:text-secondary-3"
+                        >
+                          More articles by {p.name}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        ) : null
+      }
+      {credits.length > 0 ? (
+        <div class:list={[showProfiles ? 'mt-8 border-t border-secondary-2/15 pt-8 md:mt-10' : '']}>
+          {credits.map((c) => (
+            <p class="font-serif text-base italic text-secondary-4">By {c.name}</p>
+          ))}
+        </div>
+      ) : null}
+    </aside>
+  ) : null
+}

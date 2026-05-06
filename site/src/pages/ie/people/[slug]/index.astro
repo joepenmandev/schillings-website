@@ -1,0 +1,235 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import PersonTrustSignals from '@/components/PersonTrustSignals.astro';
+import PersonPublicContact from '@/components/PersonPublicContact.astro';
+import PersonRelatedAndExplore from '@/components/PersonRelatedAndExplore.astro';
+import PersonContactCta from '@/components/PersonContactCta.astro';
+import PersonNewsByline from '@/components/PersonNewsByline.astro';
+import { getPersonBySlug } from '@/data/people';
+import { getNewsForPersonSlug, type NewsArticle } from '@/data/news';
+import { EXPERTISE_LABELS } from '@/data/people-taxonomy';
+import { getAllPeopleSlugs } from '@/lib/people-paths';
+import { personBioLocaleNote } from '@/lib/person-locale-notes';
+import { localeHref } from '@/lib/site-nav';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { extendJsonLdGraph } from '@/lib/jsonld-page';
+import { absolutePageUrl } from '@/lib/public-url';
+import {
+  buildPersonProfilePageJsonLd,
+  buildPersonMetaDescription,
+  buildPersonPageTitle,
+  clipPlainText,
+} from '@/lib/person-jsonld';
+import { peopleDirectoryCardByline, resolvePersonPracticeGroup } from '@/lib/people-directory';
+import { locales, isLocale, type Locale } from '@/i18n/config';
+
+export function getStaticPaths() {
+  const slugs = getAllPeopleSlugs();
+  return slugs.map((slug) => ({ params: { slug } }));
+}
+
+function titleFromSlug(slug: string) {
+  return slug
+    .split('-')
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+const slug = Astro.params.slug;
+if (typeof slug !== 'string') {
+  return new Response(null, { status: 404 });
+}
+const locale = 'en-ie';
+const allowedSlugs = new Set(getAllPeopleSlugs());
+if (!allowedSlugs.has(slug)) {
+  return new Response(null, { status: 404 });
+}
+
+const person = getPersonBySlug(slug);
+const isMigration = !person;
+
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+
+const migrationTitle = titleFromSlug(slug);
+const migrationDescription =
+  'This profile is being migrated to the new Schillings site. Please check back or contact us for the latest version.';
+
+let personJsonLd: object | null = null;
+let pageTitle = '';
+let pageDescription = '';
+let pathAfterLocale = '';
+
+let newsByPerson: NewsArticle[] = [];
+let localeBioNote: string | null = null;
+let profileSubline = '';
+
+if (person) {
+  localeBioNote = personBioLocaleNote(locale);
+  const expertiseLabels = (person.expertise ?? []).map((id) => EXPERTISE_LABELS[id]);
+  const seniority = person.seniority ?? 'other';
+  const practiceGroup = resolvePersonPracticeGroup(person);
+  const positionByline = peopleDirectoryCardByline(seniority, practiceGroup);
+  profileSubline = `${positionByline} · ${person.office}`;
+  pageTitle = buildPersonPageTitle(person.name, positionByline);
+  pageDescription = buildPersonMetaDescription(
+    positionByline,
+    person.office,
+    expertiseLabels,
+    person.paragraphs[0] ?? '',
+  );
+  pathAfterLocale = `people/${person.slug}`;
+  const pageUrl = `${absolutePageUrl(origin, locale, `people/${person.slug}`)}`;
+  const photoUrl = person.imagePath ? `${origin}${person.imagePath}` : undefined;
+  const bioPlain = clipPlainText(person.paragraphs.join(' '), 480);
+  const knowsAbout = expertiseLabels;
+  const sameAs = person.sameAs ?? [];
+  newsByPerson = getNewsForPersonSlug(person.slug, 8);
+  const profileGraph = buildPersonProfilePageJsonLd({
+    name: person.name,
+    jobTitle: positionByline,
+    pageUrl,
+    origin,
+    locale,
+    description: bioPlain || pageDescription,
+    knowsAbout,
+    sameAs,
+    imageUrl: photoUrl,
+    dateModified: person.profileUpdatedAt,
+    office: person.office,
+    authoredArticles: newsByPerson.map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      date: a.date,
+      dateModified: a.dateModified,
+      publishedAt: a.publishedAt,
+      modifiedAt: a.modifiedAt,
+    })),
+  });
+  personJsonLd = extendJsonLdGraph(profileGraph as { '@context': string; '@graph': Record<string, unknown>[] }, breadcrumbListGraphNode([
+    { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
+    { name: 'People', item: `${absolutePageUrl(origin, locale, 'people')}` },
+    { name: person.name, item: pageUrl },
+  ]));
+} else {
+  pageTitle = `${migrationTitle} | Schillings`;
+  pageDescription = migrationDescription;
+  pathAfterLocale = `people/${slug}`;
+}
+
+const ogImageAbsolute =
+  person?.imagePath && Astro.site
+    ? new URL(person.imagePath, Astro.site).href
+    : person?.imagePath
+      ? `https://schillingspartners.com${person.imagePath}`
+      : undefined;
+---
+
+<Base
+  title={pageTitle}
+  description={pageDescription}
+  {locale}
+  pathAfterLocale={pathAfterLocale}
+  noindex={isMigration}
+  ogImage={ogImageAbsolute}
+  ogType={person ? 'profile' : 'website'}
+  hreflangLocales={isMigration ? [locale] : undefined}
+>
+  {personJsonLd && <script type="application/ld+json" slot="head" set:html={JSON.stringify(personJsonLd)} />}
+  <SiteHeader {locale} deferHeaderLogoPriority={!!(person?.imagePath)} />
+  <DocumentMain contentWidth="wide">
+    <article>
+      {
+        person ? (
+          <>
+            <header class="max-w-6xl lg:flex lg:items-start lg:gap-12 xl:gap-16">
+              <div class="min-w-0 flex-1">
+                <h1 class="font-serif text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-4xl md:leading-[1.06] lg:text-[2.75rem]">
+                  {person.name}
+                </h1>
+                <p class="mt-2 max-w-3xl text-pretty font-serif text-xl font-extralight italic leading-snug text-secondary-4 md:text-2xl md:leading-snug">
+                  {profileSubline}
+                </p>
+                {
+                  localeBioNote ? (
+                    <p class="mt-4 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3">{localeBioNote}</p>
+                  ) : null
+                }
+                {
+                  person.expertise && person.expertise.length > 0 ? (
+                    <ul class="mt-6 flex flex-wrap gap-2" aria-label="Expertise">
+                      {person.expertise.map((id) => (
+                        <li>
+                          <a
+                            href={localeHref(locale, `services/${id}`)}
+                            class="inline-block rounded-full border border-secondary-2/40 px-3 py-1 text-xs font-normal text-secondary-3 transition-colors hover:border-secondary-3 hover:bg-utility-2/60"
+                          >
+                            {EXPERTISE_LABELS[id]}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null
+                }
+              </div>
+              {
+                person.imagePath ? (
+                  <div class="mx-auto mt-8 w-full max-w-[20rem] shrink-0 lg:mx-0 lg:mt-1">
+                    <div class="overflow-hidden rounded-sm shadow-md ring-1 ring-secondary-2/20 lg:sticky lg:top-28">
+                      <img
+                        src={person.imagePath}
+                        alt={person.name}
+                        width={480}
+                        height={480}
+                        class="aspect-square w-full object-cover"
+                        sizes="(max-width: 1024px) 100vw, 320px"
+                        loading="eager"
+                        decoding="async"
+                        fetchpriority="high"
+                      />
+                    </div>
+                  </div>
+                ) : null
+              }
+            </header>
+
+            <section class="mt-12 max-w-[52rem] md:mt-14" aria-labelledby="person-bio-heading">
+              <h2 id="person-bio-heading" class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
+                Biography
+              </h2>
+              <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
+                {person.paragraphs.map((p) => (
+                  <p>{p}</p>
+                ))}
+              </div>
+            </section>
+
+            <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
+            <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />
+            <PersonTrustSignals personName={person.name} sameAs={person.sameAs ?? []} recognitions={person.recognitions ?? []} hideLinkedIn />
+            <PersonContactCta locale={locale} personName={person.name} />
+            <PersonRelatedAndExplore locale={locale} />
+          </>
+        ) : (
+          <>
+            <p class="text-xs font-normal uppercase tracking-wide text-secondary-2">People</p>
+            <h1 class="mt-2 text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+              {migrationTitle}
+            </h1>
+            <p class="mt-6 text-pretty text-base font-normal leading-relaxed text-secondary-3">{migrationDescription}</p>
+            <p class="mt-4 text-sm text-secondary-3">
+              Slug preserved for redirects: <code class="rounded bg-utility-2 px-1.5 py-0.5 text-secondary-4">{slug}</code>
+            </p>
+          </>
+        )
+      }
+      <p class="mt-10">
+        <a class="text-sm font-medium text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'people')}>
+          ← People
+        </a>
+      </p>
+    </article>
+  </DocumentMain>
+</Base>

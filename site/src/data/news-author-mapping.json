@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-05-05T16:49:03.260Z",
+  "source": {
+    "newsImportedPath": "src/data/news-imported.json",
+    "peopleImportedPath": "src/data/people-imported.json"
+  },
+  "coverage": {
+    "uniqueLegacyAuthorsFound": 2,
+    "uniqueLegacyAuthorsMapped": 2,
+    "coveragePercent": 100
+  },
+  "mappings": [
+    {
+      "legacyAuthorRaw": "Chris Bell-Watson",
+      "personSlug": "chris-bell-watson",
+      "matchStrategy": "exactName",
+      "peopleRow": {
+        "name": "Chris Bell-Watson",
+        "office": "London",
+        "seniority": "senior_analyst",
+        "practiceGroup": "isd"
+      }
+    },
+    {
+      "legacyAuthorRaw": "Will Lowe",
+      "personSlug": "will-lowe",
+      "matchStrategy": "exactName",
+      "peopleRow": {
+        "name": "Will Lowe",
+        "office": "London",
+        "seniority": "associate",
+        "practiceGroup": "isd"
+      }
+    }
+  ],
+  "unresolved": []
+}
+

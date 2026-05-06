@@ -1,0 +1,44 @@
+{
+  "david-imison": {
+    "recognitions": [
+      {
+        "provider": "spears",
+        "title": "Power List",
+        "year": "2025",
+        "scope": "person",
+        "href": "https://spears500.com/company/20906/schillings"
+      },
+      {
+        "provider": "legal500",
+        "title": "Firm profile listed",
+        "year": "2026",
+        "scope": "firm",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/841606-jenny-afia"
+      }
+    ]
+  },
+  "jenny-afia": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Band ranked",
+        "year": "2026",
+        "scope": "person"
+      },
+      {
+        "provider": "legal500",
+        "title": "Hall of Fame listing",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/841606-jenny-afia"
+      },
+      {
+        "provider": "spears",
+        "title": "Top Flight / Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://spears500.com/company/20906/schillings"
+      }
+    ]
+  }
+}

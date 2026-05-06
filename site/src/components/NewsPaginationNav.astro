@@ -1,0 +1,79 @@
+---
+import type { Locale } from '@/i18n/config';
+import { newsPaginationItems } from '@/lib/news-pagination';
+import { localeHref } from '@/lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  /** 1-based; page 1 is `/news/`. */
+  currentPage: number;
+  totalPages: number;
+}
+
+const { locale, currentPage, totalPages } = Astro.props;
+
+function hrefFor(page: number): string {
+  if (page <= 1) return localeHref(locale, 'news');
+  return localeHref(locale, `news/page/${page}`);
+}
+
+const items = newsPaginationItems(currentPage, totalPages);
+const prevHref = currentPage > 1 ? hrefFor(currentPage - 1) : null;
+const nextHref = currentPage < totalPages ? hrefFor(currentPage + 1) : null;
+---
+
+<nav class="mt-10 border-t border-secondary-2/25 pt-8 text-sm" aria-label="Pagination">
+  <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+    {
+      prevHref ? (
+        <a class="font-medium text-secondary-4 underline hover:text-secondary-3" href={prevHref}>
+          ← Newer
+        </a>
+      ) : (
+        <span class="select-none text-secondary-2" aria-disabled="true">
+          ← Newer
+        </span>
+      )
+    }
+    <ol class="order-last flex w-full list-none flex-wrap items-center justify-center gap-x-1 gap-y-2 sm:order-none sm:w-auto" role="list">
+      {
+        items.map((it) =>
+          it.kind === 'ellipsis' ? (
+            <li class="px-1 text-secondary-2 select-none" aria-hidden="true">
+              …
+            </li>
+          ) : it.page === currentPage ? (
+            <li>
+              <span
+                class="flex min-w-9 items-center justify-center rounded border border-secondary-3/35 bg-utility-2/80 px-2 py-1.5 font-medium tabular-nums text-secondary-4"
+                aria-current="page"
+              >
+                {it.page}
+              </span>
+            </li>
+          ) : (
+            <li>
+              <a
+                class="flex min-w-9 items-center justify-center rounded border border-transparent px-2 py-1.5 font-medium tabular-nums text-secondary-4 underline decoration-secondary-2/45 underline-offset-2 hover:border-secondary-2/30 hover:bg-utility-2/50"
+                href={hrefFor(it.page)}
+              >
+                {it.page}
+              </a>
+            </li>
+          ),
+        )
+      }
+    </ol>
+    {
+      nextHref ? (
+        <a class="font-medium text-secondary-4 underline hover:text-secondary-3" href={nextHref}>
+          Older →
+        </a>
+      ) : (
+        <span class="select-none text-secondary-2" aria-disabled="true">
+          Older →
+        </span>
+      )
+    }
+  </div>
+</nav>

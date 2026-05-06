@@ -1,0 +1,82 @@
+---
+import Base from '@/layouts/Base.astro';
+import NewsArticleList from '@/components/NewsArticleList.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import NewsHubIndexHero from '@/components/NewsHubIndexHero.astro';
+import { publishedNews } from '@/data/news';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { buildJsonLdGraph, buildNewsTopicHubGraphNodes } from '@/lib/jsonld-page';
+import { absolutePageUrl } from '@/lib/public-url';
+import { localeHref } from '@/lib/site-nav';
+import { articlesMatchingTopicSlug, uniqueTopicEntriesFromArticles } from '@/lib/news-topic-slug';
+
+export function getStaticPaths() {
+  const entries = uniqueTopicEntriesFromArticles(publishedNews());
+  return entries.map(({ slug }) => ({ params: { topic: slug } }));
+}
+
+const rawTopic = Astro.params.topic;
+if (typeof rawTopic !== 'string') {
+  return new Response(null, { status: 404 });
+}
+const locale = 'en-ie';
+const topicSlug = rawTopic;
+const topicEntries = uniqueTopicEntriesFromArticles(publishedNews());
+if (!topicEntries.some((e) => e.slug === topicSlug)) {
+  return new Response(null, { status: 404 });
+}
+const label = topicEntries.find((e) => e.slug === topicSlug)!.label;
+
+const articles = articlesMatchingTopicSlug(publishedNews(), topicSlug).sort((a, b) =>
+  a.date < b.date ? 1 : a.date > b.date ? -1 : 0,
+);
+
+const pageTitle = `${label} — News & Insights | Schillings`;
+const pageDescription = `Schillings news and analysis tagged “${label}”.`;
+const pathAfterLocale = `news/topic/${topicSlug}`;
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const topicPageUrl = `${absolutePageUrl(origin, locale, pathAfterLocale)}`;
+const topicJsonLd = buildJsonLdGraph(
+  ...buildNewsTopicHubGraphNodes({
+    origin,
+    locale,
+    topicSlug,
+    articles: articles.map((a) => ({ slug: a.slug, title: a.title })),
+    pageTitle,
+    pageDescription,
+  }),
+  breadcrumbListGraphNode([
+    { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
+    { name: 'News & Insights', item: `${absolutePageUrl(origin, locale, 'news')}` },
+    { name: label, item: topicPageUrl },
+  ]),
+);
+const thinTopicHub = articles.length === 0;
+---
+
+<Base title={pageTitle} description={pageDescription} {locale} pathAfterLocale={pathAfterLocale} noindex={thinTopicHub}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(topicJsonLd)} />
+  <SiteHeader {locale} />
+  <NewsHubIndexHero
+    {locale}
+    title={label}
+    subtitle="Articles and commentary filed under this topic."
+    hubKind="topic"
+    activeTopicSlug={topicSlug}
+    subtitleLink={{ href: localeHref(locale, 'news'), label: 'All news and insights' }}
+  />
+  <DocumentMain contentWidth="wide">
+    {
+      articles.length === 0 ? (
+        <p class="mt-2 max-w-2xl text-pretty text-secondary-3">
+          No published articles with this topic yet. Migrated pieces may still be in editorial review — check back or view the full news index.
+        </p>
+      ) : (
+        <NewsArticleList {locale} {articles} showTopicBadges class="mt-2 border-0 pt-0" />
+      )
+    }
+    <MarketingStubNav {locale} currentSegment={`news/topic/${topicSlug}`} />
+  </DocumentMain>
+</Base>

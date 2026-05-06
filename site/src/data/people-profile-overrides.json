@@ -1,0 +1,26 @@
+{
+  "charlie-lait": {
+    "seniority": "director",
+    "role": "Director"
+  },
+  "david-imison": {
+    "seniority": "ceo",
+    "role": "Chief Executive Officer"
+  },
+  "craig-edwards": {
+    "seniority": "ciso",
+    "role": "Chief Information Security Officer"
+  },
+  "lord-browne-of-madingley": {
+    "seniority": "advisory_board",
+    "role": "Advisory Board"
+  },
+  "sir-george-buckley": {
+    "seniority": "advisory_board",
+    "role": "Advisory Board"
+  },
+  "sir-mark-lyall-grant": {
+    "seniority": "advisory_board",
+    "role": "Advisory Board"
+  }
+}

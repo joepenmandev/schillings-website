@@ -1,0 +1,87 @@
+---
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import NewsArticleList from '@/components/NewsArticleList.astro';
+import NewsPaginationNav from '@/components/NewsPaginationNav.astro';
+import NewsArchiveIndexHero from '@/components/NewsArchiveIndexHero.astro';
+import NewsTopicStrip from '@/components/NewsTopicStrip.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import {
+  articlesForNewsPage,
+  newsPaginatedPageNumbers,
+  newsTotalPages,
+} from '@/lib/news-pagination';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { buildJsonLdGraph, buildNewsPaginatedIndexGraphJsonLd } from '@/lib/jsonld-page';
+import { localeHref } from '@/lib/site-nav';
+import { absolutePageUrl } from '@/lib/public-url';
+
+export function getStaticPaths() {
+  const pageNums = newsPaginatedPageNumbers();
+  return pageNums.map((p) => ({ params: { page: String(p) } }));
+}
+
+const rawPage = Astro.params.page;
+if (typeof rawPage !== 'string') {
+  return new Response(null, { status: 404 });
+}
+const locale = 'en-ie';
+const pageNum = Number.parseInt(rawPage, 10);
+const totalPages = newsTotalPages();
+if (!Number.isFinite(pageNum) || pageNum < 2 || pageNum > totalPages) {
+  return new Response(null, { status: 404 });
+}
+
+const articles = articlesForNewsPage(pageNum);
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const newsIndexUrl = `${absolutePageUrl(origin, locale, 'news')}`;
+const prevUrl = pageNum === 2 ? newsIndexUrl : `${absolutePageUrl(origin, locale, `news/page/${pageNum - 1}`)}`;
+const nextUrl = pageNum < totalPages ? `${absolutePageUrl(origin, locale, `news/page/${pageNum + 1}`)}` : null;
+const pathAfterLocale = `news/page/${pageNum}`;
+const newsDescription =
+  'News, views, and analysis from Schillings on reputation, privacy, litigation, and high-stakes matters.';
+const listingPageTitle =
+  pageNum === 2 ? `News & Insights — Page ${pageNum} | Schillings` : `News & Insights — Page ${pageNum} of ${totalPages} | Schillings`;
+const listingPageUrl = `${absolutePageUrl(origin, locale, `news/page/${pageNum}`)}`;
+const newsGraph = buildNewsPaginatedIndexGraphJsonLd({
+  origin,
+  locale,
+  pageNum,
+  articles: articles.map((a) => ({ slug: a.slug, title: a.title })),
+  pageTitle: listingPageTitle,
+  pageDescription: newsDescription,
+}) as { '@graph': Record<string, unknown>[] };
+const newsJsonLd = buildJsonLdGraph(
+  ...newsGraph['@graph'],
+  breadcrumbListGraphNode([
+    { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
+    { name: 'News & Insights', item: `${absolutePageUrl(origin, locale, 'news')}` },
+    { name: `Page ${pageNum}`, item: listingPageUrl },
+  ]),
+);
+---
+
+<Base
+  title={listingPageTitle}
+  description={newsDescription}
+  {locale}
+  pathAfterLocale={pathAfterLocale}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(newsJsonLd)} />
+  <link slot="head" rel="prev" href={prevUrl} />
+  {nextUrl && <link slot="head" rel="next" href={nextUrl} />}
+  <SiteHeader {locale} />
+  <NewsArchiveIndexHero
+    {locale}
+    meta={`Page ${pageNum} of ${totalPages}`}
+    metaLinkLabel="Latest posts"
+    metaLinkHref={localeHref(locale, 'news')}
+  />
+  <DocumentMain contentWidth="wide">
+    <NewsArticleList {locale} {articles} showTopicBadges />
+    <NewsTopicStrip {locale} />
+    <NewsPaginationNav {locale} currentPage={pageNum} {totalPages} />
+    <MarketingStubNav {locale} currentSegment={pathAfterLocale} />
+  </DocumentMain>
+</Base>

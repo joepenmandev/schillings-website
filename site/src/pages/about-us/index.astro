@@ -1,0 +1,27 @@
+---
+import Base from '@/layouts/Base.astro';
+import AboutUsRegional from '@/components/AboutUsRegional.astro';
+import { getAboutUsRegionModel, aboutUsOfficeSlug } from '@/lib/about-us-region';
+import { buildAboutUsPageJsonLd } from '@/lib/jsonld-page';
+import { absolutePageUrl } from '@/lib/public-url';
+
+const locale = 'en-gb';
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const model = getAboutUsRegionModel(locale);
+const aboutJsonLd = buildAboutUsPageJsonLd({
+  origin,
+  locale,
+  pageTitle: model.metaTitle,
+  pageDescription: model.metaDescription,
+  officeSlug: aboutUsOfficeSlug(locale),
+  breadcrumbItems: [
+    { name: 'Home', item: absolutePageUrl(origin, locale, '') },
+    { name: 'About', item: absolutePageUrl(origin, locale, 'about-us') },
+  ],
+});
+---
+
+<Base title={model.metaTitle} description={model.metaDescription} {locale} pathAfterLocale="about-us">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(aboutJsonLd)} />
+  <AboutUsRegional {locale} />
+</Base>

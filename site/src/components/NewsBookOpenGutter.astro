@@ -1,0 +1,17 @@
+---
+/**
+ * Center fold where two pages meet — soft valley shadow only.
+ * Real spines sit on the closed outer edge; open spreads have a paper gutter, not a title strip.
+ */
+---
+
+<!-- Mobile: subtle fold between image and text -->
+<div
+  class="order-2 h-2.5 w-full shrink-0 bg-[linear-gradient(180deg,rgba(45,1,43,0.04)_0%,rgba(0,0,0,0.07)_48%,rgba(45,1,43,0.04)_100%)] md:hidden"
+  aria-hidden="true"
+/>
+<!-- Desktop: narrow neutral crease -->
+<div
+  class="order-2 hidden w-[6px] max-w-[6px] shrink-0 bg-[linear-gradient(90deg,#e3ddd4_0%,#cec6ba_35%,#d8d0c4_50%,#cfc7bb_65%,#e5dfd6_100%)] shadow-[inset_2px_0_5px_rgba(0,0,0,0.08),inset_-2px_0_5px_rgba(255,255,255,0.35)] md:block"
+  aria-hidden="true"
+/>

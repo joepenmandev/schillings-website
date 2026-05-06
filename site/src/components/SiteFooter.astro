@@ -1,0 +1,133 @@
+---
+import type { Locale } from '../i18n/config';
+import RegionSwitcher from './RegionSwitcher.astro';
+import { getRegulatoryFooterText } from '../data/regulatory-footer';
+import { primaryNav, contactSegment, complianceNav, legalFooterNav, utilityFooterNav, localeHref } from '../lib/site-nav';
+
+const regulatoryText = getRegulatoryFooterText(new Date().getFullYear());
+/** Single list — compliance, then legal, then utility — for a stable reading order in the grid. */
+const legalAndUtilityLinks = [...complianceNav, ...legalFooterNav, ...utilityFooterNav];
+
+interface Props {
+  locale: Locale;
+  /** Path tail for region links (equivalent page in other locales). */
+  pathAfterLocale?: string;
+  /** Current request origin (`Astro.url.origin`) — absolute region hrefs for reliable local + crawler resolution. */
+  siteOrigin: string;
+}
+
+const { locale, pathAfterLocale = '', siteOrigin } = Astro.props;
+
+const social = [
+  { label: 'Schillings on LinkedIn', short: 'LinkedIn', href: 'https://uk.linkedin.com/company/schillings' },
+  { label: 'Schillings on YouTube', short: 'YouTube', href: 'https://www.youtube.com/@schillingspartners' },
+] as const;
+---
+
+<footer class="mt-auto">
+  <div class="bg-secondary-4 text-brand-white">
+    <div class="relative z-10 mx-auto max-w-[200rem] px-[min(1.25rem,5.5vw)] py-12 md:px-[min(5rem,5.5vw)] md:py-16">
+      <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-12">
+        <a
+          href={localeHref(locale, '')}
+          class="inline-block max-w-[20rem] shrink-0 outline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-white"
+        >
+          <img
+            src="/brand/schillings-logo-negative.svg"
+            alt="Schillings"
+            width="360"
+            height="65"
+            class="h-auto w-full"
+            loading="lazy"
+            decoding="async"
+            fetchpriority="low"
+          />
+        </a>
+        <div
+          class="flex min-w-0 flex-1 flex-col gap-8 md:grid md:grid-cols-[minmax(0,1fr)_17.5rem] md:items-start md:gap-x-10 lg:gap-x-16"
+        >
+          <nav aria-label="Footer" class="flex flex-col gap-3 text-base font-extralight tracking-tight">
+            {
+              primaryNav.map(({ label, segment }) => (
+                <a
+                  href={localeHref(locale, segment)}
+                  class="text-brand-white transition-colors duration-500 hover:text-secondary-2"
+                >
+                  {label}
+                </a>
+              ))
+            }
+            <a
+              href={localeHref(locale, contactSegment)}
+              class="text-brand-white transition-colors duration-500 hover:text-secondary-2"
+            >
+              Contact
+            </a>
+          </nav>
+          <div class="flex w-full flex-col gap-6 md:w-[17.5rem] md:shrink-0 md:justify-self-end">
+            <RegionSwitcher {locale} pathAfterLocale={pathAfterLocale} {siteOrigin} />
+            <div class="flex items-center gap-4 md:justify-end">
+              {
+                social.map(({ label, short, href }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    class="text-sm font-extralight text-brand-white underline decoration-secondary-2/80 underline-offset-4 transition-colors hover:text-secondary-2"
+                  >
+                    {short}
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-utility-2 text-secondary-4">
+    <div class="mx-auto max-w-[200rem] px-[min(1.25rem,5.5vw)] py-12 md:px-[min(5rem,5.5vw)] md:py-16">
+      <div
+        class="grid grid-cols-1 gap-10 border-b border-secondary-2/15 pb-10 md:gap-12 md:pb-12 lg:grid-cols-[minmax(0,17.5rem)_1fr] lg:items-start lg:gap-16"
+      >
+        <div class="max-w-[17.5rem] shrink-0 lg:max-w-none">
+          <p class="sr-only">SRA digital badge</p>
+          <div class="relative w-full overflow-hidden rounded-sm bg-secondary-4/5 pb-[59.1%] ring-1 ring-secondary-2/10">
+            <iframe
+              title="SRA regulated — digital badge"
+              src="https://cdn.yoshki.com/iframe/55847r.html"
+              class="absolute inset-0 h-full w-full border-0 bg-transparent"
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+        </div>
+        <nav
+          aria-label="Legal and compliance"
+          class="min-w-0 font-extralight"
+        >
+          <p class="mb-3 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-secondary-2">Legal &amp; policies</p>
+          <ul class="grid grid-cols-1 gap-x-8 gap-y-2.5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-2">
+            {
+              legalAndUtilityLinks.map(({ label, segment }) => (
+                <li class="min-w-0">
+                  <a
+                    href={localeHref(locale, segment)}
+                    class="text-sm text-secondary-4 underline decoration-secondary-2/55 underline-offset-[0.2em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+      <p class="mt-10 text-pretty text-xs font-normal leading-relaxed text-secondary-4 md:mt-12">
+        {regulatoryText}
+      </p>
+      <!-- Production: FOOTER-REGULATORY-CHECKLIST — Yoshki / mySRA domain allowlist; re-verify regulatory copy with compliance on updates. -->
+    </div>
+  </div>
+</footer>

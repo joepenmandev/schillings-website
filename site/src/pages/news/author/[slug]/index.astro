@@ -1,0 +1,87 @@
+---
+import Base from '@/layouts/Base.astro';
+import NewsArticleList from '@/components/NewsArticleList.astro';
+import NewsHubIndexHero from '@/components/NewsHubIndexHero.astro';
+import NewsAuthorArchiveAside from '@/components/NewsAuthorArchiveAside.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import { getAllNewsForPersonSlug, publishedNewsAuthorSlugs } from '@/data/news';
+import { getPersonBySlug } from '@/data/people';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { buildJsonLdGraph, buildNewsAuthorHubGraphNodes } from '@/lib/jsonld-page';
+import { absolutePageUrl } from '@/lib/public-url';
+import { localeHref } from '@/lib/site-nav';
+
+export function getStaticPaths() {
+  return publishedNewsAuthorSlugs().map((slug) => ({ params: { slug } }));
+}
+
+const raw = Astro.params.slug;
+if (typeof raw !== 'string' || !publishedNewsAuthorSlugs().includes(raw)) {
+  return new Response(null, { status: 404 });
+}
+const locale = 'en-gb';
+const authorSlug = raw;
+const person = getPersonBySlug(authorSlug);
+if (!person) {
+  return new Response(null, { status: 404 });
+}
+
+const articles = getAllNewsForPersonSlug(authorSlug);
+const pathAfterLocale = `news/author/${authorSlug}`;
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const pageUrl = `${absolutePageUrl(origin, locale, pathAfterLocale)}`;
+
+const pageTitle = `${person.name} — News & Insights | Schillings`;
+const pageDescription = `Analysis and commentary by ${person.name} — Schillings news and insights.`;
+const thinAuthorHub = articles.length === 0;
+
+const authorJsonLd = buildJsonLdGraph(
+  ...buildNewsAuthorHubGraphNodes({
+    origin,
+    locale,
+    authorSlug,
+    articles: articles.map((a) => ({ slug: a.slug, title: a.title })),
+    pageTitle,
+    pageDescription,
+  }),
+  breadcrumbListGraphNode([
+    { name: 'Home', item: `${absolutePageUrl(origin, locale, '')}` },
+    { name: 'News & Insights', item: `${absolutePageUrl(origin, locale, 'news')}` },
+    { name: person.name, item: pageUrl },
+  ]),
+);
+---
+
+<Base title={pageTitle} description={pageDescription} {locale} pathAfterLocale={pathAfterLocale} noindex={thinAuthorHub}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(authorJsonLd)} />
+  <SiteHeader {locale} />
+  <NewsHubIndexHero
+    {locale}
+    title={person.name}
+    subtitle={`Articles and analysis where ${person.name} is credited as an author.`}
+    hubKind="author"
+    activeAuthorSlug={authorSlug}
+    subtitleLink={{ href: localeHref(locale, `people/${authorSlug}`), label: 'Full profile' }}
+  />
+  <DocumentMain contentWidth="wide">
+    <div
+      class="flex flex-col md:grid md:grid-cols-[minmax(0,1fr)_min(17.5rem,22rem)] md:items-stretch md:gap-x-12 lg:gap-x-14"
+    >
+      <div class="order-2 min-w-0 md:order-1">
+        {
+          thinAuthorHub ? (
+            <p class="mt-2 max-w-2xl text-pretty text-secondary-3">
+              No published articles are linked to this profile yet.
+            </p>
+          ) : (
+            <NewsArticleList {locale} {articles} showTopicBadges showAuthorByline={false} class="mt-2 border-0 pt-0" />
+          )
+        }
+        <MarketingStubNav {locale} currentSegment={pathAfterLocale} />
+      </div>
+      <NewsAuthorArchiveAside {locale} {person} {authorSlug} articleCount={thinAuthorHub ? undefined : articles.length} />
+    </div>
+  </DocumentMain>
+</Base>

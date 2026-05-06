@@ -1,0 +1,32 @@
+---
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import OfficesInternationalGrid from '@/components/OfficesInternationalGrid.astro';
+
+const locale = 'en-us';
+---
+
+<Base
+  title="International | Schillings"
+  description="Schillings in London, Miami, and Dublin — offices, cross-border mandates, and regional contact."
+  {locale}
+  pathAfterLocale="international"
+>
+  <SiteHeader {locale} />
+  <DocumentMain class="max-w-[min(88rem,calc(100%-1.5rem))]">
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      International
+    </h1>
+    <p class="mt-4 max-w-3xl text-pretty text-secondary-3">
+      You are on the United States site. Schillings works across jurisdictions from London, Miami, and Dublin. Each office page includes local
+      contact details and a form with the matching region pre-selected (change it in the form if needed).
+    </p>
+    <OfficesInternationalGrid {locale} />
+    <p class="mt-10 max-w-3xl text-pretty text-sm text-secondary-3">
+      Engagements are subject to US entity terms and conflicts checks. Align office narrative with <code class="text-secondary-4">ENTITY-SERVICES-MATRIX.md</code>.
+    </p>
+    <MarketingStubNav {locale} currentSegment="international" />
+  </DocumentMain>
+</Base>

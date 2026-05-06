@@ -1,0 +1,32 @@
+---
+import { localeHref } from '@/lib/site-nav';
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-us';
+---
+
+<Base
+  title="Regulatory | Schillings"
+  description="SRA and multi-entity regulatory disclosures — placeholder; see compliance hub."
+  locale={locale}
+  pathAfterLocale="legal/regulatory"
+>
+  <SiteHeader locale={locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Regulatory
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Placeholder — detailed SRA and entity copy also belongs on{' '}
+      <a class="text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'compliance/schillings-sra')}>
+        Schillings: Regulated by SRA
+      </a>
+      {' '}and the footer regulatory block. Cross-check <code class="rounded bg-utility-2 px-1 text-sm text-secondary-4">FOOTER-REGULATORY-CHECKLIST.md</code>.
+    </p>
+    <MarketingStubNav {locale} currentSegment="legal/regulatory" />
+  </DocumentMain>
+</Base>

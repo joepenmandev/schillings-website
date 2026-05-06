@@ -1,0 +1,93 @@
+---
+import type { Locale } from '../i18n/config';
+import { primaryNav, contactSegment, immediateResponseSegment, localeHref } from '../lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  /**
+   * When the page has a stronger LCP candidate (e.g. article hero, people portrait), lower the logo’s fetch
+   * priority so bandwidth goes to that image first — avoids competing `fetchpriority="high"` hints.
+   */
+  deferHeaderLogoPriority?: boolean;
+}
+
+const { locale, deferHeaderLogoPriority = false } = Astro.props;
+const home = localeHref(locale, '');
+const immediateHref = localeHref(locale, immediateResponseSegment);
+
+const navLinkClass =
+  'rounded-sm py-1 text-sm font-extralight text-brand-black outline-offset-4 transition-colors hover:text-secondary-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4';
+const navLinkClassMobile = `${navLinkClass} block px-3 py-2`;
+---
+
+<header class="sticky top-0 z-50">
+  <div class="bg-secondary-4 text-brand-white">
+    <div
+      class="mx-auto flex max-w-[200rem] justify-end px-[min(1.25rem,5.5vw)] py-2.5 text-sm font-extralight tracking-wide md:px-[min(5rem,5.5vw)]"
+    >
+      <a
+        href={immediateHref}
+        class="inline-flex items-center gap-2 rounded-sm outline-offset-4 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-white"
+      >
+        <span>Immediate response</span>
+        <span class="text-base font-extralight leading-none" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+  <div class="border-b border-secondary-2/40 bg-brand-white/95 backdrop-blur">
+    <div
+      class="relative mx-auto flex max-w-[200rem] items-center justify-between gap-4 px-[min(1.25rem,5.5vw)] py-4 md:px-[min(5rem,5.5vw)]"
+    >
+      <a
+        href={home}
+        class="inline-flex shrink-0 rounded-sm outline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4"
+      >
+        <img
+          src="/brand/schillings-logo-rgb.svg"
+          alt="Schillings — home"
+          width="360"
+          height="65"
+          class="h-8 w-auto sm:h-9"
+          loading="eager"
+          decoding="async"
+          fetchpriority={deferHeaderLogoPriority ? 'low' : 'high'}
+        />
+      </a>
+
+      <nav aria-label="Primary" class="hidden items-center gap-6 md:flex lg:gap-8">
+        {
+          primaryNav.map(({ label, segment }) => (
+            <a href={localeHref(locale, segment)} class={navLinkClass}>
+              {label}
+            </a>
+          ))
+        }
+        <a href={localeHref(locale, contactSegment)} class={navLinkClass}>
+          Contact
+        </a>
+      </nav>
+
+      <details class="group relative md:hidden">
+        <summary
+          class="list-none rounded-sm border border-secondary-2/50 px-3 py-2 text-sm font-extralight text-secondary-4 outline-offset-4 marker:content-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4 [&::-webkit-details-marker]:hidden"
+        >
+          Menu
+        </summary>
+        <div
+          class="absolute right-0 z-50 mt-2 min-w-[12rem] rounded-md border border-secondary-2/40 bg-brand-white py-2 shadow-lg"
+        >
+          {
+            primaryNav.map(({ label, segment }) => (
+              <a href={localeHref(locale, segment)} class={navLinkClassMobile}>
+                {label}
+              </a>
+            ))
+          }
+          <a href={localeHref(locale, contactSegment)} class={navLinkClassMobile}>
+            Contact
+          </a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>

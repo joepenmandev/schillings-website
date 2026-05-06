@@ -1,0 +1,226 @@
+---
+import type { Locale } from '../i18n/config';
+import type { OfficeId } from '../data/people-taxonomy';
+import HomeExploreStrip from './HomeExploreStrip.astro';
+import MarketingStubNav from './MarketingStubNav.astro';
+import PersonColleagueCard from './PersonColleagueCard.astro';
+import SiteHeader from './SiteHeader.astro';
+import { getAboutUsRegionModel, aboutUsOfficeSlug } from '../lib/about-us-region';
+import { publishedPeopleForOffice } from '../lib/people-directory';
+import { clipPlainText } from '../lib/person-jsonld';
+import { absolutePageUrl } from '../lib/public-url';
+import { localeHref } from '../lib/site-nav';
+import PageBreadcrumbs from './PageBreadcrumbs.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const m = getAboutUsRegionModel(locale);
+const officeSeg = aboutUsOfficeSlug(locale);
+const officePageHref = localeHref(locale, officeSeg);
+const peopleOfficeHref = `${localeHref(locale, 'people')}?office=${m.teamOfficeParam}`;
+const newsHref = m.relatedNewsSlug ? localeHref(locale, `news/${m.relatedNewsSlug}`) : null;
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+
+const officeId = m.teamOfficeParam as OfficeId;
+const leadershipTeam = publishedPeopleForOffice(officeId);
+/** One grid of four — same standard as office pages; full list via directory link. */
+const leadershipFeatured = leadershipTeam.slice(0, 4);
+---
+
+<SiteHeader {locale} />
+<main id="main">
+  <div class="mx-auto max-w-4xl px-[min(1.25rem,5.5vw)] pt-8 md:px-[min(5rem,5.5vw)]">
+    <PageBreadcrumbs
+      items={[
+        { name: 'Home', href: absolutePageUrl(origin, locale, '') },
+        { name: 'About', current: true },
+      ]}
+    />
+  </div>
+  <section
+    class="bg-utility-1 px-[min(1.25rem,5.5vw)] pb-16 pt-12 text-center md:px-[min(5rem,5.5vw)] md:pb-20 md:pt-16"
+    aria-labelledby="about-hero-heading"
+  >
+    <div class="mx-auto max-w-4xl">
+      <p class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
+        {m.storyEyebrow}
+      </p>
+      <h1
+        id="about-hero-heading"
+        class="mt-3 font-serif text-pretty text-[clamp(2rem,5vw,3.25rem)] font-extralight leading-[1.08] tracking-tight text-secondary-4 md:leading-[1.05]"
+      >
+        {m.heroTitle}
+      </h1>
+      <p
+        class="mx-auto mt-8 max-w-3xl text-pretty font-serif text-lg font-extralight leading-relaxed text-secondary-3 md:text-xl md:leading-relaxed"
+      >
+        {m.heroLead}
+      </p>
+    </div>
+  </section>
+
+  <section
+    class="border-t border-secondary-2/20 bg-utility-2/40 px-[min(1.25rem,5.5vw)] py-16 md:px-[min(5rem,5.5vw)] md:py-24"
+    aria-labelledby="about-story-heading"
+  >
+    <div class="mx-auto max-w-3xl">
+      <h2
+        id="about-story-heading"
+        class="font-serif text-[clamp(1.5rem,3vw,2.125rem)] font-extralight leading-snug tracking-tight text-secondary-4"
+      >
+        {m.storyTitle}
+      </h2>
+      <div class="mt-6 space-y-5 text-pretty text-base leading-relaxed text-secondary-3 md:text-lg">
+        {m.storyParagraphs.map((p) => <p>{p}</p>)}
+      </div>
+      {
+        newsHref ? (
+          <p class="mt-8 text-sm text-secondary-3">
+            <a
+              href={newsHref}
+              class="font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.2em] hover:text-secondary-3"
+            >
+              Read our Dublin office announcement →
+            </a>
+          </p>
+        ) : null
+      }
+    </div>
+  </section>
+
+  <section
+    class="border-t border-secondary-2/20 bg-utility-1 px-[min(1.25rem,5.5vw)] py-16 md:px-[min(5rem,5.5vw)] md:py-24"
+    aria-labelledby="about-office-heading"
+  >
+    <div class="mx-auto max-w-3xl">
+      <p class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">{m.officeEyebrow}</p>
+      <h2
+        id="about-office-heading"
+        class="mt-2 font-serif text-[clamp(1.5rem,3vw,2.125rem)] font-extralight leading-snug tracking-tight text-secondary-4"
+      >
+        {m.officeTitle}
+      </h2>
+      <div class="mt-6 space-y-5 text-pretty text-base leading-relaxed text-secondary-3 md:text-lg">
+        {m.officeParagraphs.map((p) => <p>{p}</p>)}
+      </div>
+      <p class="mt-10">
+        <a
+          href={officePageHref}
+          class="font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[5px] hover:decoration-secondary-4"
+        >
+          Office details &amp; contact →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section
+    class="bg-secondary-4 px-[min(1.25rem,5.5vw)] py-16 md:px-[min(5rem,5.5vw)] md:py-24"
+    aria-labelledby="about-mission-heading"
+  >
+    <div class="mx-auto max-w-3xl">
+      <p class="text-xs font-medium uppercase tracking-[0.18em] text-brand-white/80">{m.missionEyebrow}</p>
+      <h2
+        id="about-mission-heading"
+        class="mt-2 font-serif text-[clamp(1.5rem,3vw,2.125rem)] font-extralight leading-snug tracking-tight text-brand-white"
+      >
+        {m.missionTitle}
+      </h2>
+      <div class="mt-8 space-y-6 text-pretty text-base leading-relaxed text-brand-white/92 md:text-lg">
+        {m.missionParagraphs.map((p) => <p>{p}</p>)}
+      </div>
+      <p class="mt-10">
+        <a
+          href={localeHref(locale, 'services')}
+          class="font-medium text-brand-white underline decoration-white/35 underline-offset-[5px] transition-colors hover:decoration-white"
+        >
+          Discover our expertise
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section
+    class="border-t border-secondary-2/20 bg-utility-1 px-[min(1.25rem,5.5vw)] py-16 md:px-[min(5rem,5.5vw)] md:py-24"
+    aria-labelledby="about-leadership-heading"
+  >
+    <div class="mx-auto max-w-3xl">
+      <h2
+        id="about-leadership-heading"
+        class="font-serif text-[clamp(1.5rem,3vw,2.125rem)] font-extralight leading-snug tracking-tight text-secondary-4"
+      >
+        {m.leadershipTitle}
+      </h2>
+      <p class="mt-4 text-pretty text-base leading-relaxed text-secondary-3 md:text-lg">
+        {m.leadershipIntro}
+      </p>
+    </div>
+
+    {
+      leadershipTeam.length === 0 ? (
+        <p class="mx-auto mt-8 max-w-3xl text-sm text-secondary-3">
+          Published bios for this office will appear here as they are added to the directory.
+        </p>
+      ) : (
+        <>
+          <ul class="mt-10 grid list-none gap-x-6 gap-y-10 p-0 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
+            {leadershipFeatured.map((p) => {
+              const teaser = p.paragraphs[0] ? clipPlainText(p.paragraphs[0], 150) : '';
+              return (
+                <li class="min-w-0">
+                  <PersonColleagueCard locale={locale} person={p} variant="grid" teaser={teaser || undefined} />
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )
+    }
+
+    <div class="mx-auto max-w-3xl">
+      <p class="mt-10">
+        <a
+          href={peopleOfficeHref}
+          class="font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[5px] hover:decoration-secondary-4"
+        >
+          {m.teamCtaLabel}
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section
+    class="border-t border-secondary-2/25 bg-utility-2/35 px-[min(1.25rem,5.5vw)] py-16 md:px-[min(5rem,5.5vw)] md:py-24"
+    aria-labelledby="about-global-heading"
+  >
+    <div class="mx-auto max-w-3xl">
+      <p class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">{m.globalEyebrow}</p>
+      <h2
+        id="about-global-heading"
+        class="mt-2 font-serif text-[clamp(1.5rem,3vw,2.125rem)] font-extralight leading-snug tracking-tight text-secondary-4"
+      >
+        {m.globalTitle}
+      </h2>
+      <div class="mt-6 space-y-5 text-pretty text-base leading-relaxed text-secondary-3 md:text-lg">
+        {m.globalParagraphs.map((p) => <p>{p}</p>)}
+      </div>
+      <p class="mt-10">
+        <a
+          href={localeHref(locale, 'international')}
+          class="font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[5px] hover:decoration-secondary-4"
+        >
+          Discover our global presence
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-3xl px-[min(1.25rem,5.5vw)] pb-14 pt-4 md:px-[min(5rem,5.5vw)]">
+    <MarketingStubNav {locale} currentSegment="about-us" />
+  </div>
+
+  <HomeExploreStrip {locale} />
+</main>

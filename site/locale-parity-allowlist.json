@@ -1,0 +1,4 @@
+{
+  "ukOnly": [],
+  "_comment": "Path tails under UK (e.g. 'my-page' or 'nested/page') that intentionally have no en-us/en-ie mirror. Empty = require parity for all UK static routes."
+}

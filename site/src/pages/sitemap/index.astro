@@ -1,0 +1,29 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import HtmlSitemapContent from '@/components/HtmlSitemapContent.astro';
+import { buildJsonLdGraph, buildPageEntityJsonLd } from '@/lib/jsonld-page';
+
+const locale = 'en-gb';
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const description = 'Overview of main pages on the UK Schillings site.';
+const jsonLd = buildJsonLdGraph(
+  buildPageEntityJsonLd({
+    origin,
+    locale,
+    pathSegment: 'sitemap',
+    pageType: 'WebPage',
+    name: 'Sitemap | Schillings',
+    description,
+  }),
+);
+---
+
+<Base title="Sitemap | Schillings" {description} {locale} pathAfterLocale="sitemap">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <HtmlSitemapContent {locale} />
+  </DocumentMain>
+</Base>

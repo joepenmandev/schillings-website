@@ -1,0 +1,31 @@
+---
+import { localeHref } from '@/lib/site-nav';
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-gb';
+---
+
+<Base
+  title="Keith Schilling — Founder | Schillings"
+  description="Keith Schilling, founder of Schillings — leadership and legacy."
+  {locale}
+  pathAfterLocale="keith-schilling-founder"
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Keith Schilling
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Placeholder — this URL exists on the live sitemap; migrate approved biography and imagery. Sub-pages live under{' '}
+      <a class="text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'keith-schilling-biography/early-career')}>
+        Keith Schilling biography
+      </a>.
+    </p>
+    <MarketingStubNav {locale} currentSegment="keith-schilling-founder" />
+  </DocumentMain>
+</Base>

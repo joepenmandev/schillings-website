@@ -1,0 +1,39 @@
+---
+import type { Locale } from '../i18n/config';
+import { localeHref } from '../lib/site-nav';
+
+/** Post-bio links only — no “related people” grid on profile pages. */
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const explore = [
+  { href: localeHref(locale, 'people'), label: 'All people' },
+  { href: localeHref(locale, 'services'), label: 'Services' },
+  { href: localeHref(locale, 'news'), label: 'News & insights' },
+  { href: localeHref(locale, 'international'), label: 'International' },
+  { href: localeHref(locale, 'contact'), label: 'Contact' },
+] as const;
+---
+
+<section class="mt-14 border-t border-secondary-2/20 pt-10" aria-labelledby="person-explore-heading">
+  <h2 id="person-explore-heading" class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
+    Explore Schillings
+  </h2>
+  <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2.5 font-serif text-sm md:text-base">
+    {
+      explore.map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class="font-medium text-secondary-4 underline decoration-secondary-2/35 underline-offset-[0.22em] transition-colors hover:decoration-secondary-4"
+          >
+            {label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

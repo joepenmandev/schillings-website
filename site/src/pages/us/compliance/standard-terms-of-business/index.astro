@@ -1,0 +1,28 @@
+---
+import Base from '@/layouts/Base.astro';
+import ComplianceSectionNav from '@/components/ComplianceSectionNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-us';
+---
+
+<Base
+  title="Standard Terms of Business | Schillings"
+  description="Standard terms of business for Schillings International LLP and related entities — compliance placeholder pending approved copy."
+  {locale}
+  pathAfterLocale="compliance/standard-terms-of-business"
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Standard Terms of Business
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Placeholder — replace with the current Standard Terms of Business text approved by compliance. On the previous public stack this page lived at{' '}
+      <code class="text-sm">/compliance/standard-terms-of-business</code> (and legacy URLs redirect here).
+    </p>
+    <ComplianceSectionNav {locale} currentSegment="compliance/standard-terms-of-business" />
+  </DocumentMain>
+</Base>

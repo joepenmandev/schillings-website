@@ -1,0 +1,31 @@
+---
+import { localeHref } from '@/lib/site-nav';
+import Base from '@/layouts/Base.astro';
+import ComplianceSectionNav from '@/components/ComplianceSectionNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-us';
+---
+
+<Base
+  title="Privacy & Disclaimer | Schillings"
+  description="Privacy notice, cookies, and disclaimers for schillingspartners.com and related Schillings entities."
+  {locale}
+  pathAfterLocale="compliance/privacy-disclaimer"
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Privacy & Disclaimer
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Placeholder — must match live compliance copy and cookie categories; footer on live points here (<code class="text-sm">LIVE-SITE-EXTRACT.md</code>). Internal draft:{' '}
+      <a class="text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'legal/privacy-notice')}>
+        Privacy notice (dev)
+      </a>.
+    </p>
+    <ComplianceSectionNav {locale} currentSegment="compliance/privacy-disclaimer" />
+  </DocumentMain>
+</Base>

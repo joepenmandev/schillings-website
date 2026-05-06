@@ -1,0 +1,44 @@
+---
+import type { Locale } from '../i18n/config';
+import { localeHref } from '../lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  /** Path after locale, e.g. `compliance/privacy-disclaimer` */
+  currentSegment: string;
+}
+
+const { locale, currentSegment } = Astro.props;
+
+const links = [
+  { label: 'Privacy & Disclaimer', segment: 'compliance/privacy-disclaimer' },
+  { label: 'Complaints Handling', segment: 'compliance/complaints-handling' },
+  { label: 'Schillings: Regulated by SRA', segment: 'compliance/schillings-sra' },
+  { label: 'Candidate privacy notice', segment: 'compliance/candidate-privacy-notice' },
+  { label: 'Standard Terms of Business', segment: 'compliance/standard-terms-of-business' },
+] as const;
+---
+
+<nav class="mt-10 border-t border-secondary-2/25 pt-8" aria-label="Compliance section">
+  <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">In this section</p>
+  <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+    {
+      links.map(({ label, segment }) => (
+        <li>
+          {segment === currentSegment ? (
+            <span class="font-medium text-secondary-4" aria-current="page">
+              {label}
+            </span>
+          ) : (
+            <a
+              href={localeHref(locale, segment)}
+              class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:decoration-secondary-4"
+            >
+              {label}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</nav>

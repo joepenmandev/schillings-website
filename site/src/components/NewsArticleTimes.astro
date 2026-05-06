@@ -1,0 +1,35 @@
+---
+import type { NewsArticle } from '@/data/news';
+import type { Locale } from '@/i18n/config';
+import {
+  articleDateModifiedIso,
+  articleDatePublishedIso,
+  formatNewsArticleModifiedForDisplay,
+  formatNewsArticlePublishedForDisplay,
+  shouldShowArticleUpdated,
+} from '@/lib/news-datetime';
+
+interface Props {
+  article: NewsArticle;
+  locale: Locale;
+}
+
+const { article, locale } = Astro.props;
+const publishedIso = articleDatePublishedIso(article);
+const publishedLabel = formatNewsArticlePublishedForDisplay(article, locale);
+const showUpdated = shouldShowArticleUpdated(article);
+const modifiedIso = showUpdated ? articleDateModifiedIso(article) : '';
+const modifiedLabel = showUpdated ? formatNewsArticleModifiedForDisplay(article, locale) : '';
+---
+
+<p class="text-xs text-secondary-2">
+  <time class="font-normal uppercase tracking-wide" datetime={publishedIso}>{publishedLabel}</time>
+  {
+    showUpdated ? (
+      <span class="ml-1 font-normal normal-case tracking-normal text-secondary-3">
+        {' · '}
+        Updated <time datetime={modifiedIso}>{modifiedLabel}</time>
+      </span>
+    ) : null
+  }
+</p>

@@ -1,0 +1,29 @@
+---
+import type { Locale } from '@/i18n/config';
+import type { NewsArticle } from '@/data/news';
+import NewsArticleGrid from '@/components/NewsArticleGrid.astro';
+
+interface Props {
+  locale: Locale;
+  articles: NewsArticle[];
+  showTopicBadges?: boolean;
+  showAuthorByline?: boolean;
+  class?: string;
+}
+
+const {
+  locale,
+  articles,
+  showTopicBadges = false,
+  showAuthorByline = true,
+  class: className = 'mt-10 border-t border-secondary-2/30 pt-10',
+} = Astro.props;
+---
+
+<NewsArticleGrid
+  {locale}
+  {articles}
+  {showTopicBadges}
+  {showAuthorByline}
+  class={className}
+/>

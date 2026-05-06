@@ -1,0 +1,46 @@
+---
+import { localeHref } from '@/lib/site-nav';
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { keithBiographySlugs } from '@/data/keith-biography-slugs';
+import { locales, isLocale, type Locale } from '@/i18n/config';
+
+export function getStaticPaths() {
+  return keithBiographySlugs.map((slug) => ({ params: { slug } }));
+}
+
+const slug = Astro.params.slug;
+if (typeof slug !== 'string') {
+  return new Response(null, { status: 404 });
+}
+const locale = 'en-gb';
+if (!(keithBiographySlugs as readonly string[]).includes(slug)) {
+  return new Response(null, { status: 404 });
+}
+
+const titleCase = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+---
+
+<Base
+  title={`${titleCase} | Keith Schilling biography | Schillings`}
+  description={`Biography chapter: ${titleCase}.`}
+  {locale}
+  pathAfterLocale={`keith-schilling-biography/${slug}`}
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <p class="text-xs font-normal uppercase tracking-wide text-secondary-2">Keith Schilling biography</p>
+    <h1 class="mt-2 text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      {titleCase}
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Placeholder — migrate approved chapter copy from the current site. Return to{' '}
+      <a class="text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'keith-schilling-founder')}>
+        Founder overview
+      </a>.
+    </p>
+    <MarketingStubNav {locale} currentSegment={`keith-schilling-biography/${slug}`} />
+  </DocumentMain>
+</Base>

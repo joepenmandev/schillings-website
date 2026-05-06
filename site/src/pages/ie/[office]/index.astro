@@ -1,0 +1,50 @@
+---
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import PageBreadcrumbs from '@/components/PageBreadcrumbs.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import OfficeLocationSection from '@/components/OfficeLocationSection.astro';
+import { OFFICES, officeSlugs, type OfficeSlug } from '@/lib/offices';
+import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
+import { buildJsonLdGraph, buildOfficeLocalBusinessJsonLd, buildPageEntityJsonLd } from '@/lib/jsonld-page';
+import { absolutePageUrl } from '@/lib/public-url';
+
+export function getStaticPaths() {
+  return officeSlugs.map((office) => ({ params: { office } }));
+}
+
+const locale = 'en-ie';
+const slug = Astro.params.office as OfficeSlug;
+const office = OFFICES[slug];
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const description = `Contact Schillings ${office.cityLabel} — address, map, phone, email, and regional enquiry form.`;
+const pageTitle = `Contact — ${office.name} | Schillings`;
+const jsonLd = buildJsonLdGraph(
+  buildPageEntityJsonLd({
+    origin,
+    locale,
+    pathSegment: office.slug,
+    pageType: 'ContactPage',
+    name: pageTitle,
+    description,
+  }),
+  buildOfficeLocalBusinessJsonLd({ origin, locale, office }),
+);
+---
+
+<Base title={pageTitle} {description} {locale} pathAfterLocale={office.slug}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+  <SiteHeader {locale} />
+  <DocumentMain class="max-w-[min(88rem,calc(100%-1.5rem))]">
+    <PageBreadcrumbs
+      class="mb-8"
+      items={[
+        { name: 'Home', href: absolutePageUrl(origin, locale, '') },
+        { name: office.name, current: true },
+      ]}
+    />
+    <OfficeLocationSection {locale} {office} />
+    <MarketingStubNav {locale} currentSegment={office.slug} />
+  </DocumentMain>
+</Base>

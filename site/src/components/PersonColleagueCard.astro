@@ -1,0 +1,119 @@
+---
+import type { Locale } from '../i18n/config';
+import type { PersonProfile } from '../data/people';
+import { OFFICE_LABELS, type OfficeId, type SeniorityId } from '../data/people-taxonomy';
+import { localeHref } from '../lib/site-nav';
+import { peopleDirectoryCardByline, resolvePersonPracticeGroup } from '../lib/people-directory';
+
+interface Props {
+  locale: Locale;
+  person: PersonProfile;
+  /** Narrower card for horizontal overflow strip */
+  variant?: 'grid' | 'strip';
+  /** Short bio line (office hub, EEAT) — keep to ~2 lines visually */
+  teaser?: string;
+}
+
+function officeLineLabel(p: PersonProfile): string {
+  const raw = p.office?.trim();
+  if (raw) return raw;
+  if (p.officeId && p.officeId in OFFICE_LABELS) return OFFICE_LABELS[p.officeId as OfficeId];
+  return '';
+}
+
+const { locale, person, variant = 'grid', teaser } = Astro.props;
+const seniority = person.seniority ?? 'other';
+const practiceGroup = resolvePersonPracticeGroup(person);
+const byline = peopleDirectoryCardByline(seniority as SeniorityId, practiceGroup);
+const officeLabel = officeLineLabel(person);
+
+const isStrip = variant === 'strip';
+const teaserText = teaser?.trim();
+
+/** Card shell — keep visually aligned with `NewsAuthorArchiveAside` rail. */
+const cardShell =
+  'flex h-full min-h-0 flex-1 flex-col rounded-lg border border-secondary-2/20 bg-utility-2/55 shadow-sm ring-1 ring-secondary-2/10 transition-[box-shadow,border-color,background-color] group-hover:border-secondary-2/35 group-hover:bg-utility-2/85 group-hover:shadow-md';
+
+const anchorWidth = isStrip ? 'max-w-[13rem] mx-auto w-full' : 'w-full';
+const pad = isStrip ? 'p-3 sm:p-3.5' : 'p-4 sm:p-5';
+const titleClamp = isStrip ? 'line-clamp-2 min-h-[2.35rem]' : 'line-clamp-2 min-h-[2.5rem] md:min-h-[2.7rem]';
+const titleSize = isStrip ? 'text-[1.05rem]' : 'text-[1.1rem] md:text-[1.2rem]';
+const bylineSize = isStrip ? 'text-[0.8125rem]' : 'text-sm md:text-[0.95rem]';
+const bylineMinH = isStrip ? 'min-h-[2.1rem]' : 'min-h-[2.35rem] md:min-h-[2.55rem]';
+---
+
+<a
+  href={localeHref(locale, `people/${person.slug}`)}
+  class:list={[
+    'group flex h-full min-h-0 w-full flex-col outline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-secondary-4',
+    anchorWidth,
+  ]}
+>
+  <div class:list={[cardShell, pad]}>
+    {
+      person.imagePath ? (
+        <div class="overflow-hidden rounded-md ring-1 ring-secondary-2/12">
+          <img
+            src={person.imagePath}
+            alt=""
+            width={224}
+            height={224}
+            class="aspect-square w-full object-cover"
+            sizes={isStrip ? '13rem' : '(max-width: 640px) 90vw, 16rem'}
+            loading="lazy"
+            decoding="async"
+            fetchpriority="low"
+          />
+        </div>
+      ) : (
+        <div
+          class="flex aspect-square w-full items-center justify-center rounded-md bg-utility-1/90 text-xs text-secondary-2 ring-1 ring-secondary-2/15"
+          aria-hidden="true"
+        >
+          Photo pending
+        </div>
+      )
+    }
+    <h3
+      title={person.name}
+      class:list={[
+        'mt-4 w-full break-words font-serif font-extralight leading-[1.22] text-secondary-4 transition-colors group-hover:text-secondary-3',
+        titleClamp,
+        titleSize,
+      ]}
+    >
+      {person.name}
+    </h3>
+    <p
+      class:list={[
+        'mt-1 w-full shrink-0 text-pretty font-serif font-normal italic leading-[1.25] text-secondary-3 line-clamp-2',
+        bylineSize,
+        bylineMinH,
+      ]}
+    >
+      {byline}
+    </p>
+    {
+      officeLabel ? (
+        <p class="mt-2 w-full text-xs font-normal uppercase tracking-wide text-secondary-2">{officeLabel}</p>
+      ) : null
+    }
+    {
+      teaserText ? (
+        <p
+          class:list={[
+            'mt-3 w-full text-pretty font-serif font-extralight leading-snug text-secondary-3 line-clamp-2',
+            isStrip ? 'text-[0.7rem]' : 'text-xs sm:text-[0.8125rem]',
+          ]}
+        >
+          {teaserText}
+        </p>
+      ) : null
+    }
+    <span
+      class="mt-auto block w-full pt-4 text-sm font-medium text-secondary-4 underline decoration-secondary-2/50 underline-offset-[0.2em] transition-colors group-hover:decoration-secondary-4"
+    >
+      Full profile →
+    </span>
+  </div>
+</a>

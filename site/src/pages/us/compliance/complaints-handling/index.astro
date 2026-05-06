@@ -1,0 +1,27 @@
+---
+import Base from '@/layouts/Base.astro';
+import ComplianceSectionNav from '@/components/ComplianceSectionNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-us';
+---
+
+<Base
+  title="Complaints Handling | Schillings"
+  description="How to raise a concern or complaint about Schillings services, including regulatory escalation."
+  {locale}
+  pathAfterLocale="compliance/complaints-handling"
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Complaints Handling
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Placeholder — implement per <code class="text-sm">FOOTER-REGULATORY-CHECKLIST.md</code> and SRA transparency rules.
+    </p>
+    <ComplianceSectionNav {locale} currentSegment="compliance/complaints-handling" />
+  </DocumentMain>
+</Base>

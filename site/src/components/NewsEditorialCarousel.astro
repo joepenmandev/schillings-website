@@ -1,0 +1,110 @@
+---
+import type { Locale } from '@/i18n/config';
+import type { NewsArticle } from '@/data/news';
+import NewsArticleEditorialCard from '@/components/NewsArticleEditorialCard.astro';
+
+interface Props {
+  locale: Locale;
+  articles: NewsArticle[];
+  showTopicBadges?: boolean;
+  showAuthorByline?: boolean;
+  excludeAuthorSlugs?: string[];
+  class?: string;
+}
+
+const {
+  locale,
+  articles,
+  showTopicBadges = false,
+  showAuthorByline = true,
+  excludeAuthorSlugs = [],
+  class: className = '',
+} = Astro.props;
+
+const carouselUid = `nc-${Math.random().toString(36).slice(2, 9)}`;
+/** Arrows only when horizontal scroll is likely needed (four or more cards). */
+const showCarouselArrows = articles.length >= 4;
+---
+
+{
+  articles.length > 0 ? (
+    <div class:list={['news-editorial-carousel', className]} data-news-carousel={carouselUid}>
+      <div class="relative">
+        {
+          showCarouselArrows ? (
+            <>
+              <button
+                type="button"
+                class="carousel-nav-prev absolute left-0 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 -translate-x-1 items-center justify-center rounded-full border border-secondary-2/35 bg-brand-white/95 text-lg leading-none text-secondary-4 shadow-md backdrop-blur-sm transition hover:border-secondary-3 hover:bg-utility-2 sm:flex lg:-translate-x-4"
+                aria-label="Scroll articles backward"
+                data-carousel-prev=""
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                class="carousel-nav-next absolute right-0 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 translate-x-1 items-center justify-center rounded-full border border-secondary-2/35 bg-brand-white/95 text-lg leading-none text-secondary-4 shadow-md backdrop-blur-sm transition hover:border-secondary-3 hover:bg-utility-2 sm:flex lg:translate-x-4"
+                aria-label="Scroll articles forward"
+                data-carousel-next=""
+              >
+                ›
+              </button>
+            </>
+          ) : null
+        }
+
+        <div
+          class="carousel-track flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-3 pt-1 [scrollbar-width:thin] [-ms-overflow-style:auto] [scrollbar-color:var(--secondary-2)_transparent]"
+          data-carousel-track=""
+          tabindex="0"
+          role="list"
+        >
+          {articles.map((article, index) => (
+            <div
+              class="snap-center shrink-0 list-none w-[min(100vw-3rem,20.5rem)] sm:w-[22.5rem]"
+              role="listitem"
+            >
+              <NewsArticleEditorialCard
+                {locale}
+                {article}
+                {index}
+                {showTopicBadges}
+                {showAuthorByline}
+                excludeAuthorSlugs={excludeAuthorSlugs}
+                class="h-full"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <script is:inline define:vars={{ carouselUid }}>
+        (function () {
+          var root = document.querySelector('[data-news-carousel="' + carouselUid + '"]');
+          if (!root) return;
+          var track = root.querySelector('[data-carousel-track]');
+          var prev = root.querySelector('[data-carousel-prev]');
+          var next = root.querySelector('[data-carousel-next]');
+          if (!track) return;
+          var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          function step() {
+            var card = track.querySelector('.snap-center');
+            var w = card ? card.offsetWidth + 20 : Math.round(track.clientWidth * 0.88);
+            return w;
+          }
+          function scrollByDir(dir) {
+            track.scrollBy({ left: dir * step(), behavior: reduceMotion ? 'auto' : 'smooth' });
+          }
+          prev &&
+            prev.addEventListener('click', function () {
+              scrollByDir(-1);
+            });
+          next &&
+            next.addEventListener('click', function () {
+              scrollByDir(1);
+            });
+        })();
+      </script>
+    </div>
+  ) : null
+}

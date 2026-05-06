@@ -1,0 +1,84 @@
+---
+import type { PersonRecognition } from '@/data/people';
+
+interface Props {
+  items: PersonRecognition[];
+  compact?: boolean;
+}
+
+const { items, compact = false } = Astro.props;
+
+function providerLabel(provider: PersonRecognition['provider']) {
+  if (provider === 'legal500') return 'The Legal 500';
+  if (provider === 'spears') return "Spear's";
+  if (provider === 'chambers') return 'Chambers';
+  return 'Recognition';
+}
+
+function providerLetters(provider: PersonRecognition['provider']) {
+  if (provider === 'legal500') return 'L500';
+  if (provider === 'spears') return 'SP';
+  if (provider === 'chambers') return 'CP';
+  return 'R';
+}
+---
+
+{
+  items.length > 0 ? (
+    <ul class:list={['flex flex-wrap gap-2.5', compact ? 'text-xs' : 'text-sm']} aria-label="Independent recognitions">
+      {items.map((item) => {
+        const subtitle = [providerLabel(item.provider), item.year].filter(Boolean).join(' · ');
+        const title = subtitle ? `${item.title} — ${subtitle}` : item.title;
+        return (
+          <li>
+            {item.href ? (
+              <a
+                href={item.href}
+                rel="noopener noreferrer"
+                target="_blank"
+                class:list={[
+                  'group inline-flex items-center gap-2 rounded-full border border-secondary-2/30 bg-brand-white pl-1.5 pr-3 py-1.5 text-secondary-4 transition-colors hover:border-secondary-3 hover:bg-utility-2/60',
+                  compact ? 'min-h-8' : 'min-h-9',
+                ]}
+                title={title}
+              >
+                <span class="inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-full border border-secondary-2/30 bg-secondary-4 text-[0.58rem] font-semibold tracking-wide text-brand-white">
+                  {item.imagePath ? (
+                    <img src={item.imagePath} alt="" width="24" height="24" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                  ) : (
+                    providerLetters(item.provider)
+                  )}
+                </span>
+                <span class="leading-tight">
+                  <span class="font-medium">{item.title}</span>
+                  {subtitle ? <span class="ml-1 text-secondary-3">{subtitle}</span> : null}
+                </span>
+                <span class="sr-only"> (opens in new tab)</span>
+              </a>
+            ) : (
+              <span
+                class:list={[
+                  'inline-flex items-center gap-2 rounded-full border border-secondary-2/30 bg-brand-white pl-1.5 pr-3 py-1.5 text-secondary-4',
+                  compact ? 'min-h-8' : 'min-h-9',
+                ]}
+                title={title}
+              >
+                <span class="inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-full border border-secondary-2/30 bg-secondary-4 text-[0.58rem] font-semibold tracking-wide text-brand-white">
+                  {item.imagePath ? (
+                    <img src={item.imagePath} alt="" width="24" height="24" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                  ) : (
+                    providerLetters(item.provider)
+                  )}
+                </span>
+                <span class="leading-tight">
+                  <span class="font-medium">{item.title}</span>
+                  {subtitle ? <span class="ml-1 text-secondary-3">{subtitle}</span> : null}
+                </span>
+              </span>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  ) : null
+}

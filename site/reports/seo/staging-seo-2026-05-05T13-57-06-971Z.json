@@ -1,0 +1,22 @@
+{
+  "createdAt": "2026-05-05T13:57:06.970Z",
+  "baseUrl": "http://localhost:4510",
+  "owners": {
+    "engineering": "",
+    "seo": ""
+  },
+  "totals": {
+    "imported": 164,
+    "published": 0,
+    "checkedPages": 0,
+    "failures": 1,
+    "warnings": 0,
+    "sitemapsChecked": 1,
+    "sitemapUrlCount": 0
+  },
+  "failures": [
+    "Child sitemap non-200 (404): https://www.schillingspartners.com/sitemap-0.xml"
+  ],
+  "warnings": [],
+  "pages": []
+}

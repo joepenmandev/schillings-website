@@ -1,0 +1,13 @@
+# Production — allow crawling of public marketing pages.
+#
+# Preview / staging (pick one before pointing DNS at a preview host):
+#   Option A — swap this file to block all crawlers:
+#     User-agent: *
+#     Disallow: /
+#   Option B — keep Allow but add HTTP auth at the edge (preferred with previews).
+# Do not rely on robots.txt alone for confidentiality.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://schillingspartners.com/sitemap-index.xml

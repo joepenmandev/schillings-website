@@ -1,0 +1,27 @@
+---
+import Base from '@/layouts/Base.astro';
+import ComplianceSectionNav from '@/components/ComplianceSectionNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-us';
+---
+
+<Base
+  title="Schillings: Regulated by SRA | Schillings"
+  description="SRA regulation, entity structure, and professional standards for Schillings International LLP."
+  {locale}
+  pathAfterLocale="compliance/schillings-sra"
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Schillings: Regulated by SRA
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Placeholder — pair with Yoshki badge in footer and mySRA domain setup before launch.
+    </p>
+    <ComplianceSectionNav {locale} currentSegment="compliance/schillings-sra" />
+  </DocumentMain>
+</Base>

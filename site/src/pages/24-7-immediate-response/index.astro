@@ -1,0 +1,26 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import ImmediateResponseContent from '@/components/ImmediateResponseContent.astro';
+import {
+  buildImmediateResponsePageJsonLd,
+  immediateResponseMetaDescription,
+  IMMEDIATE_RESPONSE_PAGE_TITLE,
+} from '@/lib/immediate-response-page';
+
+const locale = 'en-gb';
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const description = immediateResponseMetaDescription(locale);
+const jsonLd = buildImmediateResponsePageJsonLd(origin, locale);
+---
+
+<Base
+  title={IMMEDIATE_RESPONSE_PAGE_TITLE}
+  description={description}
+  {locale}
+  pathAfterLocale="24-7-immediate-response"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+  <SiteHeader {locale} />
+  <ImmediateResponseContent {locale} />
+</Base>

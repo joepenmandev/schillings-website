@@ -1,0 +1,32 @@
+---
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { localeHref } from '@/lib/site-nav';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-gb';
+---
+
+<Base
+  title="Careers | Schillings"
+  description="Careers at Schillings — placeholder; optional main nav per IA."
+  {locale}
+  pathAfterLocale="careers"
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Careers
+    </h1>
+    <p class="mt-4 max-w-2xl text-pretty text-secondary-3">
+      Placeholder — link out to the live careers / recruitment stack when URLs are agreed. Candidate privacy:{' '}
+      <a class="text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'compliance/candidate-privacy-notice')}>
+        Candidate privacy notice
+      </a>
+      . <code class="rounded bg-utility-2 px-1 text-sm text-secondary-4">IA-URL-SPEC.md</code> §1.
+    </p>
+    <MarketingStubNav {locale} currentSegment="careers" />
+  </DocumentMain>
+</Base>

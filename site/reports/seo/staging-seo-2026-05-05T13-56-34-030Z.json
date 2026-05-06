@@ -1,0 +1,22 @@
+{
+  "createdAt": "2026-05-05T13:56:34.029Z",
+  "baseUrl": "http://localhost:4322",
+  "owners": {
+    "engineering": "",
+    "seo": ""
+  },
+  "totals": {
+    "imported": 164,
+    "published": 0,
+    "checkedPages": 0,
+    "failures": 1,
+    "warnings": 0,
+    "sitemapsChecked": 0,
+    "sitemapUrlCount": 0
+  },
+  "failures": [
+    "Sitemap index non-200 (404): http://localhost:4322/sitemap-index.xml"
+  ],
+  "warnings": [],
+  "pages": []
+}

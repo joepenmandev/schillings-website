@@ -1,0 +1,28 @@
+---
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-gb';
+---
+
+<Base
+  title="Accessibility | Schillings"
+  description="Accessibility statement for schillingspartners.com — placeholder pending approved copy."
+  {locale}
+  pathAfterLocale="accessibility"
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Accessibility
+    </h1>
+    <p class="mt-4 max-w-2xl text-pretty text-secondary-3">
+      Placeholder — publish WCAG conformance targets, known limitations, and a contact route for accessibility feedback when
+      compliance approves. Listed in <code class="rounded bg-utility-2 px-1 text-sm text-secondary-4">IA-URL-SPEC.md</code> §1.
+    </p>
+    <MarketingStubNav {locale} currentSegment="accessibility" />
+  </DocumentMain>
+</Base>

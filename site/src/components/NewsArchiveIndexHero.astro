@@ -1,0 +1,75 @@
+---
+/**
+ * News index masthead — compact sage band, accent bar, optional topic toolbar (matches featured book hero tokens).
+ */
+import type { Locale } from '@/i18n/config';
+import NewsArchiveFilters from '@/components/NewsArchiveFilters.astro';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  locale?: Locale;
+  activeTopicSlug?: string;
+  activeAuthorSlug?: string;
+  /** Secondary line, e.g. pagination. */
+  meta?: string;
+  metaLinkLabel?: string;
+  metaLinkHref?: string;
+}
+
+const {
+  title = 'News & Insights',
+  subtitle = 'The latest news, views, insights and analysis from Schillings.',
+  locale,
+  activeTopicSlug = '',
+  activeAuthorSlug = '',
+  meta,
+  metaLinkLabel,
+  metaLinkHref,
+} = Astro.props;
+---
+
+<section
+  class="border-b border-secondary-2/20 bg-accordion-open px-[min(1.25rem,5.5vw)] pt-8 md:px-[min(4rem,5vw)] md:pt-9 lg:px-[min(5rem,6vw)]"
+  aria-labelledby="news-archive-hero-heading"
+>
+  <div class="mx-auto max-w-[min(88rem,calc(100%-1.5rem))] pb-6 md:pb-7">
+    <div class="flex gap-3.5 md:gap-4">
+      <span
+        class="mt-1 min-h-[2.75rem] w-[3px] shrink-0 self-stretch rounded-full bg-gradient-to-b from-secondary-3/60 via-secondary-4/50 to-secondary-3/35"
+        aria-hidden="true"
+      />
+      <div class="min-w-0 flex-1">
+        <h1
+          id="news-archive-hero-heading"
+          class="font-serif text-[1.75rem] font-extralight leading-[1.12] tracking-tight text-secondary-4 sm:text-[2.1rem] md:text-[2.45rem]"
+        >
+          {title}
+        </h1>
+        <p class="mt-2 max-w-3xl text-pretty font-serif text-[0.95rem] italic leading-relaxed text-secondary-3 md:mt-3 md:text-lg">
+          {subtitle}
+        </p>
+        {
+          meta ? (
+            <p class="mt-3 text-sm text-secondary-3 md:mt-4">
+              {meta}
+              {metaLinkHref && metaLinkLabel ? (
+                <>
+                  {' · '}
+                  <a class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:text-secondary-3" href={metaLinkHref}>
+                    {metaLinkLabel}
+                  </a>
+                </>
+              ) : null}
+            </p>
+          ) : null
+        }
+      </div>
+    </div>
+    {locale ? (
+      <div class="mt-6 border-t border-secondary-2/20 pt-5 md:mt-7 md:pt-6">
+        <NewsArchiveFilters {locale} activeTopicSlug={activeTopicSlug} activeAuthorSlug={activeAuthorSlug} />
+      </div>
+    ) : null}
+  </div>
+</section>

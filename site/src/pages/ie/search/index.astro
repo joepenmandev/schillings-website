@@ -1,0 +1,30 @@
+---
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-ie';
+---
+
+<Base
+  title="Search | Schillings"
+  description="Search the Schillings website."
+  {locale}
+  pathAfterLocale="search"
+  noindex
+  hreflangLocales={[locale]}
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Search
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Site search is not wired in this static build. Use navigation, or add client search / third-party index when
+      requirements are agreed.
+    </p>
+    <MarketingStubNav {locale} currentSegment="search" />
+  </DocumentMain>
+</Base>

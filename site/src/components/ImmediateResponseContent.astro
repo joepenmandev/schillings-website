@@ -1,0 +1,115 @@
+---
+import type { Locale } from '../i18n/config';
+import DocumentMain from './DocumentMain.astro';
+import MarketingStubNav from './MarketingStubNav.astro';
+import { immediateResponsePhoneForLocale } from '../lib/offices';
+import { immediateResponseMarketLabel } from '../lib/immediate-response-page';
+import { localeHref } from '../lib/site-nav';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const urgent = immediateResponsePhoneForLocale(locale);
+const market = immediateResponseMarketLabel(locale);
+const contactHref = localeHref(locale, 'contact');
+const internationalHref = localeHref(locale, 'international');
+---
+
+<DocumentMain class="max-w-4xl">
+  <header class="max-w-3xl">
+    <p class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">Urgent access</p>
+    <h1 class="mt-2 text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Immediate response
+    </h1>
+    <p class="mt-4 max-w-2xl text-pretty font-serif text-lg font-extralight leading-relaxed text-secondary-3 md:text-xl">
+      For high-stakes reputation, privacy, intelligence, or security situations that cannot wait, use the urgent line
+      below. It is staffed <strong class="font-normal text-secondary-4">twenty-four hours a day, seven days a week</strong>
+      so we can triage and escalate within Schillings without delay.
+    </p>
+  </header>
+
+  <section
+    class="mt-10 rounded-lg border border-secondary-2/25 bg-gradient-to-b from-utility-2/70 to-utility-1 p-6 shadow-[0_14px_44px_-18px_rgba(45,1,43,0.35)] ring-1 ring-secondary-4/10 md:mt-12 md:p-10"
+    aria-labelledby="immediate-call-heading"
+  >
+    <h2 id="immediate-call-heading" class="sr-only">Urgent telephone number</h2>
+    <p class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">Call now</p>
+    <p class="mt-3">
+      <a
+        href={urgent.phoneHref}
+        class="font-serif text-[clamp(1.75rem,5vw,2.75rem)] font-extralight leading-none tracking-tight text-secondary-4 underline decoration-secondary-2/45 decoration-2 underline-offset-[0.12em] transition-colors hover:text-secondary-3 hover:decoration-secondary-3"
+      >
+        {urgent.phoneDisplay}
+      </a>
+    </p>
+    <p class="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-secondary-3">
+      This connects you to the Schillings switchboard for the <strong class="font-normal text-secondary-4">{market}</strong>
+      site. If you reach voicemail during peak periods, follow the prompts — urgent matters are monitored continuously.
+    </p>
+  </section>
+
+  <div class="mt-14 grid gap-12 md:mt-16 lg:grid-cols-2 lg:gap-14">
+    <section class="min-w-0" aria-labelledby="when-heading">
+      <h2
+        id="when-heading"
+        class="text-sm font-semibold uppercase tracking-[0.14em] text-secondary-2"
+      >
+        When to use this line
+      </h2>
+      <ul class="mt-4 list-none space-y-3 text-pretty font-serif text-base font-extralight leading-relaxed text-secondary-4">
+        <li class="flex gap-3">
+          <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary-3" aria-hidden="true" />
+          Media, defamation, or online crises that require same-day counsel or action.
+        </li>
+        <li class="flex gap-3">
+          <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary-3" aria-hidden="true" />
+          Serious privacy or confidentiality incidents, including data or security breaches.
+        </li>
+        <li class="flex gap-3">
+          <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary-3" aria-hidden="true" />
+          Threats to safety, reputation, or operations where delay would materially increase harm.
+        </li>
+      </ul>
+    </section>
+
+    <section class="min-w-0 rounded-lg border border-secondary-2/20 bg-utility-2/40 p-6 md:p-8" aria-labelledby="not-urgent-heading">
+      <h2 id="not-urgent-heading" class="text-sm font-semibold uppercase tracking-[0.14em] text-secondary-2">
+        Not urgent or exploring fit
+      </h2>
+      <p class="mt-3 text-pretty font-serif text-base font-extralight leading-relaxed text-secondary-3">
+        For new enquiries, budget discussions, or matters that can wait a short time, please use our contact flow — we
+        assess fit carefully and respond as soon as we can.
+      </p>
+      <p class="mt-5">
+        <a
+          href={contactHref}
+          class="font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.2em] transition-colors hover:text-secondary-3"
+        >
+          Contact &amp; qualifying form →
+        </a>
+      </p>
+    </section>
+  </div>
+
+  <section class="mt-12 border-t border-secondary-2/20 pt-10 md:mt-14" aria-labelledby="offices-heading">
+    <h2 id="offices-heading" class="text-sm font-semibold uppercase tracking-[0.14em] text-secondary-2">
+      International offices
+    </h2>
+    <p class="mt-3 max-w-2xl text-pretty font-serif text-base font-extralight leading-relaxed text-secondary-3">
+      Schillings works across London, Miami, and Dublin with coordinated teams. For addresses, maps, and regional
+      context, see our international overview.
+    </p>
+    <p class="mt-5">
+      <a
+        href={internationalHref}
+        class="font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.2em] transition-colors hover:text-secondary-3"
+      >
+        All offices &amp; international →
+      </a>
+    </p>
+  </section>
+
+  <MarketingStubNav {locale} currentSegment="24-7-immediate-response" />
+</DocumentMain>

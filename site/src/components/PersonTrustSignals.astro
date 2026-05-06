@@ -1,0 +1,145 @@
+---
+/**
+ * Visible E-E-A-T affordances: verified-style outbound links.
+ * Directory links point to publisher homepages (not individual ranking claims) unless you add per-profile URLs in people-eeat-extras.json.
+ */
+import RecognitionBadges from '@/components/RecognitionBadges.astro';
+import type { PersonRecognition } from '@/data/people';
+
+export interface Props {
+  personName: string;
+  sameAs: string[];
+  recognitions?: PersonRecognition[];
+  /** When true, omit the LinkedIn block (e.g. already shown in `PersonPublicContact`). */
+  hideLinkedIn?: boolean;
+}
+
+const { personName, sameAs, recognitions = [], hideLinkedIn = false } = Astro.props;
+
+const linkedIn = sameAs.find((u) => /linkedin\.com\/in\//i.test(u));
+
+/** Non-LinkedIn / non-X authoritative URLs (publisher bios, etc.) — LinkedIn & X/Twitter shown in `PersonPublicContact`. */
+function otherSameAsUrls(urls: readonly string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const raw of urls) {
+    const u = raw.trim();
+    if (!/^https?:\/\//i.test(u)) continue;
+    if (/linkedin\.com\/in\//i.test(u)) continue;
+    if (/^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\//i.test(u)) continue;
+    if (linkedIn && u === linkedIn) continue;
+    if (seen.has(u)) continue;
+    seen.add(u);
+    out.push(u);
+  }
+  return out;
+}
+
+const extraSameAs = otherSameAsUrls(sameAs);
+
+function externalLinkLabel(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./i, '');
+  } catch {
+    return 'External link';
+  }
+}
+
+const LEGAL_DIRECTORIES: { label: string; href: string; hint: string }[] = [
+  {
+    label: 'Chambers and Partners',
+    href: 'https://www.chambersandpartners.com/',
+    hint: 'Independent legal directory',
+  },
+  {
+    label: 'The Legal 500',
+    href: 'https://www.legal500.com/',
+    hint: 'Independent legal directory',
+  },
+  {
+    label: "Spear's",
+    href: 'https://www.spears500.com/',
+    hint: 'HNW legal and reputation rankings',
+  },
+];
+
+const linkClass =
+  'inline-block rounded border border-secondary-2/35 bg-utility-1 px-3 py-2 text-xs font-medium tracking-wide text-secondary-4 transition-colors hover:border-secondary-3 hover:bg-utility-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/70';
+
+const textLinkClass =
+  'inline-flex items-center gap-2 text-sm font-medium text-secondary-4 underline decoration-secondary-2/50 underline-offset-2 transition-colors hover:decoration-secondary-4 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/70';
+---
+
+<aside
+  class="mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7"
+  aria-labelledby="trust-signals-heading"
+>
+  <h2 id="trust-signals-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">
+    Profiles & independent directories
+  </h2>
+  <p class="mt-2 text-pretty text-sm leading-relaxed text-secondary-3">
+    Third-party sources can help readers place professional background in context. Schillings does not control external sites or rankings; use firm search
+    or name search on the directories below where applicable. Contact Schillings for formal engagements.
+  </p>
+  {
+    recognitions.length > 0 ? (
+      <div class="mt-5">
+        <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Recognitions</p>
+        <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3/90">
+          Selected third-party listings and rankings for {personName}. Methodologies and criteria are set by each
+          publisher.
+        </p>
+        <div class="mt-3">
+          <RecognitionBadges items={recognitions} />
+        </div>
+      </div>
+    ) : null
+  }
+
+  {
+    linkedIn && !hideLinkedIn ? (
+      <div class="mt-5">
+        <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Professional profile</p>
+        <a href={linkedIn} class={`mt-2 ${textLinkClass}`} rel="noopener noreferrer" target="_blank">
+          {personName} on LinkedIn
+          <span class="sr-only"> (opens in new tab)</span>
+        </a>
+      </div>
+    ) : null
+  }
+
+  {
+    extraSameAs.length > 0 ? (
+      <div class="mt-6">
+        <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Additional references</p>
+        <ul class="mt-3 flex flex-col gap-2" role="list">
+          {extraSameAs.map((href) => (
+            <li>
+              <a href={href} class={textLinkClass} rel="noopener noreferrer" target="_blank">
+                <span class="break-all">{externalLinkLabel(href)}</span>
+                <span class="sr-only"> (opens in new tab)</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : null
+  }
+
+  <nav class="mt-6" aria-label="Major legal and reputation directories">
+    <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Major legal directories</p>
+    <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3/90">Use search on each site to find the firm or named individuals.</p>
+    <ul class="mt-3 flex flex-wrap gap-2" role="list">
+      {
+        LEGAL_DIRECTORIES.map((d) => (
+          <li>
+            <a href={d.href} class={linkClass} rel="noopener noreferrer" target="_blank" title={d.hint}>
+              {d.label}
+              <span class="sr-only"> (opens in new tab)</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</aside>

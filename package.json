@@ -1,0 +1,16 @@
+{
+  "name": "schillings-website",
+  "private": true,
+  "description": "Planning pack + Astro site in site/. Run npm commands from repo root or cd site.",
+  "scripts": {
+    "build": "npm run build --prefix site",
+    "test": "npm run test --prefix site",
+    "test:e2e": "npm run test:e2e --prefix site",
+    "verify": "npm run test && npm run build && npm run test:e2e",
+    "dev": "npm run dev --prefix site",
+    "preview": "npm run preview --prefix site",
+    "import:people": "npm run import:people --prefix site",
+    "optimize:people-photos": "npm run optimize:people-photos --prefix site",
+    "import:people:full": "npm run import:people:full --prefix site"
+  }
+}

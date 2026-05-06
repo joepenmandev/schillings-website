@@ -1,0 +1,32 @@
+---
+import { localeHref } from '@/lib/site-nav';
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-ie';
+---
+
+<Base
+  title="Privacy notice | Schillings"
+  description="How we process personal data in connection with this website and enquiries."
+  locale={locale}
+  pathAfterLocale="legal/privacy-notice"
+>
+  <SiteHeader locale={locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Privacy notice
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Placeholder — replace with approved notice. Public IA on live uses{' '}
+      <a class="text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'compliance/privacy-disclaimer')}>
+        Privacy & Disclaimer
+      </a>
+      ; wire redirects in <code class="rounded bg-utility-2 px-1 text-sm text-secondary-4">redirect-map.csv</code>.
+    </p>
+    <MarketingStubNav {locale} currentSegment="legal/privacy-notice" />
+  </DocumentMain>
+</Base>

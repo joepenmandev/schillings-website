@@ -1,0 +1,40 @@
+---
+import { localeHref } from '@/lib/site-nav';
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { immediateResponsePhoneForLocale } from '@/lib/offices';
+
+const locale = 'en-gb';
+const phone = immediateResponsePhoneForLocale(locale);
+---
+
+<Base
+  title="Thank you | Schillings"
+  description="Your enquiry was submitted. We will assess fit and respond as soon as we can."
+  {locale}
+  pathAfterLocale="contact/thank-you"
+  noindex
+  hreflangLocales={[locale]}
+>
+  <SiteHeader {locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Thank you
+    </h1>
+    <p class="mt-4 max-w-xl text-pretty text-secondary-3">
+      If you completed the qualifying form, your answers were received. We review fit carefully; if we can help, we will
+      be in touch. For urgent matters you can still call{' '}
+      <a class="font-medium text-secondary-4 underline hover:text-secondary-3" href={phone.phoneHref}>
+        {phone.phoneDisplay}
+      </a>.
+    </p>
+    <p class="mt-8">
+      <a class="text-sm font-medium text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'contact')}>
+        ← Contact
+      </a>
+      {' · '}
+      <a class="text-sm font-medium text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, '')}> Home</a>
+    </p>
+  </DocumentMain>
+</Base>

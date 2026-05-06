@@ -1,0 +1,32 @@
+---
+import { localeHref } from '@/lib/site-nav';
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-gb';
+---
+
+<Base
+  title="Cookies | Schillings"
+  description="How Schillings sites use cookies and similar technologies — placeholder pending approved policy."
+  locale={locale}
+  pathAfterLocale="legal/cookies"
+>
+  <SiteHeader locale={locale} />
+  <DocumentMain>
+    <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+      Cookies
+    </h1>
+    <p class="mt-4 text-pretty text-secondary-3">
+      Placeholder — align with live cookie categories and the{' '}
+      <a class="text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, 'compliance/privacy-disclaimer')}>
+        Privacy & Disclaimer
+      </a>
+      {' '}page. Listed in <code class="rounded bg-utility-2 px-1 text-sm text-secondary-4">IA-URL-SPEC.md</code> §1.
+    </p>
+    <MarketingStubNav {locale} currentSegment="legal/cookies" />
+  </DocumentMain>
+</Base>

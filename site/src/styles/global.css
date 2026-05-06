@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/*
+ * Esface (200 + italic): ship WOFF2 under /public/fonts/ with a confirmed licence, then add:
+ *
+ * @font-face { font-family: Esface; src: url("/fonts/ESFace-ExtraLight.woff2") format("woff2");
+ *   font-weight: 200; font-style: normal; font-display: swap; }
+ * @font-face { font-family: Esface; src: url("/fonts/ESFace-ExtraLightItalic.woff2") format("woff2");
+ *   font-weight: 200; font-style: italic; font-display: swap; }
+ *
+ * Reference metrics only (no runtime dependency on the old CMS): `LIVE-SITE-EXTRACT.md`.
+ *
+ * When you add real Esface `@font-face` rules, prefer **`font-display: optional`** (or metric-tuned `swap` with
+ * `size-adjust`) so text does not reflow visibly after first paint — see `TECHNICAL-SEO-LAUNCH-CHECKLIST.md` §G2.
+ */
+
+/* Schillings design tokens — source of truth for Tailwind @theme. */
+:root {
+  --utility-1: #f5f2ef;
+  --black: black;
+  --secondary-4: #2d012b;
+  --utility-2: #eeeae4;
+  /* Expanded accordion panel — warm taupe (live homepage reference) */
+  --accordion-open: #e4ddd4;
+  --white: white;
+  --secondary-2: #b8a6b0;
+  --secondary-3: #7d2442;
+  --primary-1: #9c7a8f;
+  /* Body stack: only families that exist today (no missing “Esface” lookup). Same rendered face as before WOFF2. */
+  --font-serif-stack: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-family: var(--font-serif-stack);
+}
+
+@theme {
+  --font-sans: var(--font-family), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif-stack);
+
+  --color-primary-1: var(--primary-1);
+  --color-secondary-2: var(--secondary-2);
+  --color-secondary-3: var(--secondary-3);
+  --color-secondary-4: var(--secondary-4);
+  --color-utility-1: var(--utility-1);
+  --color-utility-2: var(--utility-2);
+  --color-brand-black: var(--black);
+  --color-brand-white: var(--white);
+  --color-accordion-open: var(--accordion-open);
+}
+
+/*
+ * Editorial book hero — optional one-time settle (no opacity flash; keeps LCP readable).
+ * Disabled automatically when prefers-reduced-motion: reduce.
+ */
+@keyframes book-hero-settle {
+  from {
+    transform: translateY(6px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.book-hero-motion {
+  animation: book-hero-settle 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-hero-motion {
+    animation: none;
+  }
+}

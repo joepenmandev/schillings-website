@@ -1,0 +1,134 @@
+---
+/**
+ * Compact topic + author navigation for news archive (native selects, progressive enhancement).
+ */
+import type { Locale } from '../i18n/config';
+import { publishedNews, publishedNewsAuthorSlugs } from '../data/news';
+import { getPersonBySlug } from '../data/people';
+import { uniqueTopicEntriesFromArticles } from '../lib/news-topic-slug';
+import { localeHref } from '../lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  activeTopicSlug?: string;
+  activeAuthorSlug?: string;
+  class?: string;
+}
+
+const {
+  locale,
+  activeTopicSlug = '',
+  activeAuthorSlug = '',
+  class: className = '',
+} = Astro.props;
+
+const topicEntries = uniqueTopicEntriesFromArticles(publishedNews());
+const newsIndexHref = localeHref(locale, 'news');
+
+const topicHrefMap: Record<string, string> = { '': newsIndexHref };
+for (const e of topicEntries) {
+  topicHrefMap[e.slug] = localeHref(locale, `news/topic/${e.slug}`);
+}
+
+const authorRows = publishedNewsAuthorSlugs()
+  .map((slug) => {
+    const p = getPersonBySlug(slug);
+    return p ? { slug, name: p.name } : null;
+  })
+  .filter((x): x is { slug: string; name: string } => x != null)
+  .sort((a, b) => a.name.localeCompare(b.name, 'en-gb'));
+
+const authorHrefMap: Record<string, string> = { '': newsIndexHref };
+for (const { slug } of authorRows) {
+  authorHrefMap[slug] = localeHref(locale, `news/author/${slug}`);
+}
+
+const show = topicEntries.length > 0 || authorRows.length > 0;
+
+const selectClass =
+  'mt-1.5 w-full min-h-[2.75rem] cursor-pointer appearance-none rounded-md border border-secondary-4/35 bg-brand-white bg-[length:1rem] bg-[right_0.65rem_center] bg-no-repeat px-3 py-2 pr-9 text-sm font-normal text-secondary-4 shadow-sm transition-colors hover:border-secondary-3 focus:border-secondary-4 focus:outline-none focus:ring-2 focus:ring-secondary-4/20';
+const labelClass = 'text-[0.65rem] font-medium uppercase tracking-[0.18em] text-secondary-2';
+/** Chevron — inline SVG as data URL for background (no extra asset). */
+const chevron =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%235c4a5c' stroke-width='1.5' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")";
+---
+
+{
+  show ? (
+    <nav
+      class:list={['news-archive-filters', className]}
+      aria-label="Filter news by topic or author"
+      data-topic-map={JSON.stringify(topicHrefMap)}
+      data-author-map={JSON.stringify(authorHrefMap)}
+    >
+      <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:gap-x-6 sm:gap-y-4 lg:gap-x-8">
+        {topicEntries.length > 0 ? (
+          <div class="min-w-0 flex-1 sm:max-w-[min(100%,16rem)]">
+            <label for="news-filter-topic" class={labelClass}>
+              Topic
+            </label>
+            <select
+              id="news-filter-topic"
+              class={selectClass}
+              style={`background-image: ${chevron};`}
+              data-news-filter="topic"
+              autocomplete="off"
+            >
+              <option value="" selected={!activeTopicSlug}>
+                All topics
+              </option>
+              {topicEntries.map(({ slug, label }) => (
+                <option value={slug} selected={activeTopicSlug === slug}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+        {authorRows.length > 0 ? (
+          <div class="min-w-0 flex-1 sm:max-w-[min(100%,16rem)]">
+            <label for="news-filter-author" class={labelClass}>
+              Author
+            </label>
+            <select
+              id="news-filter-author"
+              class={selectClass}
+              style={`background-image: ${chevron};`}
+              data-news-filter="author"
+              autocomplete="off"
+            >
+              <option value="" selected={!activeAuthorSlug}>
+                All authors
+              </option>
+              {authorRows.map(({ slug, name }) => (
+                <option value={slug} selected={activeAuthorSlug === slug}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+      </div>
+    </nav>
+  ) : null
+}
+
+<script>
+  function wireNewsArchiveFilters(root) {
+    const topicRaw = root.getAttribute('data-topic-map');
+    const authorRaw = root.getAttribute('data-author-map');
+    const topicMap = topicRaw ? JSON.parse(topicRaw) : {};
+    const authorMap = authorRaw ? JSON.parse(authorRaw) : {};
+    const topicSel = root.querySelector('[data-news-filter="topic"]');
+    const authorSel = root.querySelector('[data-news-filter="author"]');
+    topicSel?.addEventListener('change', () => {
+      const href = topicMap[topicSel.value];
+      if (href) window.location.href = href;
+    });
+    authorSel?.addEventListener('change', () => {
+      const href = authorMap[authorSel.value];
+      if (href) window.location.href = href;
+    });
+  }
+  document.querySelectorAll('.news-archive-filters').forEach(wireNewsArchiveFilters);
+</script>

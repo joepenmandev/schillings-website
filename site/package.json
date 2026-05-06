@@ -1,0 +1,46 @@
+{
+  "name": "site",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "test": "vitest run",
+    "check:locale-parity": "node scripts/check-locale-parity.mjs",
+    "verify:build-seo": "node scripts/verify-build-seo.mjs",
+    "verify:launch-urls": "node scripts/verify-launch-urls.mjs",
+    "verify": "npm run verify:people-photos && npm run verify:news-migration && npm run test && npm run check:locale-parity && npm run build && npm run verify:build-seo && npm run test:e2e",
+    "test:e2e": "PLAYWRIGHT_BROWSERS_PATH=.pw-browsers playwright install chromium && PLAYWRIGHT_BROWSERS_PATH=.pw-browsers playwright test",
+    "preview": "astro preview",
+    "astro": "astro",
+    "import:people": "tsx scripts/import-people-from-live.ts",
+    "import:news": "tsx scripts/import-news-from-live.ts",
+    "optimize:people-photos": "node scripts/optimize-people-photos.mjs",
+    "import:people:full": "tsx scripts/import-people-from-live.ts && node scripts/optimize-people-photos.mjs",
+    "verify:people-photos": "node scripts/verify-people-photos.mjs",
+    "verify:news-migration": "node scripts/verify-news-migration.mjs",
+    "verify:staging-seo": "node scripts/verify-staging-seo.mjs",
+    "backfill:news-authors": "tsx scripts/backfill-news-author-slugs.ts",
+    "publish:migrated-news": "tsx scripts/publish-migrated-news.ts"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/vite": "^4.2.4",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.37.0",
+    "astro": "^6.2.2",
+    "leaflet": "^1.9.4",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.59.1",
+    "node-html-parser": "^7.1.0",
+    "sharp": "^0.34.5",
+    "tsx": "^4.21.0",
+    "vitest": "^3.2.4"
+  }
+}

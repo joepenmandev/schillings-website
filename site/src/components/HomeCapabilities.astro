@@ -1,0 +1,54 @@
+---
+/**
+ * Homepage capability accordion — copy and rhythm aligned with
+ * [schillingspartners.com](https://schillingspartners.com/) (screenshots / live text).
+ */
+const pillars = [
+  { title: 'Intelligence', line: "Discover what's happening and why." },
+  { title: 'Law', line: 'Assert your rights with confidence.' },
+  { title: 'Communications', line: 'Shape the narrative with the audiences that matter.' },
+  { title: 'Security', line: "Protect what's important to you, physically and digitally." },
+  { title: 'Diplomacy', line: 'Identify and engage critical decisionmakers.' },
+] as const;
+---
+
+<section
+  class="border-t border-secondary-2/20 bg-utility-1 px-[min(1.25rem,5.5vw)] py-12 md:px-[min(5rem,5.5vw)] md:py-20"
+  aria-label="Capabilities"
+>
+  <div class="mx-auto max-w-4xl">
+    {
+      pillars.map(({ title, line }, i) => (
+        <details
+          class="home-cap group border-b border-secondary-2/25 bg-utility-1 transition-colors duration-300 open:bg-accordion-open"
+          open={i === 0 ? true : undefined}
+        >
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-1 py-5 text-left marker:content-none md:px-2 md:py-6 [&::-webkit-details-marker]:hidden">
+            <span class="font-serif text-[clamp(1.5rem,3vw,2.25rem)] font-extralight leading-tight tracking-tight text-secondary-4">
+              {title}
+            </span>
+            <span class="home-cap-toggle relative flex h-6 w-6 shrink-0 items-center justify-center text-secondary-4" aria-hidden="true">
+              <span class="home-cap-plus absolute text-2xl font-extralight leading-none">+</span>
+              <span class="home-cap-minus absolute text-2xl font-extralight leading-none">—</span>
+            </span>
+          </summary>
+          <div class="px-1 pb-6 pt-0 md:px-2">
+            <p class="max-w-2xl font-serif text-lg font-extralight leading-relaxed text-secondary-4 md:text-xl">{line}</p>
+          </div>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .home-cap .home-cap-minus {
+    opacity: 0;
+  }
+  .home-cap[open] .home-cap-plus {
+    opacity: 0;
+  }
+  .home-cap[open] .home-cap-minus {
+    opacity: 1;
+  }
+</style>

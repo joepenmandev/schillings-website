@@ -1,0 +1,129 @@
+---
+import type { Locale } from '../i18n/config';
+import MarketingStubNav from './MarketingStubNav.astro';
+import PageBreadcrumbs from './PageBreadcrumbs.astro';
+import { allOffices, immediateResponsePhoneForLocale } from '../lib/offices';
+import { absolutePageUrl } from '../lib/public-url';
+import { immediateResponseSegment, localeHref } from '../lib/site-nav';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const phone = immediateResponsePhoneForLocale(locale);
+const offices = allOffices();
+
+const crumbHome = absolutePageUrl(origin, locale, '');
+---
+
+<PageBreadcrumbs
+  class="mb-8"
+  items={[
+    { name: 'Home', href: crumbHome },
+    { name: 'Contact', current: true },
+  ]}
+/>
+
+<header class="max-w-2xl">
+  <h1 class="text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-[3.125rem] md:leading-[1.1]">
+    Contact us
+  </h1>
+  <p class="mt-4 max-w-xl text-pretty font-serif text-lg font-extralight leading-relaxed text-secondary-3 md:text-xl">
+    Tell us briefly what you need help with. We assess fit for each enquiry — Schillings typically acts where legal fees are
+    expected to be from <strong class="font-normal text-secondary-4">£25,000</strong> upwards (or currency equivalent).
+  </p>
+</header>
+
+<section class="mt-10 max-w-2xl border-t border-secondary-2/15 pt-10" aria-labelledby="contact-urgent-heading">
+  <h2 id="contact-urgent-heading" class="text-sm font-semibold uppercase tracking-[0.14em] text-secondary-2">
+    Urgent or crisis matters
+  </h2>
+  <p class="mt-3 text-pretty text-secondary-3">
+    For emergencies that cannot wait, call{' '}
+    <a class="font-medium text-secondary-4 underline hover:text-secondary-3" href={phone.phoneHref}>
+      {phone.phoneDisplay}
+    </a>
+    {' '}— twenty-four hours a day — or use our{' '}
+    <a
+      href={localeHref(locale, immediateResponseSegment)}
+      class="font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.2em] hover:text-secondary-3"
+    >
+      immediate response page
+    </a>.
+  </p>
+</section>
+
+<section class="mt-10 max-w-2xl border-t border-secondary-2/15 pt-10" aria-labelledby="contact-offices-heading">
+  <h2 id="contact-offices-heading" class="text-sm font-semibold uppercase tracking-[0.14em] text-secondary-2">
+    Our offices
+  </h2>
+  <p class="mt-3 text-pretty text-sm leading-relaxed text-secondary-3">
+    Every office has a local address, map, and the same qualifying form with your region pre-filled for that market.
+  </p>
+  <ul class="mt-5 grid list-none gap-3 p-0 sm:grid-cols-3">
+    {
+      offices.map((o) => (
+        <li>
+          <a
+            href={localeHref(locale, o.slug)}
+            class="block rounded-lg border border-secondary-2/25 bg-utility-2/40 px-4 py-3 font-serif text-base font-extralight text-secondary-4 transition-colors hover:border-secondary-2/50 hover:bg-utility-2/70"
+          >
+            {o.name}
+            <span class="mt-0.5 block text-xs font-sans font-extralight text-secondary-2">Office &amp; form →</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="mt-5 text-sm text-secondary-3">
+    <a
+      href={localeHref(locale, 'international')}
+      class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.2em] hover:text-secondary-3"
+    >
+      International overview
+    </a>
+  </p>
+</section>
+
+<section class="mt-10 max-w-2xl border-t border-secondary-2/15 pt-10" aria-labelledby="contact-next-heading">
+  <h2 id="contact-next-heading" class="text-sm font-semibold uppercase tracking-[0.14em] text-secondary-2">
+    What happens next
+  </h2>
+  <ul class="mt-4 list-none space-y-3 p-0 text-pretty text-sm leading-relaxed text-secondary-3">
+    <li class="flex gap-3">
+      <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary-3" aria-hidden="true" />
+      We review your answers against the type of matter and our minimum engagement expectations.
+    </li>
+    <li class="flex gap-3">
+      <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary-3" aria-hidden="true" />
+      If we may be able to help, we will contact you to discuss next steps — we do not use this form for general marketing.
+    </li>
+    <li class="flex gap-3">
+      <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-secondary-3" aria-hidden="true" />
+      For privacy and compliance, read our{' '}
+      <a
+        href={localeHref(locale, 'compliance/privacy-disclaimer')}
+        class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.2em] hover:text-secondary-3"
+      >
+        privacy &amp; disclaimer
+      </a>
+      .
+    </li>
+  </ul>
+</section>
+
+<div class="mt-12 max-w-2xl">
+  <h2 class="text-lg font-semibold text-secondary-4">Enquiry form</h2>
+  <p class="mt-2 text-pretty text-sm text-secondary-3">
+    Step 2 (region) matches this site’s market by default; you can change it if the issue is centred elsewhere.
+  </p>
+  <div class="mt-6">
+    <slot />
+  </div>
+</div>
+
+<div class="mx-auto max-w-2xl pt-6">
+  <MarketingStubNav {locale} currentSegment="contact" />
+</div>

@@ -1,0 +1,25 @@
+---
+/**
+ * Google Consent Mode v2 defaults (deny non-essential) before any tags load.
+ * When marketing adds GTM/GA4, wire updates after CMP choice per `ANALYTICS-CONSENT-SPEC.md`.
+ */
+---
+
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  if (typeof window.gtag !== 'function') {
+    window.gtag = function gtag() {
+      window.dataLayer.push(arguments);
+    };
+  }
+  window.gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'granted',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    wait_for_update: 500,
+  });
+</script>

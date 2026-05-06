@@ -1,0 +1,21 @@
+---
+interface Props {
+  class?: string;
+  /**
+   * `wide` — room for multi-column people grids and split bios (~1280–1400px cap).
+   * Omit or `default` — standard prose column (`max-w-3xl`).
+   */
+  contentWidth?: 'default' | 'wide';
+}
+
+const { class: className, contentWidth = 'default' } = Astro.props;
+const widthClass =
+  className ?? (contentWidth === 'wide' ? 'max-w-[min(88rem,calc(100%-1.5rem))]' : 'max-w-3xl');
+---
+
+<main
+  id="main"
+  class:list={['mx-auto w-full px-[min(1.25rem,5.5vw)] py-12 md:px-[min(4rem,5vw)] lg:px-[min(5rem,6vw)]', widthClass]}
+>
+  <slot />
+</main>

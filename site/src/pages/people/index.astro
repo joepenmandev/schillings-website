@@ -1,0 +1,39 @@
+---
+import Base from '@/layouts/Base.astro';
+import MarketingStubNav from '@/components/MarketingStubNav.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import PeopleDirectory from '@/components/PeopleDirectory.astro';
+import { publishedPeople } from '@/data/people';
+import { peopleDirectoryMeta } from '@/lib/locale-marketing-meta';
+import { buildPeopleDirectoryGraphJsonLd } from '@/lib/jsonld-page';
+import { locales, isLocale } from '@/i18n/config';
+
+const locale = 'en-gb';
+const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const { title: peoplePageTitle, description: peoplePageDescription } = peopleDirectoryMeta(locale);
+const peopleJsonLd = buildPeopleDirectoryGraphJsonLd({
+  origin,
+  locale,
+  people: publishedPeople().map((p) => ({ slug: p.slug, name: p.name })),
+  pageTitle: peoplePageTitle,
+  pageDescription: peoplePageDescription,
+});
+---
+
+<Base
+  title={peoplePageTitle}
+  description={peoplePageDescription}
+  {locale}
+  pathAfterLocale="people"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(peopleJsonLd)} />
+  <SiteHeader {locale} />
+  <DocumentMain contentWidth="wide">
+    <h1 class="font-serif text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-4xl md:leading-[1.08] lg:text-[2.875rem]">
+      People
+    </h1>
+    <PeopleDirectory {locale} />
+    <MarketingStubNav {locale} currentSegment="people" />
+  </DocumentMain>
+</Base>

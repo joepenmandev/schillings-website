@@ -1,0 +1,76 @@
+---
+/**
+ * Topic / author hub masthead — matches NewsArchiveIndexHero (sage band, accent bar, filters).
+ */
+import type { Locale } from '@/i18n/config';
+import NewsArchiveFilters from '@/components/NewsArchiveFilters.astro';
+import { localeHref } from '@/lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  subtitle: string;
+  hubKind: 'topic' | 'author';
+  activeTopicSlug?: string;
+  activeAuthorSlug?: string;
+  subtitleLink?: { href: string; label: string };
+}
+
+const {
+  locale,
+  title,
+  subtitle,
+  hubKind,
+  activeTopicSlug = '',
+  activeAuthorSlug = '',
+  subtitleLink,
+} = Astro.props;
+
+const hubLabel = hubKind === 'topic' ? 'Topic' : 'Author';
+const newsHref = localeHref(locale, 'news');
+---
+
+<section
+  class="border-b border-secondary-2/20 bg-accordion-open px-[min(1.25rem,5.5vw)] pt-8 md:px-[min(4rem,5vw)] md:pt-9 lg:px-[min(5rem,6vw)]"
+  aria-labelledby="news-hub-hero-heading"
+>
+  <div class="mx-auto max-w-[min(88rem,calc(100%-1.5rem))] pb-6 md:pb-7">
+    <div class="flex gap-3.5 md:gap-4">
+      <span
+        class="mt-1 min-h-[2.75rem] w-[3px] shrink-0 self-stretch rounded-full bg-gradient-to-b from-secondary-3/60 via-secondary-4/50 to-secondary-3/35"
+        aria-hidden="true"
+      />
+      <div class="min-w-0 flex-1">
+        <p class="text-[0.65rem] font-medium uppercase tracking-[0.18em] text-secondary-2">
+          <a class="text-secondary-3 transition-colors hover:text-secondary-4" href={newsHref}>News &amp; Insights</a>
+          <span class="text-secondary-2"> · {hubLabel}</span>
+        </p>
+        <h1
+          id="news-hub-hero-heading"
+          class="mt-2 font-serif text-[1.75rem] font-extralight leading-[1.12] tracking-tight text-secondary-4 sm:text-[2.1rem] md:text-[2.45rem]"
+        >
+          {title}
+        </h1>
+        <p class="mt-2 max-w-3xl text-pretty font-serif text-[0.95rem] italic leading-relaxed text-secondary-3 md:mt-3 md:text-lg">
+          {subtitle}
+          {
+            subtitleLink ? (
+              <>
+                {' '}
+                <a
+                  class="font-sans text-[0.9em] font-medium not-italic text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:text-secondary-3"
+                  href={subtitleLink.href}
+                >
+                  {subtitleLink.label}
+                </a>
+              </>
+            ) : null
+          }
+        </p>
+      </div>
+    </div>
+    <div class="mt-6 border-t border-secondary-2/20 pt-5 md:mt-7 md:pt-6">
+      <NewsArchiveFilters {locale} activeTopicSlug={activeTopicSlug} activeAuthorSlug={activeAuthorSlug} />
+    </div>
+  </div>
+</section>

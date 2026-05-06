@@ -1,0 +1,40 @@
+---
+interface Props {
+  title: string;
+  mapId: string;
+  lat: number;
+  lng: number;
+  zoom?: number;
+}
+
+const { title, mapId, lat, lng, zoom = 16 } = Astro.props;
+---
+
+<div
+  class="overflow-hidden rounded-lg border border-secondary-2/25 bg-gradient-to-b from-utility-2/70 to-utility-1 shadow-[0_14px_44px_-18px_rgba(45,1,43,0.4)] ring-1 ring-secondary-4/10"
+>
+  <div
+    id={`office-map-${mapId}`}
+    class="aspect-[16/10] w-full min-h-[14rem] z-0"
+    data-office-map
+    data-lat={String(lat)}
+    data-lng={String(lng)}
+    data-zoom={String(zoom)}
+    data-marker-icon="/brand/office-map-marker.svg"
+    role="region"
+    aria-label={title}
+  />
+</div>
+
+<script>
+  import { initOfficeMaps } from '../scripts/office-map';
+
+  initOfficeMaps();
+  document.addEventListener('astro:page-load', () => initOfficeMaps());
+</script>
+
+<style is:global>
+  .schillings-map-marker {
+    filter: drop-shadow(0 2px 4px rgba(45, 1, 43, 0.22));
+  }
+</style>

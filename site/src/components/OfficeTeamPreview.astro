@@ -1,0 +1,70 @@
+---
+import type { Locale } from '../i18n/config';
+import type { OfficeId } from '../data/people-taxonomy';
+import type { Office } from '../lib/offices';
+import PersonColleagueCard from './PersonColleagueCard.astro';
+import { publishedPeopleForOffice } from '../lib/people-directory';
+import { clipPlainText } from '../lib/person-jsonld';
+import { localeHref } from '../lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  office: Office;
+}
+
+const { locale, office } = Astro.props;
+const officeId = office.slug as OfficeId;
+const team = publishedPeopleForOffice(officeId);
+/** Same pattern as elsewhere: one grid of four — full roster via directory links below. */
+const featuredCount = 4;
+const featuredTeam = team.slice(0, featuredCount);
+const peopleFilteredHref = `${localeHref(locale, 'people')}?office=${office.slug}`;
+---
+
+{
+  featuredTeam.length > 0 ? (
+    <section
+      class="border-t border-secondary-2/20 pt-12"
+      aria-labelledby={`office-team-${office.slug}`}
+    >
+      <h2 id={`office-team-${office.slug}`} class="text-xs font-medium uppercase tracking-[0.18em] text-secondary-2">
+        People in {office.cityLabel}
+      </h2>
+      <p class="mt-2 max-w-3xl text-pretty font-serif text-sm leading-relaxed text-secondary-3 md:text-base">
+        Schillings is a people business: who advises you matters for outcomes and trust. A selection of the{' '}
+        <strong class="font-normal text-secondary-4">{office.cityLabel}</strong> team is below —{' '}
+        <strong class="font-normal text-secondary-4">most senior first</strong>. Open a profile for the full biography
+        and expertise.
+      </p>
+      <p class="mt-3 text-sm text-secondary-3">
+        <a
+          href={peopleFilteredHref}
+          class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.2em] hover:text-secondary-3"
+        >
+          All people in {office.cityLabel}
+        </a>
+        <span class="mx-2 text-secondary-2" aria-hidden="true">
+          ·
+        </span>
+        <a
+          href={localeHref(locale, 'people')}
+          class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.2em] hover:text-secondary-3"
+        >
+          Full global directory
+        </a>
+      </p>
+
+      <ul class="mt-8 grid list-none gap-x-6 gap-y-10 p-0 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
+        {featuredTeam.map((p) => {
+          const teaser =
+            p.paragraphs[0] ? clipPlainText(p.paragraphs[0], 150) : '';
+          return (
+            <li class="min-w-0">
+              <PersonColleagueCard locale={locale} person={p} variant="grid" teaser={teaser || undefined} />
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  ) : null
+}

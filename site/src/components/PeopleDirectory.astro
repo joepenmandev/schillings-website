@@ -1,0 +1,406 @@
+---
+import type { Locale } from '../i18n/config';
+import {
+  SENIORITY_FILTER_ORDER,
+  SENIORITY_LABELS,
+  EXECUTIVE_COLLATION_SENIORITIES,
+  LEADERSHIP_DIRECTORY_FILTER_VALUE,
+  LEGACY_EXECUTIVES_DIRECTORY_FILTER_VALUE,
+  type SeniorityId,
+} from '../data/people-taxonomy';
+import {
+  compareDirectoryPeopleBySeniorityThenName,
+  getPeopleIndexModel,
+  peopleDirectoryCardByline,
+} from '../lib/people-directory';
+import PersonColleagueCard from './PersonColleagueCard.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const model = getPeopleIndexModel(locale);
+const uid = `pf-${locale.replace(/-/g, '')}`;
+const sortedPeople = [...model.people].sort(compareDirectoryPeopleBySeniorityThenName);
+
+const seniorityIds = new Set(model.seniorityOptions.map((o) => o.id));
+const seniorityPresent = new Set(model.people.map((p) => p.seniority));
+/** Plural / marketing labels for the seniority pill row (dropdown uses `SENIORITY_LABELS`). */
+const SENIORITY_PILL_LABEL: Partial<Record<SeniorityId, string>> = {
+  partner: 'Partners',
+  director: 'Directors',
+  senior_associate: 'Senior Associates',
+  associate: 'Associates',
+  senior_analyst: 'Senior Analysts',
+  analyst: 'Analysts',
+};
+
+/** Founder / CEO / CISO appear only under the collated “Leadership” filter, not as separate pills or `<select>` rows. */
+const LEADERSHIP_ONLY_SENIORITY = new Set<string>(EXECUTIVE_COLLATION_SENIORITIES as unknown as string[]);
+
+const leadershipCollatedPresent = model.people.some((p) =>
+  (EXECUTIVE_COLLATION_SENIORITIES as readonly string[]).includes(p.seniority),
+);
+
+/** Seniority pills: Leadership first (when any of those tiers exist), then remaining tiers in filter order. */
+const quickSeniorityTabs: { id: string; label: string }[] = (() => {
+  const rows: { id: string; label: string }[] = [];
+  if (leadershipCollatedPresent) {
+    rows.push({ id: LEADERSHIP_DIRECTORY_FILTER_VALUE, label: 'Leadership' });
+  }
+  for (const id of SENIORITY_FILTER_ORDER) {
+    if (LEADERSHIP_ONLY_SENIORITY.has(id)) continue;
+    if (!seniorityIds.has(id) || !seniorityPresent.has(id)) continue;
+    rows.push({ id, label: SENIORITY_PILL_LABEL[id as SeniorityId] ?? SENIORITY_LABELS[id] });
+  }
+  return rows;
+})();
+
+const leadershipCollationIdsAttr = [...EXECUTIVE_COLLATION_SENIORITIES].join(',');
+---
+
+<div
+  class="people-directory mt-8 md:mt-10"
+  data-leadership-seniority-filter={LEADERSHIP_DIRECTORY_FILTER_VALUE}
+  data-leadership-seniority-legacy={LEGACY_EXECUTIVES_DIRECTORY_FILTER_VALUE}
+  data-leadership-seniority-ids={leadershipCollationIdsAttr}
+  data-leadership-only-seniorities={leadershipCollationIdsAttr}
+>
+  <noscript>
+    <p class="mt-6 rounded border border-secondary-2/30 bg-utility-2 px-4 py-3 text-sm text-secondary-3">
+      Filters and search need JavaScript. Browse profiles from the grid below or open a bio URL directly.
+    </p>
+  </noscript>
+
+  <div class="mt-10 space-y-8" data-people-filters id={`${uid}-filters`} role="region" aria-labelledby={`${uid}-filter-heading`}>
+    <p id={`${uid}-filter-heading`} class="sr-only">People directory filters</p>
+    <p
+      id={`${uid}-filter-status`}
+      class="text-center text-sm text-secondary-3"
+      data-filter-status
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+    </p>
+
+    <div class="mx-auto flex w-full max-w-5xl flex-col gap-8">
+      <div class="space-y-2">
+        <p
+          id={`${uid}-lab-dept`}
+          class="text-center text-[0.65rem] font-medium uppercase tracking-[0.18em] text-secondary-2"
+        >
+          Department
+        </p>
+        <nav
+          class="flex flex-wrap items-end justify-center gap-x-1 gap-y-1 border-b border-secondary-2/25 pb-0.5 font-serif text-sm md:text-base"
+          aria-labelledby={`${uid}-lab-dept`}
+        >
+          <button
+            type="button"
+            class="people-pill px-3 py-2 text-secondary-2 transition-colors hover:text-secondary-4 data-[active=true]:border-b-2 data-[active=true]:border-secondary-4 data-[active=true]:text-secondary-4"
+            data-qf-all
+            data-active="true"
+          >
+            All
+          </button>
+          {
+            model.practiceGroupOptions.map(({ id, label }) => (
+              <button
+                type="button"
+                class="people-pill px-3 py-2 text-secondary-2 transition-colors hover:text-secondary-4 data-[active=true]:border-b-2 data-[active=true]:border-secondary-4 data-[active=true]:text-secondary-4"
+                data-qf-practice={id}
+                data-active="false"
+              >
+                {label}
+              </button>
+            ))
+          }
+        </nav>
+      </div>
+
+      <div class="space-y-2">
+        <p
+          id={`${uid}-lab-seniority`}
+          class="text-center text-[0.65rem] font-medium uppercase tracking-[0.18em] text-secondary-2"
+        >
+          Seniority
+        </p>
+        <nav
+          class="flex flex-nowrap items-end justify-center gap-x-0.5 overflow-x-auto border-b border-secondary-2/25 pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-x-1 [&::-webkit-scrollbar]:hidden"
+          aria-labelledby={`${uid}-lab-seniority`}
+        >
+          {
+            quickSeniorityTabs.map(({ id, label }) => (
+              <button
+                type="button"
+                class="people-pill shrink-0 whitespace-nowrap px-2 py-1.5 text-xs text-secondary-2 transition-colors hover:text-secondary-4 data-[active=true]:border-b-2 data-[active=true]:border-secondary-4 data-[active=true]:text-secondary-4 sm:px-2.5 sm:py-2 sm:text-sm md:px-3 md:text-base"
+                data-qf-seniority={id}
+                data-active="false"
+              >
+                {label}
+              </button>
+            ))
+          }
+        </nav>
+      </div>
+
+      <div class="space-y-2">
+        <p
+          id={`${uid}-lab-office`}
+          class="text-center text-[0.65rem] font-medium uppercase tracking-[0.18em] text-secondary-2"
+        >
+          Location
+        </p>
+        <nav
+          class="flex flex-wrap items-end justify-center gap-x-1 gap-y-1 border-b border-secondary-2/25 pb-0.5 font-serif text-sm md:text-base"
+          aria-labelledby={`${uid}-lab-office`}
+        >
+          {
+            model.officeFilterOptions.map(({ id, label }) => (
+              <button
+                type="button"
+                class="people-pill px-3 py-2 text-secondary-2 transition-colors hover:text-secondary-4 data-[active=true]:border-b-2 data-[active=true]:border-secondary-4 data-[active=true]:text-secondary-4"
+                data-qf-office={id}
+                data-active="false"
+              >
+                {label}
+              </button>
+            ))
+          }
+        </nav>
+      </div>
+    </div>
+
+    <div class="mx-auto w-full max-w-xl px-1">
+      <label for={`${uid}-search`} class="sr-only">Search people by name</label>
+      <input
+        id={`${uid}-search`}
+        type="search"
+        enterkeyhint="search"
+        autocomplete="off"
+        placeholder="Search people"
+        data-people-search
+        class="w-full border-0 border-b border-brand-black/20 bg-transparent py-3 text-center font-serif text-base text-secondary-4 placeholder:text-secondary-2/75 outline-none transition-colors focus-visible:border-secondary-4"
+      />
+    </div>
+
+  </div>
+
+  <ul class="mt-12 grid list-none gap-x-6 gap-y-10 p-0 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 lg:grid-cols-4 lg:gap-x-10" data-people-grid>
+    {
+      sortedPeople.map((p) => (
+        <li
+          class="person-card flex h-full flex-col border-0 p-0 transition-opacity"
+          data-person-card
+          data-person-name={p.name.toLowerCase()}
+          data-person-slug={p.slug.toLowerCase()}
+          data-people-search-blob={[
+            p.name,
+            peopleDirectoryCardByline(p.seniority, p.practiceGroup),
+            p.slug.replace(/-/g, ' '),
+          ]
+            .join(' ')
+            .toLowerCase()}
+          data-office={p.officeId}
+          data-seniority={p.seniority}
+          data-practice={p.practiceGroup}
+          data-expertise={p.expertise.join(',')}
+        >
+          <PersonColleagueCard locale={locale} person={p} variant="grid" />
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script is:inline>
+  function initPeopleFilters(root) {
+    const leadershipFilterVal = root.getAttribute('data-leadership-seniority-filter') || '';
+    const leadershipLegacyVal = root.getAttribute('data-leadership-seniority-legacy') || '';
+    const leadershipIds = (root.getAttribute('data-leadership-seniority-ids') || '').split(',').filter(Boolean);
+    const leadershipOnlySeniorities = (root.getAttribute('data-leadership-only-seniorities') || '').split(',').filter(Boolean);
+    const statusEl = root.querySelector('[data-filter-status]');
+    const search = root.querySelector('[data-people-search]');
+    const tabAll = root.querySelector('[data-qf-all]');
+    const tabPractice = [...root.querySelectorAll('[data-qf-practice]')];
+    const tabSeniority = [...root.querySelectorAll('[data-qf-seniority]')];
+    const tabOffice = [...root.querySelectorAll('[data-qf-office]')];
+    const practiceValues = tabPractice.map((btn) => btn.getAttribute('data-qf-practice') || '').filter(Boolean);
+    const seniorityValues = tabSeniority.map((btn) => btn.getAttribute('data-qf-seniority') || '').filter(Boolean);
+    const officeValues = tabOffice.map((btn) => btn.getAttribute('data-qf-office') || '').filter(Boolean);
+    let selectedPractice = '';
+    let selectedOffice = '';
+    let selectedSeniority = '';
+
+    function readControlsFromUrl() {
+      const u = new URL(window.location.href);
+      const o = u.searchParams.get('office');
+      const s = u.searchParams.get('seniority');
+      const pr = u.searchParams.get('practice');
+      const exRaw = u.searchParams.get('expertise');
+      const exList = exRaw ? exRaw.split(',').map((x) => x.trim()).filter(Boolean) : [];
+      selectedPractice = pr && practiceValues.includes(pr) ? pr : '';
+      selectedOffice = o && officeValues.includes(o) ? o : '';
+      let sv = s || '';
+      if (leadershipLegacyVal && sv === leadershipLegacyVal) sv = leadershipFilterVal;
+      if (leadershipOnlySeniorities.includes(sv)) sv = leadershipFilterVal;
+      selectedSeniority = sv && seniorityValues.includes(sv) ? sv : '';
+      void exList;
+    }
+
+    function syncUrl(replace) {
+      const u = new URL(window.location.href);
+      const pr = selectedPractice;
+      const o = selectedOffice;
+      const s = selectedSeniority;
+      if (pr) u.searchParams.set('practice', pr);
+      else u.searchParams.delete('practice');
+      if (o) u.searchParams.set('office', o);
+      else u.searchParams.delete('office');
+      if (s) u.searchParams.set('seniority', s);
+      else u.searchParams.delete('seniority');
+      u.searchParams.delete('expertise');
+      const qs = u.searchParams.toString();
+      const next = u.pathname + (qs ? '?' + qs : '') + u.hash;
+      const cur = window.location.pathname + window.location.search + window.location.hash;
+      if (next === cur) return;
+      if (replace) history.replaceState({}, '', next);
+      else history.pushState({}, '', next);
+    }
+
+    function setTabVisual() {
+      const pr = selectedPractice;
+      const o = selectedOffice;
+      const s = selectedSeniority;
+      const qFold = searchQueryFolded();
+      const allDefault = !o && !s && !pr && !qFold;
+      if (tabAll) tabAll.setAttribute('data-active', allDefault ? 'true' : 'false');
+      tabPractice.forEach((btn) => {
+        const id = btn.getAttribute('data-qf-practice') || '';
+        btn.setAttribute('data-active', pr === id ? 'true' : 'false');
+      });
+      tabSeniority.forEach((btn) => {
+        const id = btn.getAttribute('data-qf-seniority') || '';
+        btn.setAttribute('data-active', s === id ? 'true' : 'false');
+      });
+      tabOffice.forEach((btn) => {
+        const id = btn.getAttribute('data-qf-office') || '';
+        btn.setAttribute('data-active', o === id ? 'true' : 'false');
+      });
+    }
+
+    /** Fold text for resilient name search (accents, curly quotes, NBSP). */
+    function foldSearchText(raw) {
+      return (raw || '')
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/\p{M}/gu, '')
+        .replace(/[\u00a0\u202f]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .replace(/[\u2018\u2019\u2032\u2035]/g, "'");
+    }
+
+    function searchQueryFolded() {
+      return foldSearchText(search && search.value ? search.value : '');
+    }
+
+    function applyVisibility() {
+      const pr = selectedPractice;
+      const o = selectedOffice;
+      const s = selectedSeniority;
+      const qFold = searchQueryFolded();
+      const searchActive = qFold.length > 0;
+
+      const cards = [...root.querySelectorAll('[data-person-card]')];
+      let visibleCount = 0;
+      for (const card of cards) {
+        const co = card.getAttribute('data-office') ?? '';
+        const se = card.getAttribute('data-seniority') ?? '';
+        const pg = card.getAttribute('data-practice') ?? '';
+        const blob = card.getAttribute('data-people-search-blob') ?? '';
+        const textMatch = foldSearchText(blob).includes(qFold);
+
+        const officeOk = !o || co === o;
+        const leadershipActive =
+          !!s &&
+          (s === leadershipFilterVal || (leadershipLegacyVal && s === leadershipLegacyVal));
+        const senOk =
+          !s ||
+          se === s ||
+          (leadershipActive && leadershipIds.includes(se));
+        const practiceOk = !pr || pg === pr;
+        const filtersOk = officeOk && senOk && practiceOk;
+        const show = searchActive ? textMatch : filtersOk;
+        card.classList.toggle('hidden', !show);
+        if (show) visibleCount += 1;
+      }
+
+      if (statusEl) {
+        const total = cards.length;
+        statusEl.textContent =
+          visibleCount === total
+            ? 'Showing all ' + total + ' profile' + (total === 1 ? '' : 's') + ' in the directory.'
+            : 'Showing ' + visibleCount + ' of ' + total + ' profiles (filters applied).';
+      }
+      setTabVisual();
+    }
+
+    tabAll?.addEventListener('click', () => {
+      selectedPractice = '';
+      selectedOffice = '';
+      selectedSeniority = '';
+      if (search) search.value = '';
+      applyVisibility();
+      syncUrl(true);
+    });
+    tabPractice.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-qf-practice') || '';
+        selectedPractice = id;
+        if (search) search.value = '';
+        applyVisibility();
+        syncUrl(true);
+      });
+    });
+    tabSeniority.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-qf-seniority') || '';
+        selectedSeniority = id;
+        if (search) search.value = '';
+        applyVisibility();
+        syncUrl(true);
+      });
+    });
+    tabOffice.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-qf-office') || '';
+        selectedOffice = id;
+        if (search) search.value = '';
+        applyVisibility();
+        syncUrl(true);
+      });
+    });
+
+    readControlsFromUrl();
+    applyVisibility();
+    syncUrl(true);
+
+    search?.addEventListener('input', function () {
+      applyVisibility();
+    });
+
+    window.addEventListener('popstate', function () {
+      readControlsFromUrl();
+      applyVisibility();
+    });
+  }
+
+  const roots = document.querySelectorAll('[data-people-filters]');
+  roots.forEach((r) => {
+    const host = r.closest('.people-directory');
+    if (host) initPeopleFilters(host);
+  });
+</script>
