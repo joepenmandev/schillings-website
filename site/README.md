@@ -15,10 +15,10 @@ npm run verify     # test + check:locale-parity + build + verify:build-seo + tes
                    # Vitest: CSP `frame-src`, Consent wiring
                    # Playwright: HTTP smoke + locale/sitemap/region + Chromium/axe on contact `#main`
 npm run check:locale-parity   # UK static routes must have en-us + en-ie mirrors (see locale-parity-allowlist.json)
-npm run verify:build-seo      # after build: hreflang + canonical on locale home HTML in dist/
+npm run verify:build-seo      # after build: hreflang + canonical on locale homes (fetches via spawned `astro dev`; `astro preview` unsupported with Vercel adapter). Optional: `BUILD_SEO_VERIFY_URL=https://…`
 npm run verify:launch-urls    # optional live audit — set LAUNCH_VERIFY_URL=https://… (/, /contact/, sitemap, /en-gb/→/)
 npm run verify:nonprod-indexing  # optional live audit — set INDEXING_VERIFY_URL=https://… (checks noindex + robots block on nonprod)
-npm run test:e2e   # Playwright only (needs dist/ — run build first, or use full verify)
+npm run test:e2e   # Playwright (starts `astro dev` on port **8787** by default — set `PLAYWRIGHT_DEV_PORT` to override)
 npm run preview
 npm run import:people
 npm run optimize:people-photos

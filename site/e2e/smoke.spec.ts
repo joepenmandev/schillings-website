@@ -2,8 +2,8 @@ import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
 
 /**
- * HTTP-level smoke checks against `astro preview` (no browser binary required).
- * Validates HTML/RSS without `page` — works in CI and restricted sandboxes.
+ * HTTP-level smoke checks against `astro dev` (no browser binary required for request tests).
+ * `@astrojs/vercel` does not support `astro preview`; Playwright starts dev on PLAYWRIGHT_DEV_PORT.
  */
 test.describe('smoke', () => {
   test('locale home responds with expected content', async ({ request }) => {
@@ -32,7 +32,7 @@ test.describe('smoke', () => {
   });
 
   test('news RSS is valid XML', async ({ request }) => {
-    const res = await request.get('/news/rss.xml/');
+    const res = await request.get('/news/rss.xml');
     expect(res.ok()).toBeTruthy();
     const ct = res.headers()['content-type'] ?? '';
     expect(ct).toMatch(/rss|xml/i);

@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:4321';
+/** Dedicated port avoids clashes with a developer’s normal `astro dev` on 4321. `@astrojs/vercel` does not support `astro preview`. */
+const devPort = process.env.PLAYWRIGHT_DEV_PORT ?? '8787';
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? `http://127.0.0.1:${devPort}`;
 
 export default defineConfig({
   testDir: 'e2e',
@@ -23,9 +25,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run preview -- --port 4321 --host 127.0.0.1',
+    command: `npm run dev -- --port ${devPort} --host 127.0.0.1`,
     url: `${baseURL}/`,
     reuseExistingServer: !process.env.CI,
-    timeout: 90_000,
+    timeout: 120_000,
   },
 });

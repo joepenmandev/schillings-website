@@ -3,6 +3,7 @@ import { publishedNews } from '@/data/news';
 import { articleDatePublishedIso } from '@/lib/news-datetime';
 import { newsExcerpt, newsShowListDate } from '@/lib/news-render';
 import { buildNewsRssXml, rssChannelLanguage } from '@/lib/rss-feed';
+import { absolutePageUrl } from '@/lib/public-url';
 import type { Locale } from '@/i18n/config';
 
 export const GET: APIRoute = ({ site, url }) => {
@@ -10,7 +11,7 @@ export const GET: APIRoute = ({ site, url }) => {
   const origin = (site?.origin ?? url.origin);
   const channelLink = `${origin}/news/`;
   const sorted = [...publishedNews()].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
-  const selfFeedUrl = `${origin}/news/rss.xml/`;
+  const selfFeedUrl = absolutePageUrl(origin, locale, 'news/rss.xml');
   const xml = buildNewsRssXml({
     channelTitle: `Schillings — News & Insights (${locale})`,
     channelLink,

@@ -44,7 +44,7 @@ Phased runbook for Vercel + Astro. **Engineering** owns config and headers; **ma
 | 10 | **Smoke** | `/`, one news article, one person profile, `/contact/`, `/robots.txt`, sitemap index (e.g. `/sitemap-index.xml`) — no 5xx |
 | 11 | **`hreflang`** | Same trio of URLs on UK + one mirror (`/us/` or `/ie/`): alternates present and consistent |
 | 12 | **Open Graph** | `og:url`, `og:image` (absolute HTTPS) sane on share-worthy pages |
-| 13 | **RSS** | `/news/rss.xml/` (and `/us/news/rss.xml/`, `/ie/news/rss.xml/` if used): item links use expected origin |
+| 13 | **RSS** | `/news/rss.xml` (and `/us/news/rss.xml`, `/ie/news/rss.xml`): item links use expected origin |
 | 14 | **Redirects** | Sample paths from **`vercel.json`** + root **`redirect-map.csv`**: status, locale, trailing slash |
 | 15 | **Indexing headers** | Production responses must **not** include `X-Robots-Tag: noindex` unless you intend noindex. Non-allowlisted hosts should get staging behavior per **`vercel.json`**. |
 | 16 | **Optional script** | From **`site/`**: `INDEXING_VERIFY_URL=https://preview… npm run verify:nonprod-indexing`; for prod checks add `INDEXING_VERIFY_MODE=prod` |
@@ -68,6 +68,34 @@ Phased runbook for Vercel + Astro. **Engineering** owns config and headers; **ma
 | Step | Task | Done when |
 |------|------|-----------|
 | M1 | **`LEGACY_SITE_ORIGIN`** | Set before **`npm run import:news`** / **`import:people`** (see **`site/.env.example`**) |
+
+---
+
+## Crawler audit (Screaming Frog) — sitemaps, indexing, technical
+
+Use this alongside Google’s [localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions) guidance. Screaming Frog documents hreflang setup under [How to audit hreflang](https://www.screamingfrog.co.uk/how-to-audit-hreflang/) and issue classes under [Hreflang issues](https://www.screamingfrog.co.uk/seo-spider/issues/hreflang/).
+
+### Spider configuration (typical)
+
+1. **Config → Spider → Crawl** — enable **Crawl** and **Store** hreflang; optionally **Crawl Linked XML Sitemaps** (discover via `robots.txt` or paste `sitemap-index.xml`).
+2. **Authentication** — if the deploy uses HTTP Basic Auth, add credentials in **Config → Authentication** (or crawl a no-auth preview).
+3. **Rendering** — this site is SSR-friendly; start without JS rendering unless you expand heavy client-only UI.
+4. After the crawl, use the **Hreflang**, **Response Codes**, **Directives**, **Canonicals**, and **Sitemaps** views; export **Issues** for hreflang errors.
+
+### What this stack does well
+
+- **`@astrojs/sitemap`** emits **`sitemap-index.xml`** / **`sitemap-0.xml`** at build time with **`PUBLIC_SITE_URL`** / **`VERCEL_URL`** as the URL prefix (avoid publishing a sitemap full of `http://localhost:4321` — set env on the **build** that deploys).
+- **Filters** in `astro.config.mjs` drop thin migration news/people URLs, `/search`, and `/contact/thank-you` from the XML sitemap (good alignment with “no non-indexable URLs in sitemap”).
+- **Canonical + hreflang** on locale templates are enforced post-build via `npm run verify:build-seo` (uses **`astro dev`** locally because **`astro preview`** is unsupported with **`@astrojs/vercel`**).
+
+### Known gaps to track in SF / GSC (not automatic bugs)
+
+| Topic | Detail |
+|--------|--------|
+| **Sitemap depth** | The generated XML sitemap includes **marketing static routes** (UK + `/us/` + `/ie/` mirrors). It does **not** currently enumerate every **`/news/{slug}/`** or **`/people/{slug}/`** URL. Discovery for articles and bios still relies on **internal links** and GSC; if you want every indexable article in XML, plan a **custom sitemap** or post-process step. |
+| **`robots.txt` `Sitemap:`** | Production `site/public/robots.txt` may still omit the absolute `Sitemap:` line until the final public origin is fixed — add it for cleaner SF/GSC discovery (see *If you only have 5 minutes*). |
+| **Staging hosts** | Non-allowlisted hosts get **`noindex`** + staging **`robots.txt`** via `vercel.json` — SF should show that on previews; production allowlisted hosts should not. |
+| **RSS URLs** | Feeds live at **`/news/rss.xml`** (no trailing slash); `localeHref` matches that pattern for `news/rss.xml`. |
 
 ---
 
