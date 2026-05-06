@@ -34,8 +34,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  const expectedUser = process.env.SITE_USER;
-  const expectedPass = process.env.SITE_PASS;
+  // Read private env vars in a way that works across Vercel runtimes.
+  const expectedUser =
+    import.meta.env.SITE_USER ??
+    (typeof process !== 'undefined' ? process.env.SITE_USER : undefined);
+  const expectedPass =
+    import.meta.env.SITE_PASS ??
+    (typeof process !== 'undefined' ? process.env.SITE_PASS : undefined);
   if (!expectedUser || !expectedPass) {
     return next();
   }
