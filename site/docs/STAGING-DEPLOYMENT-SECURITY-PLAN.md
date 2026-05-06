@@ -121,4 +121,5 @@ Maintain and test:
 ## Related Policy
 
 - Reviewer access runbook: `docs/REVIEWER-ACCESS-POLICY.md`
+- Vercel platform steps: `docs/VERCEL-OPERATIONS-CHECKLIST.md`
 
