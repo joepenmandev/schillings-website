@@ -49,5 +49,27 @@ function readSecret(context: APIContext, key: 'SITE_USER' | 'SITE_PASS') {
 }
 
 export const onRequest = defineMiddleware(async (context, next) => {
-  return new Response('middleware reached', { status: 401 });
+  // Keep local/staging development friction-free; gate production when credentials are configured.
+  if (!import.meta.env.PROD) {
+    return next();
+  }
+
+  // Read private env vars across node/serverless/edge runtime styles.
+  const expectedUser = readSecret(context, 'SITE_USER');
+  const expectedPass = readSecret(context, 'SITE_PASS');
+  if (!expectedUser || !expectedPass) {
+    return next();
+  }
+
+  const authHeader = context.request.headers.get('authorization');
+  if (!authHeader) {
+    return unauthorizedResponse();
+  }
+
+  const provided = decodeBasicCredentials(authHeader);
+  if (!provided || provided.username !== expectedUser || provided.password !== expectedPass) {
+    return unauthorizedResponse();
+  }
+
+  return next();
 });
