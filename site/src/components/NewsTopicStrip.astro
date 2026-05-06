@@ -7,6 +7,7 @@ import type { Locale } from '../i18n/config';
 import { expertisePathSlug } from '../lib/expertise-paths';
 import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '../lib/site-nav';
 import { NEWS_THEME_LINKS } from '../lib/news-topics';
+import { NEWS_MICRO_LABEL_CLASS } from '../lib/visual-tokens';
 
 interface Props {
   locale: Locale;
@@ -20,7 +21,7 @@ const { locale } = Astro.props;
   aria-labelledby="news-themes-heading"
 >
   <h2 id="news-themes-heading" class="sr-only">Explore related capabilities</h2>
-  <p class="text-[0.65rem] font-medium uppercase tracking-[0.18em] text-secondary-2">Related capabilities</p>
+  <p class={NEWS_MICRO_LABEL_CLASS}>Related capabilities</p>
   <ul class="mt-3 flex flex-wrap gap-2">
     {
       NEWS_THEME_LINKS.map(({ label, expertiseId }) => (

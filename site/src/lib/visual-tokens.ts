@@ -52,3 +52,30 @@ export const PEOPLE_DIRECTORY_H1_CLASS =
 /** Published colleague profile `<h1>` — intentionally smaller than {@link STRATEGIC_PAGE_H1_CLASS}. */
 export const PEOPLE_PROFILE_H1_CLASS =
   'font-serif text-3xl font-extralight leading-tight tracking-tight text-secondary-4 md:text-4xl md:leading-[1.06] lg:text-[2.75rem]';
+
+/* --- Intelligence (editorial) — copied from `NewsArchiveIndexHero` / `NewsHubIndexHero` / post & featured heroes. --- */
+
+/**
+ * Intelligence archive & topic/author hub `<h1>` typography (margin is contextual — e.g. hub adds `mt-2`).
+ * Not {@link STRATEGIC_PAGE_H1_CLASS}.
+ */
+export const NEWS_HUB_H1_CLASS =
+  'font-serif text-[1.75rem] font-extralight leading-[1.12] tracking-tight text-secondary-4 sm:text-[2.1rem] md:text-[2.45rem]';
+
+/**
+ * Article and featured-story headline typography (`NewsArticlePostHero` adds `post-full-heading` separately).
+ */
+export const NEWS_EDITORIAL_HEADLINE_CLASS =
+  'font-serif text-[1.65rem] font-normal leading-[1.15] tracking-tight text-[#3c3b39] sm:text-[2rem] lg:text-[2.2rem]';
+
+/** Topic/author filter labels, hub eyebrow scale, “Related capabilities” strip label (`NewsArchiveFilters`, `NewsTopicStrip`, `NewsHubIndexHero`). */
+export const NEWS_MICRO_LABEL_CLASS =
+  'text-[0.65rem] font-medium uppercase tracking-[0.18em] text-secondary-2';
+
+/** Inner width shell under Intelligence sage mastheads (`NewsArchiveIndexHero`, `NewsHubIndexHero`). */
+export const NEWS_MASTHEAD_INNER_CLASS =
+  'mx-auto max-w-[min(88rem,calc(100%-1.5rem))] pb-6 md:pb-7';
+
+/** Primary in-body editorial text link (archive meta link, author foot profile/archive links). */
+export const NEWS_TEXT_LINK_CLASS =
+  'font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:text-secondary-3';

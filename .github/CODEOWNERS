@@ -1,0 +1,6 @@
+# Governance & shared tokens — optional review routing.
+# Edit @YOUR_GITHUB_OR_TEAM (or copy from CODEOWNERS.example). Unknown handles may be ignored by GitHub.
+
+site/docs/DESIGN-SYSTEM-GOVERNANCE.md @YOUR_GITHUB_OR_TEAM
+site/docs/architecture/ @YOUR_GITHUB_OR_TEAM
+site/src/lib/visual-tokens.ts @YOUR_GITHUB_OR_TEAM

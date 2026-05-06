@@ -7,6 +7,7 @@ Planning artefacts for a new or relaunched **schillingspartners.com** (or succes
 | Area | Doc / folder |
 |------|----------------|
 | **Astro app** | **[`site/`](./site/)** — deployable project |
+| **Contributing & architecture governance** | **[`CONTRIBUTING.md`](./CONTRIBUTING.md)** — when to read design-system rules; **[`.github/pull_request_template.md`](./.github/pull_request_template.md)** — governance/family checklist on PRs |
 | **Engineering** (install, commands, CI, headers, routes, env) | **[`site/README.md`](./site/README.md)** — canonical; root `package.json` forwards `dev`, `build`, `test`, `verify`, `test:e2e`, `preview`, and people import scripts to `site/` |
 | **Launch order** (local → Vercel → forms → compliance → SEO) | **[`STATUS.md`](./STATUS.md)** — checklist; defers command details to `site/README.md` |
 | **Prioritized SEO / crawl backlog** | **[`IMPROVEMENT-PLAN.md`](./IMPROVEMENT-PLAN.md)** — P0–P2 from audit + SF alignment; use with `STATUS.md` |

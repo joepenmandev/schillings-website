@@ -4,6 +4,8 @@ Marketing site scaffold aligned with repo **`IA-URL-SPEC.md`** and **`HREFLANG-S
 
 **This file is the canonical engineering reference** for install, scripts, CI, security headers, routes, and environment variables. Planning specs and stakeholder tables live in **`../`**; use **`../STATUS.md`** for an ordered launch checklist (it points here for commands). For **domain cutover, indexing, and env sequencing**, follow **`docs/DEPLOY-CHECKLIST.md`** in order.
 
+**Contributing & design-system governance:** **`../CONTRIBUTING.md`**, **`docs/DESIGN-SYSTEM-GOVERNANCE.md`**, ADRs in **`docs/architecture/adr/`**, RFC template **`docs/architecture/rfc-template.md`**. Doc drift: **`npm run verify:governance-docs`** (runs inside **`npm run verify`**).
+
 ## Commands
 
 ```bash

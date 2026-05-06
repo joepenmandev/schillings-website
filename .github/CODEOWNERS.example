@@ -1,0 +1,6 @@
+# Copy to CODEOWNERS and replace @YOUR_GITHUB_OR_TEAM with a real username or @org/team.
+# GitHub uses this for review routing only — not merge blocking unless you configure branch protection.
+
+site/docs/DESIGN-SYSTEM-GOVERNANCE.md @YOUR_GITHUB_OR_TEAM
+site/docs/architecture/ @YOUR_GITHUB_OR_TEAM
+site/src/lib/visual-tokens.ts @YOUR_GITHUB_OR_TEAM

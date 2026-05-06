@@ -35,6 +35,11 @@ describe('visual-tokens', () => {
     expect(visualTokens.STRATEGIC_PAGE_H1_CLASS).toContain('font-serif');
     expect(visualTokens.PEOPLE_DIRECTORY_H1_CLASS).toContain('lg:text-[2.875rem]');
     expect(visualTokens.PEOPLE_PROFILE_H1_CLASS).toContain('lg:text-[2.75rem]');
+    expect(visualTokens.NEWS_HUB_H1_CLASS).toContain('md:text-[2.45rem]');
+    expect(visualTokens.NEWS_EDITORIAL_HEADLINE_CLASS).toContain('text-[#3c3b39]');
+    expect(visualTokens.NEWS_MICRO_LABEL_CLASS).toContain('tracking-[0.18em]');
+    expect(visualTokens.NEWS_MASTHEAD_INNER_CLASS).toContain('max-w-[min(88rem');
+    expect(visualTokens.NEWS_TEXT_LINK_CLASS).toContain('decoration-secondary-2/40');
   });
 });
 

@@ -10,6 +10,7 @@ import { newsListAuthorEntries } from '@/lib/news-list-authors';
 import { formatNewsCardDateUk, newsExcerpt, newsHeroAlt, newsHeroDisplaySrc } from '@/lib/news-render';
 import { topicSlugFromLabel } from '@/lib/news-topic-slug';
 import { localeHref } from '@/lib/site-nav';
+import { NEWS_EDITORIAL_HEADLINE_CLASS } from '@/lib/visual-tokens';
 import NewsBookOpenGutter from '@/components/NewsBookOpenGutter.astro';
 
 interface Props {
@@ -63,10 +64,7 @@ const homeHref = localeHref(locale, '');
             }
             <h2
               id={`news-featured-title-${article.slug}`}
-              class:list={[
-                'font-serif text-[1.65rem] font-normal leading-[1.15] tracking-tight text-[#3c3b39] sm:text-[2rem] lg:text-[2.2rem]',
-                cardDate ? 'mt-3' : 'mt-2',
-              ]}
+              class:list={[NEWS_EDITORIAL_HEADLINE_CLASS, cardDate ? 'mt-3' : 'mt-2']}
             >
               <a
                 href={articleHref}
