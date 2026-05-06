@@ -17,7 +17,7 @@ describe('parseNewsHtml', () => {
         <p>Second paragraph with substantive information for article rendering.</p>
       </article>
     </body></html>`;
-    const out = parseNewsHtml(html, 'parser-fixture-high-stakes-sample', 'https://schillingspartners.com');
+    const out = parseNewsHtml(html, 'parser-fixture-high-stakes-sample', 'https://example.org');
     expect('error' in out).toBe(false);
     if ('error' in out) return;
     expect(out.title).toBe('Integrated response in high-stakes matters');
@@ -25,26 +25,26 @@ describe('parseNewsHtml', () => {
     expect(out.datePublished).toBe('2026-05-01');
     expect(out.dateModified).toBe('2026-05-02');
     expect(out.body.length).toBeGreaterThanOrEqual(2);
-    expect(out.heroImage?.src).toBe('https://schillingspartners.com/images/hero.jpg');
+    expect(out.heroImage?.src).toBe('https://example.org/images/hero.jpg');
     expect(out.legacyAuthorRaw).toBe('Jane Doe');
   });
 
   it('falls back description to first paragraph', () => {
     const html = `<html><body><h1>Title</h1><time datetime="2026-03-01"></time><article><p>Lead paragraph fallback used when no meta description exists.</p></article></body></html>`;
-    const out = parseNewsHtml(html, 'x', 'https://schillingspartners.com');
+    const out = parseNewsHtml(html, 'x', 'https://example.org');
     expect('error' in out).toBe(false);
     if ('error' in out) return;
     expect(out.description).toContain('Lead paragraph fallback');
   });
 
   it('returns no title error when neither h1 nor meta/title exists', () => {
-    const out = parseNewsHtml('<html><body><p>No heading</p></body></html>', 'x', 'https://schillingspartners.com');
+    const out = parseNewsHtml('<html><body><p>No heading</p></body></html>', 'x', 'https://example.org');
     expect(out).toEqual({ slug: 'x', error: 'no title' });
   });
 
   it('falls back datePublished to 1970-01-01 when missing', () => {
     const html = `<html><body><h1>Title</h1><article><p>Body paragraph that is definitely long enough to pass validation threshold.</p></article></body></html>`;
-    const out = parseNewsHtml(html, 'x', 'https://schillingspartners.com');
+    const out = parseNewsHtml(html, 'x', 'https://example.org');
     expect('error' in out).toBe(false);
     if ('error' in out) return;
     expect(out.datePublished).toBe('1970-01-01');
@@ -59,7 +59,7 @@ describe('parseNewsHtml', () => {
       <article><p>First paragraph with enough content to pass the parser threshold for migration output.</p>
       <p>Second paragraph with substantive information for article rendering.</p></article>
     </body></html>`;
-    const out = parseNewsHtml(html, 'x', 'https://schillingspartners.com');
+    const out = parseNewsHtml(html, 'x', 'https://example.org');
     expect('error' in out).toBe(false);
     if ('error' in out) return;
     expect(out.datePublished).toBe('2022-05-03');
@@ -77,7 +77,7 @@ describe('parseNewsHtml', () => {
       <article><p>First paragraph with enough content to pass the parser threshold for migration output.</p>
       <p>Second paragraph with substantive information for article rendering.</p></article>
     </body></html>`;
-    const out = parseNewsHtml(html, 'fake-news', 'https://schillingspartners.com');
+    const out = parseNewsHtml(html, 'fake-news', 'https://example.org');
     expect('error' in out).toBe(false);
     if ('error' in out) return;
     expect(out.topics).toEqual(['Disinformation']);

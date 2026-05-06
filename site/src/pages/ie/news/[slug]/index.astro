@@ -41,7 +41,7 @@ if (!allowedSlugs.has(slug)) {
 const article = getNewsBySlug(slug);
 const isMigration = !article;
 
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 
 const migrationTitle = titleFromSlug(slug);
 const migrationDescription =

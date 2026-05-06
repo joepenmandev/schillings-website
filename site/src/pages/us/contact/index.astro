@@ -12,7 +12,7 @@ import { absolutePageUrl } from '@/lib/public-url';
 
 const locale = 'en-us';
 const contactDefaults = contactQualifyingDefaults(locale);
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const { title: contactTitle, description: contactDescription, pageEntityName: contactPageEntityName } =
   contactPageMeta(locale);
 const contactJsonLd = buildJsonLdGraph(

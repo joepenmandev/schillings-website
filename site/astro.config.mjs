@@ -64,9 +64,14 @@ function isThinMigrationPeoplePath(pathname) {
   return false;
 }
 
+const siteUrl =
+  process.env.PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined) ||
+  'http://localhost:4321';
+
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://schillingspartners.com',
+  site: siteUrl,
   output: 'server',
   adapter: vercel(),
   trailingSlash: 'always',

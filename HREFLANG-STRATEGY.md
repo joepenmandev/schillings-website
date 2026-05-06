@@ -52,9 +52,9 @@ Optional **`en`** (language-only): Google suggests a generic English alternate w
 
 | URL | Locale (internal) | `hreflang` (markup) |
 |-----|-------------------|---------------------|
-| `https://www.schillingspartners.com/` | `en-gb` | `en-GB` |
-| `https://www.schillingspartners.com/en-us/` | `en-us` | `en-US` |
-| `https://www.schillingspartners.com/en-ie/` | `en-ie` | `en-IE` |
+| `/` | `en-gb` | `en-GB` |
+| `/en-us/` | `en-us` | `en-US` |
+| `/en-ie/` | `en-ie` | `en-IE` |
 
 Legacy **`/en-gb/…`** URLs **301** to the same path without the segment. **Option — geo in path** (e.g. `/uk/`) is **not** used here; if you ever add it, map **`hreflang`** explicitly — values are **not** inferred from words like “uk” in the path.
 

@@ -60,9 +60,9 @@ A **set** = URLs that are intentional alternates of the same content (same templ
 
 | Set ID | Template (e.g. Homepage, Service: Reputation, People: Bio) | URLs in set (full `https://…`) | `hreflang` values used | `x-default` URL | Owner for keeping alternates in sync |
 |--------|------------------------------------------------------------|----------------------------------|------------------------|-----------------|----------------------------------------|
-| H1 | Locale home | **`…/`** (UK), **`…/en-us/`**, **`…/en-ie/`** | **`en-GB`**, **`en-US`**, **`en-IE`** (see `Base.astro` / `htmlLang`) | **`https://www.schillingspartners.com/`** | Web + compliance |
-| H2 | People index | **`…/people/`**, **`…/en-us/people/`**, **`…/en-ie/people/`** | same | **`https://www.schillingspartners.com/people/`** | Web |
-| H3 | News index | **`…/news/`**, **`…/en-us/news/`**, **`…/en-ie/news/`** | same | **`https://www.schillingspartners.com/news/`** | Web |
+| H1 | Locale home | **`…/`** (UK), **`…/en-us/`**, **`…/en-ie/`** | **`en-GB`**, **`en-US`**, **`en-IE`** (see `Base.astro` / `htmlLang`) | **`/`** | Web + compliance |
+| H2 | People index | **`…/people/`**, **`…/en-us/people/`**, **`…/en-ie/people/`** | same | **`/people/`** | Web |
+| H3 | News index | **`…/news/`**, **`…/en-us/news/`**, **`…/en-ie/news/`** | same | **`/news/`** | Web |
 
 **Source:** [Google — localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)
 
@@ -72,7 +72,7 @@ A **set** = URLs that are intentional alternates of the same content (same templ
 
 | Property type | URL / domain | Verified owner (team/email) | Notes (staging, www vs apex, regional TLDs) |
 |---------------|--------------|-----------------------------|---------------------------------------------|
-| Production | `https://www.schillingspartners.com` | *Internal* | **mySRA:** register this hostname for badge (see checklist). |
+| Production | `` | *Internal* | **mySRA:** register this hostname for badge (see checklist). |
 | Staging / Preview | *e.g. Vercel preview URL* | *Internal* | **`robots.txt`** should **disallow** or use **noindex** until launch (see **`TECHNICAL-SEO-LAUNCH-CHECKLIST.md`** §A). |
 
 **GSC workflow:** Export top **Landing pages** + **Links** reports → reconcile with **`redirect-map.csv`** and **`site/vercel.json`**; add rows for any legacy URL with traffic not yet covered (see **`REDIRECT-MAP.md`**).

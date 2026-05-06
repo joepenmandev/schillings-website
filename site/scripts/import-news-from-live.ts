@@ -10,6 +10,8 @@
  *
  * After `--write`, re-run author slug backfill (import replaces JSON):
  *   npm run backfill:news-authors
+ *
+ * Set **LEGACY_SITE_ORIGIN** (HTTPS origin, no trailing slash) to the host you are importing from.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -56,9 +58,10 @@ function normalizeSlug(slug: string): string {
 function getConfig(argv: string[]): RunConfig {
   const write = argv.includes('--write');
   const probe = argv.includes('--probe');
+  const baseUrl = (process.env.LEGACY_SITE_ORIGIN ?? 'https://example.com').replace(/\/+$/, '');
   return {
-    baseUrl: 'https://schillingspartners.com',
-    userAgent: 'SchillingsNewsMigration/1.0 (+https://schillingspartners.com)',
+    baseUrl,
+    userAgent: 'SchillingsNewsMigration/1.0',
     delayMs: 200,
     dryRun: !write,
     probe,

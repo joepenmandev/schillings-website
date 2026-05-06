@@ -6,7 +6,7 @@ import { buildAboutUsPageJsonLd } from '@/lib/jsonld-page';
 import { absolutePageUrl } from '@/lib/public-url';
 
 const locale = 'en-gb';
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const model = getAboutUsRegionModel(locale);
 const aboutJsonLd = buildAboutUsPageJsonLd({
   origin,

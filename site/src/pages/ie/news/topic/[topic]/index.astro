@@ -36,7 +36,7 @@ const articles = articlesMatchingTopicSlug(publishedNews(), topicSlug).sort((a, 
 const pageTitle = `${label} — News & Insights | Schillings`;
 const pageDescription = `Schillings news and analysis tagged “${label}”.`;
 const pathAfterLocale = `news/topic/${topicSlug}`;
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const topicPageUrl = `${absolutePageUrl(origin, locale, pathAfterLocale)}`;
 const topicJsonLd = buildJsonLdGraph(
   ...buildNewsTopicHubGraphNodes({

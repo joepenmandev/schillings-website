@@ -28,7 +28,7 @@ After each merge: **`cd site && npm run verify`**. After deploy: **`TECHNICAL-SE
 
 | Item | Implementation |
 |------|----------------|
-| Apex canonical | `site` = `https://schillingspartners.com`; fallbacks in `Base.astro` and pages. |
+| Apex canonical | `site` = ``; fallbacks in `Base.astro` and pages. |
 | Public regions | **`/us/`**, **`/ie/`**; **`/en-us/`**, **`/en-ie/`** → **`/us/`**, **`/ie/`** in `vercel.json` + `redirect-map.csv`. |
 | UK legacy locale | **`/en-gb/*`** → unprefixed UK paths. |
 | XML sitemap | **`noindex`** utilities excluded: **`/search/`**, **`*/contact/thank-you/`** (`astro.config.mjs` filter). |
@@ -62,11 +62,11 @@ After each merge: **`cd site && npm run verify`**. After deploy: **`TECHNICAL-SE
 
 | ID | Task | Acceptance criteria | Notes |
 |----|------|---------------------|-------|
-| **P1.1** | Screaming Frog baseline | Spider from **`https://schillingspartners.com/`** with **Crawl canonicals**, **Extract hreflang**, **Crawl linked XML sitemaps**, **Always follow redirects** ([SF configuration](https://www.screamingfrog.co.uk/seo-spider/user-guide/configuration/)) | Export **Issues** + **Internal → Redirect chains** |
+| **P1.1** | Screaming Frog baseline | Spider from **`/`** with **Crawl canonicals**, **Extract hreflang**, **Crawl linked XML sitemaps**, **Always follow redirects** ([SF configuration](https://www.screamingfrog.co.uk/seo-spider/user-guide/configuration/)) | Export **Issues** + **Internal → Redirect chains** |
 | **P1.2** | Shorten redirect chains | No **high-traffic** URL with **>1** 301 hop where avoidable. **Implemented:** **`/en-us/expertise`** (and **`/en-ie/expertise`**) → **`/us/services`** / **`/ie/services`** one-hop rules in **`site/vercel.json`** + **`redirect-map.csv`**; **`npm run test`** passes. Re-verify **Internal → Redirect chains** in Screaming Frog after deploy. | [Redirect chains](https://www.screamingfrog.co.uk/seo-spider/issues/response-codes/internal-redirect-chains/) |
 | **P1.3** | Sitemap vs indexable | **Issues** tab: **non-indexable URLs in sitemap** empty or justified | Guarded by filters + topic routing; re-check after content changes |
 | **P1.4** | Rich Results | Sample **Person**, **Article**, **Organization** URLs pass [Rich Results Test](https://search.google.com/test/rich-results) | SF structured data ≠ Google’s validator |
-| **P1.5** | Search Console | Property for apex; submit **`https://schillingspartners.com/sitemap-index.xml`**; watch **Coverage**, **hreflang**, **CWV** | After M0 |
+| **P1.5** | Search Console | Property for apex; submit **`/sitemap-index.xml`**; watch **Coverage**, **hreflang**, **CWV** | After M0 |
 | **P1.6** | Documentation accuracy | Planning + **`site/README.md`**: public paths documented as **`/us/`**, **`/ie/`** where meant for URLs; internal **`Locale`** **`en-us`** / **`en-ie`** called out | Reduces onboarding errors |
 
 **Maps to:** **`TECHNICAL-SEO-LAUNCH-CHECKLIST.md`** §L (Screaming Frog) and §A–D.
@@ -113,7 +113,7 @@ Aligned with **[Google Search Central — Article structured data](https://devel
 
 | Item | Action |
 |------|--------|
-| **Q1** | Run **`LAUNCH_VERIFY_URL=https://schillingspartners.com npm run verify:launch-urls`** from **`site/`** after deploy (see **`site/package.json`**). |
+| **Q1** | Run **`LAUNCH_VERIFY_URL= npm run verify:launch-urls`** from **`site/`** after deploy (see **`site/package.json`**). |
 | **Q2** | Add **`verify:launch-urls`** to release checklist in **`STATUS.md`** verification table if not already routine. |
 | **Q3** | PageSpeed Insights on **`/`**, **`/contact/`**, **`/news/`** (lab + field when CrUX exists) — **`TECHNICAL-SEO-LAUNCH-CHECKLIST.md`** §G2. |
 

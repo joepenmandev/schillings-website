@@ -6,9 +6,9 @@ import { buildNewsRssXml, rssChannelLanguage } from '@/lib/rss-feed';
 import type { Locale } from '@/i18n/config';
 import { absolutePageUrl } from '@/lib/public-url';
 
-export const GET: APIRoute = ({ site }) => {
+export const GET: APIRoute = ({ site, url }) => {
   const locale = 'en-ie' as Locale;
-  const origin = (site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+  const origin = (site?.origin ?? url.origin);
   const channelLink = absolutePageUrl(origin, locale, 'news');
   const sorted = [...publishedNews()].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
   const selfFeedUrl = absolutePageUrl(origin, locale, 'news/rss.xml');

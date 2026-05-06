@@ -29,9 +29,9 @@ const jane: PersonProfile = {
 
 describe('buildNewsArticleBlogPostingGraph', () => {
   it('emits Person node with stable @id and BlogPosting with isPartOf WebSite', () => {
-    const pageUrl = 'https://schillingspartners.com/news/test-article/';
+    const pageUrl = 'https://example.org/news/test-article/';
     const g = buildNewsArticleBlogPostingGraph({
-      origin: 'https://schillingspartners.com',
+      origin: 'https://example.org',
       locale: 'en-gb',
       article: baseArticle,
       pageUrl,
@@ -41,12 +41,12 @@ describe('buildNewsArticleBlogPostingGraph', () => {
     const person = g['@graph'][0] as Record<string, unknown>;
     const post = g['@graph'][1] as Record<string, unknown>;
     expect(person['@type']).toBe('Person');
-    expect(person['@id']).toBe('https://schillingspartners.com/people/jane-doe/#person');
+    expect(person['@id']).toBe('https://example.org/people/jane-doe/#person');
     expect(post['@type']).toBe('BlogPosting');
-    expect(post.isPartOf).toEqual({ '@id': 'https://schillingspartners.com/#website' });
+    expect(post.isPartOf).toEqual({ '@id': 'https://example.org/#website' });
     expect(post.articleSection).toBe('Reputation');
     expect(post.keywords).toBe('Reputation, Privacy');
-    expect(post.author).toEqual({ '@id': 'https://schillingspartners.com/people/jane-doe/#person' });
+    expect(post.author).toEqual({ '@id': 'https://example.org/people/jane-doe/#person' });
     expect(person.description).toBe('Bio.');
     expect(post.speakable).toEqual({
       '@type': 'SpeakableSpecification',
@@ -60,24 +60,24 @@ describe('buildNewsArticleBlogPostingGraph', () => {
       authorSlugs: ['jane-doe', 'not-a-published-person'],
     };
     const g = buildNewsArticleBlogPostingGraph({
-      origin: 'https://schillingspartners.com',
+      origin: 'https://example.org',
       locale: 'en-gb',
       article: a,
-      pageUrl: 'https://schillingspartners.com/news/test-article/',
+      pageUrl: 'https://example.org/news/test-article/',
       resolvePerson: (s) => (s === 'jane-doe' ? jane : null),
     });
     const post = g['@graph'][1] as Record<string, unknown>;
     expect(g['@graph']).toHaveLength(2);
-    expect(post.author).toEqual({ '@id': 'https://schillingspartners.com/people/jane-doe/#person' });
+    expect(post.author).toEqual({ '@id': 'https://example.org/people/jane-doe/#person' });
   });
 
   it('speakable uses headline only when there is no body paragraph', () => {
     const a: NewsArticle = { ...baseArticle, paragraphs: ['', '  ', ''] };
     const g = buildNewsArticleBlogPostingGraph({
-      origin: 'https://schillingspartners.com',
+      origin: 'https://example.org',
       locale: 'en-gb',
       article: a,
-      pageUrl: 'https://schillingspartners.com/news/test-article/',
+      pageUrl: 'https://example.org/news/test-article/',
       resolvePerson: (s) => (s === 'jane-doe' ? jane : null),
     });
     const post = g['@graph'][1] as Record<string, unknown>;
@@ -90,14 +90,14 @@ describe('buildNewsArticleBlogPostingGraph', () => {
   it('falls back to Organization as author when no people or legacy line', () => {
     const a: NewsArticle = { ...baseArticle, authorSlugs: [], legacyAuthorRaw: '' };
     const g = buildNewsArticleBlogPostingGraph({
-      origin: 'https://schillingspartners.com',
+      origin: 'https://example.org',
       locale: 'en-gb',
       article: a,
-      pageUrl: 'https://schillingspartners.com/news/test-article/',
+      pageUrl: 'https://example.org/news/test-article/',
       resolvePerson: () => null,
     });
     const post = g['@graph'][0] as Record<string, unknown>;
-    expect(post.author).toEqual({ '@id': 'https://schillingspartners.com/#organization' });
+    expect(post.author).toEqual({ '@id': 'https://example.org/#organization' });
   });
 
   it('omits BlogPosting image when hero resolves to SVG', () => {
@@ -106,10 +106,10 @@ describe('buildNewsArticleBlogPostingGraph', () => {
       heroImage: { src: '/art.svg', alt: '' },
     };
     const g = buildNewsArticleBlogPostingGraph({
-      origin: 'https://schillingspartners.com',
+      origin: 'https://example.org',
       locale: 'en-gb',
       article: a,
-      pageUrl: 'https://schillingspartners.com/news/test-article/',
+      pageUrl: 'https://example.org/news/test-article/',
       resolvePerson: (s) => (s === 'jane-doe' ? jane : null),
     });
     const post = g['@graph'][1] as Record<string, unknown>;
@@ -122,10 +122,10 @@ describe('buildNewsArticleBlogPostingGraph', () => {
       publishedAt: '2026-01-15T14:00:00.000Z',
     };
     const g = buildNewsArticleBlogPostingGraph({
-      origin: 'https://schillingspartners.com',
+      origin: 'https://example.org',
       locale: 'en-gb',
       article: a,
-      pageUrl: 'https://schillingspartners.com/news/test-article/',
+      pageUrl: 'https://example.org/news/test-article/',
       resolvePerson: (s) => (s === 'jane-doe' ? jane : null),
     });
     const post = g['@graph'][1] as Record<string, unknown>;
@@ -135,10 +135,10 @@ describe('buildNewsArticleBlogPostingGraph', () => {
   it('uses legacyAuthorRaw as Person when slugs empty (migration credit)', () => {
     const a: NewsArticle = { ...baseArticle, authorSlugs: [], legacyAuthorRaw: 'Legacy credit line' };
     const g = buildNewsArticleBlogPostingGraph({
-      origin: 'https://schillingspartners.com',
+      origin: 'https://example.org',
       locale: 'en-gb',
       article: a,
-      pageUrl: 'https://schillingspartners.com/news/test-article/',
+      pageUrl: 'https://example.org/news/test-article/',
       resolvePerson: () => null,
     });
     const post = g['@graph'][0] as Record<string, unknown>;

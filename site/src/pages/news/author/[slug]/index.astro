@@ -30,7 +30,7 @@ if (!person) {
 
 const articles = getAllNewsForPersonSlug(authorSlug);
 const pathAfterLocale = `news/author/${authorSlug}`;
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const pageUrl = `${absolutePageUrl(origin, locale, pathAfterLocale)}`;
 
 const pageTitle = `${person.name} — News & Insights | Schillings`;

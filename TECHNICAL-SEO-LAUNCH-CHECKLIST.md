@@ -189,7 +189,7 @@ Google can index **server-rendered / pre-built HTML** without depending on clien
 
 | Mode | Use for |
 |------|---------|
-| **Spider** (default) | Discover internal URLs from a start URL (e.g. **`https://schillingspartners.com/`** — UK home). Legacy **`/en-gb/…`** **301**s to unprefixed UK paths; legacy **`/en-us/…`** / **`/en-ie/…`** **301** to **`/us/…`** / **`/ie/…`**. Confirms indexable HTML, links, response codes, inlinks/outlinks. |
+| **Spider** (default) | Discover internal URLs from a start URL (e.g. **`/`** — UK home). Legacy **`/en-gb/…`** **301**s to unprefixed UK paths; legacy **`/en-us/…`** / **`/en-ie/…`** **301** to **`/us/…`** / **`/ie/…`**. Confirms indexable HTML, links, response codes, inlinks/outlinks. |
 | **List** | Paste **GSC** / analytics exports, legacy URLs from `redirect-map.csv`, or “top landing pages” — verify each returns **301 → final** URL, **404**, or **200** as intended. |
 | **Sitemap** | Crawl **`sitemap-index.xml`** (linked from `robots.txt`) to verify sitemap ↔ live URLs, **orphans**, and **non-indexable URLs in sitemap** (see [Sitemaps issues](https://www.screamingfrog.co.uk/seo-spider/issues/sitemaps/)). Enable **Crawl linked XML sitemaps** in Configuration → Spider → Crawl where appropriate ([user guide](https://www.screamingfrog.co.uk/seo-spider/user-guide/configuration/#crawl-linked-xml-sitemaps)). |
 

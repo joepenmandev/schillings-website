@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const phone = immediateResponsePhoneForLocale(locale);
 const offices = allOffices();
 

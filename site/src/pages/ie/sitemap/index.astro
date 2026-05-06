@@ -6,7 +6,7 @@ import HtmlSitemapContent from '@/components/HtmlSitemapContent.astro';
 import { buildJsonLdGraph, buildPageEntityJsonLd } from '@/lib/jsonld-page';
 
 const locale = 'en-ie';
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const description = 'Overview of main pages on the Ireland Schillings site.';
 const jsonLd = buildJsonLdGraph(
   buildPageEntityJsonLd({

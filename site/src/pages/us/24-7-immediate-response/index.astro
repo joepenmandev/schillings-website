@@ -9,7 +9,7 @@ import {
 } from '@/lib/immediate-response-page';
 
 const locale = 'en-us';
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const description = immediateResponseMetaDescription(locale);
 const jsonLd = buildImmediateResponsePageJsonLd(origin, locale);
 ---

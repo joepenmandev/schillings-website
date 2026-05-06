@@ -11,7 +11,7 @@ import { localeHref } from '@/lib/site-nav';
 import { locales, isLocale, type Locale } from '@/i18n/config';
 
 const locale = 'en-us';
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const servicesTitle = 'Services | Schillings';
 const servicesDescription =
   'Practice hubs linking Schillings expertise to people and capabilities — reputation, privacy, litigation, intelligence, communications, and more.';

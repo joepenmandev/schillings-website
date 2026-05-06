@@ -6,7 +6,7 @@
  *   INDEXING_VERIFY_URL="https://preview.example.vercel.app" npm run verify:nonprod-indexing
  *
  * Optional mode:
- *   INDEXING_VERIFY_MODE=prod INDEXING_VERIFY_URL="https://schillingspartners.com" npm run verify:nonprod-indexing
+ *   INDEXING_VERIFY_MODE=prod INDEXING_VERIFY_URL="https://your-production-host.example" npm run verify:nonprod-indexing
  */
 
 const origin = (process.env.INDEXING_VERIFY_URL ?? '').trim().replace(/\/+$/, '');

@@ -316,7 +316,7 @@ export type ParsePersonHtmlResult =
       unknownTagLabels: string[];
     };
 
-export function parsePersonHtml(html: string, slug: string, baseOrigin = 'https://schillingspartners.com'): ParsePersonHtmlResult {
+export function parsePersonHtml(html: string, slug: string, baseOrigin = 'https://example.com'): ParsePersonHtmlResult {
   const root = parse(html);
   const main = root.querySelector('.main-wrapper');
   if (!main) return { error: 'no main-wrapper', slug };

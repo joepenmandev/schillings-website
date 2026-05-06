@@ -6,7 +6,7 @@
 
 ---
 
-## Answers based on **current** [schillingspartners.com](https://www.schillingspartners.com/)
+## Answers based on **current** [schillingspartners.com](/)
 
 These entries describe what the **live site already does** (structure + messaging patterns). Treat that as the **primary approval baseline** for the rebuild unless marketing explicitly revises it. External templates fill **only gaps** the current site does not define (e.g. multi-step qualification).
 
@@ -63,7 +63,7 @@ Preserve **taxonomy + filter model** when moving to Astro; improve accessibility
 | Element | Current behaviour |
 |---------|-------------------|
 | Pattern | Long-form, headings, bullet lists, links to SRA / complaints. |
-| Example | [Schillings SRA page](https://www.schillingspartners.com/compliance/schillings-sra) |
+| Example | [Schillings SRA page](/compliance/schillings-sra) |
 
 Keep **content hierarchy**; migration may **reshape** layout (readable max-width, TOC) without changing legal meaning — compliance approves copy.
 
@@ -84,11 +84,11 @@ Keep **content hierarchy**; migration may **reshape** layout (readable max-width
 
 | Page type | Primary reference (approved baseline) | External pattern (borrow if needed) |
 |-----------|----------------------------------------|-------------------------------------|
-| **Home** | [schillingspartners.com](https://www.schillingspartners.com/) | Mishcon / Astro marketing themes for **section spacing** only |
+| **Home** | [schillingspartners.com](/) | Mishcon / Astro marketing themes for **section spacing** only |
 | **Service hub** | *(Build to match future IA; live may not mirror final slugs)* | Mishcon practice hub rhythm |
-| **Article / insight** | [News & Insights](https://www.schillingspartners.com/news) listing + article templates once URL known | Mishcon article typography |
+| **Article / insight** | [News & Insights](/news) listing + article templates once URL known | Mishcon article typography |
 | **People index** | *(Confirm live people URL when stable)* | Mishcon people filters |
-| **Contact / qualify** | [Contact](https://www.schillingspartners.com/contact) for **offices + phone + media** | `LEAD-QUALIFICATION.md` + Tailwind UI for **multi-step** |
+| **Contact / qualify** | [Contact](/contact) for **offices + phone + media** | `LEAD-QUALIFICATION.md` + Tailwind UI for **multi-step** |
 
 ---
 
@@ -107,15 +107,15 @@ Keep **content hierarchy**; migration may **reshape** layout (readable max-width
 
 | Area | Approved (baseline = current live unless noted) | Borrowed (structure/UX only — re-skinned) | Status |
 |------|--------------------------------------------------|---------------------------------------------|--------|
-| **Global** | Title pattern; “Schillings” framing; five pillars + editorial strips; **SVG logotypes** in `site/public/brand/` (`schillings-logo-rgb.svg`, `schillings-logo-negative.svg`) | — | Match [homepage](https://www.schillingspartners.com/) |
+| **Global** | Title pattern; “Schillings” framing; five pillars + editorial strips; **SVG logotypes** in `site/public/brand/` (`schillings-logo-rgb.svg`, `schillings-logo-negative.svg`) | — | Match [homepage](/) |
 | **Header / nav** | *(Infer from live header in browser / Figma)* | Sticky / mobile menu **behaviour** from Tailwind UI if live lacks pattern | Confirm with design |
 | **Home hero** | “High stakes, handled.” + proposition paragraph | None for headline; **remove Lorem** | Fix placeholder |
 | **Home body** | Pillar labels + split-line sections | Optional: Mishcon-style **hub links** under pillars if approved | Optional |
 | **Service hub** | TBD per IA | Mishcon-style sub-hub cards | When services ship |
-| **News listing** | Topic chips + All/News/Insights filter model | Accessible filter primitives (Tailwind UI / Headless UI patterns) | [News](https://www.schillingspartners.com/news) |
+| **News listing** | Topic chips + All/News/Insights filter model | Accessible filter primitives (Tailwind UI / Headless UI patterns) | [News](/news) |
 | **People** | TBD when URL stable | Mishcon list density | Pending |
-| **Contact** | Offices, phones, media, 24/7 CTA; **dedupe** regions | **Multi-step £25k gate** — new vs live | [Contact](https://www.schillingspartners.com/contact) + `site/` form |
-| **Footer / regulatory** | SRA page content & links — `FOOTER-REGULATORY-CHECKLIST.md` | Multi-column footer layout from Tailwind UI | [SRA compliance](https://www.schillingspartners.com/compliance/schillings-sra) |
+| **Contact** | Offices, phones, media, 24/7 CTA; **dedupe** regions | **Multi-step £25k gate** — new vs live | [Contact](/contact) + `site/` form |
+| **Footer / regulatory** | SRA page content & links — `FOOTER-REGULATORY-CHECKLIST.md` | Multi-column footer layout from Tailwind UI | [SRA compliance](/compliance/schillings-sra) |
 
 ---
 

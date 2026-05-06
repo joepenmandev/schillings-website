@@ -15,7 +15,7 @@
     "sitemapUrlCount": 0
   },
   "failures": [
-    "Child sitemap non-200 (404): https://www.schillingspartners.com/sitemap-0.xml"
+    "Child sitemap non-200 (404): /sitemap-0.xml"
   ],
   "warnings": [],
   "pages": []

@@ -51,7 +51,7 @@ if (!allowedSlugs.has(slug)) {
 const person = getPersonBySlug(slug);
 const isMigration = !person;
 
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 
 const migrationTitle = titleFromSlug(slug);
 const migrationDescription =
@@ -119,12 +119,9 @@ if (person) {
   pathAfterLocale = `people/${slug}`;
 }
 
-const ogImageAbsolute =
-  person?.imagePath && Astro.site
-    ? new URL(person.imagePath, Astro.site).href
-    : person?.imagePath
-      ? `https://schillingspartners.com${person.imagePath}`
-      : undefined;
+const ogImageAbsolute = person?.imagePath
+  ? new URL(person.imagePath, Astro.site ?? Astro.url).href
+  : undefined;
 ---
 
 <Base

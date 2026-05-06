@@ -20,7 +20,7 @@ const articles = articlesForNewsPage(page);
 const featuredArticle = articles[0];
 const gridArticles = featuredArticle ? articles.slice(1) : [];
 const totalPages = newsTotalPages();
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const nextHref = totalPages > 1 ? `${absolutePageUrl(origin, locale, 'news/page/2')}` : null;
 
 const newsTitle = 'News & Insights | Schillings';

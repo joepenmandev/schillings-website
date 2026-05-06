@@ -6,7 +6,7 @@ Synthesized from **regulators, standards bodies, and first-party platform docume
 
 ## 1. Firm context (from public site)
 
-- Positioning: reputation, privacy, security, law, intelligence, communications, diplomacy ([schillingspartners.com](https://www.schillingspartners.com/)).
+- Positioning: reputation, privacy, security, law, intelligence, communications, diplomacy ([schillingspartners.com](/)).
 - **Quality issue:** placeholder **Lorem ipsum** appears on the live homepage in at least one section — remove before any relaunch; it signals neglect and can undermine trust and E-E-A-T-style signals.
 
 **Action:** Confirm whether marketing is for an **SRA-authorised firm** (or group including one). Everything in §4 applies only to **regulated solicitors/firms** in scope.

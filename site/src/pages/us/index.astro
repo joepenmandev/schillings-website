@@ -8,7 +8,7 @@ import { homePageMeta } from '@/lib/locale-marketing-meta';
 import { buildJsonLdGraph, buildPageEntityJsonLd } from '@/lib/jsonld-page';
 const locale = 'en-us';
 
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const { title: homeTitle, description: mission } = homePageMeta(locale);
 const homeWebPageJsonLd = buildJsonLdGraph(
   buildPageEntityJsonLd({

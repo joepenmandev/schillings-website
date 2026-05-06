@@ -1,5 +1,5 @@
 /**
- * One-off migration: fetch public people pages from schillingspartners.com,
+ * One-off migration: fetch public people pages from a legacy host (set LEGACY_SITE_ORIGIN),
  * extract name, role, bio paragraphs, tags, headshot URL; download images to public/people-photos/.
  *
  * Run from repo: npm run import:people (uses tsx)
@@ -16,8 +16,8 @@ const slugsPath = path.join(siteRoot, 'src/data/people-sitemap-slugs.json');
 const outJsonPath = path.join(siteRoot, 'src/data/people-imported.json');
 const photoDir = path.join(siteRoot, 'public/people-photos');
 
-const BASE = 'https://schillingspartners.com';
-const UA = 'SchillingsInternalMigration/1.0 (+https://schillingspartners.com)';
+const BASE = (process.env.LEGACY_SITE_ORIGIN ?? 'https://example.com').replace(/\/+$/, '');
+const UA = 'SchillingsInternalMigration/1.0';
 const DELAY_MS = 450;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

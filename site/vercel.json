@@ -6,8 +6,7 @@
     {
       "source": "/robots.txt",
       "missing": [
-        { "type": "host", "value": "schillingspartners.com" },
-        { "type": "host", "value": "www.schillingspartners.com" }
+        { "type": "host", "value": "schillings-website.vercel.app" }
       ],
       "destination": "/robots-staging.txt"
     }
@@ -64,8 +63,7 @@
     {
       "source": "/(.*)",
       "missing": [
-        { "type": "host", "value": "schillingspartners.com" },
-        { "type": "host", "value": "www.schillingspartners.com" }
+        { "type": "host", "value": "schillings-website.vercel.app" }
       ],
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }

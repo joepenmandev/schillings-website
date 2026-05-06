@@ -22,7 +22,7 @@ describe('api/contact handler', () => {
   async function post(body: unknown, init?: { headers?: Record<string, string> }) {
     const { default: handler } = await import('./contact');
     return handler(
-      new Request('https://schillingspartners.com/api/contact', {
+      new Request('https://example.test/api/contact', {
         method: 'POST',
         headers: { 'content-type': 'application/json', ...init?.headers },
         body: JSON.stringify(body),

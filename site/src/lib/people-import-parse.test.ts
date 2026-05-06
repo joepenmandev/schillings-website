@@ -152,7 +152,7 @@ describe('inferOffice / inferSeniority', () => {
 });
 
 describe('collectLinkedInProfileUrls', () => {
-  const base = 'https://schillingspartners.com';
+  const base = 'https://example.org';
 
   it('normalises protocol-relative and absolute /in/ profile links', () => {
     const urls = collectLinkedInProfileUrls(

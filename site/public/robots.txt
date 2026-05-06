@@ -10,4 +10,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://schillingspartners.com/sitemap-index.xml
+# Sitemap: set an absolute URL when you have a final public origin, e.g.
+# Sitemap: https://your-public-domain.example/sitemap-index.xml

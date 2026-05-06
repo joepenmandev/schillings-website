@@ -50,7 +50,7 @@ const editorialNewsStubs: unknown[] = [
     locale: 'en-gb',
     title: 'Privacy, reputation, and safety as one fight',
     datePublished: '2026-04-18',
-    legacyUrl: 'https://schillingspartners.com/news/privacy-reputation-safety-one-fight',
+    legacyUrl: '/news/privacy-reputation-safety-one-fight',
     status: 'published',
     description:
       'Personal and institutional risk rarely arrives as a single “legal” or “PR” problem — mapping the whole surface area early reduces blind spots.',

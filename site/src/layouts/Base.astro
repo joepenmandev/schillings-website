@@ -32,7 +32,7 @@ interface Props {
   hreflangLocales?: readonly Locale[];
 }
 
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 /** Request host — use for same-origin links in the shell (footer region URLs work on localhost and in prod). */
 const siteOrigin = Astro.url.origin;
 const {

@@ -10,7 +10,7 @@
 
 | Rule | Choice |
 |------|--------|
-| Host | `https://www.schillingspartners.com` (pending DNS confirmation) |
+| Host | `` (pending DNS confirmation) |
 | Lowercase paths | **Yes** |
 | Trailing slash | **With** trailing slash (`/contact/`); redirect non-slash → slash |
 | **UK (primary)** public URLs | **No** `/en-gb/` segment — site root **`/`** and paths like **`/news/`**, **`/people/`** (canonical **en-GB** cluster; internal data `locale` remains **`en-gb`**) |
@@ -27,7 +27,7 @@
 
 Path suffixes below are **relative to the locale root**:
 
-- **UK:** prefix = **none** — e.g. suffix `/contact/` → **`https://www.schillingspartners.com/contact/`**
+- **UK:** prefix = **none** — e.g. suffix `/contact/` → **`/contact/`**
 - **US:** prefix = **`/en-us`** — e.g. **`/en-us/contact/`**
 - **IE:** prefix = **`/en-ie`** — e.g. **`/en-ie/contact/`**
 

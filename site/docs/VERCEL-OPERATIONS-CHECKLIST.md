@@ -49,6 +49,6 @@ From `site/`:
 ```bash
 npm run build
 INDEXING_VERIFY_URL="https://<staging-or-preview-url>" npm run verify:nonprod-indexing
-INDEXING_VERIFY_MODE=prod INDEXING_VERIFY_URL="https://schillingspartners.com" npm run verify:nonprod-indexing
+INDEXING_VERIFY_MODE=prod INDEXING_VERIFY_URL="" npm run verify:nonprod-indexing
 ```
 

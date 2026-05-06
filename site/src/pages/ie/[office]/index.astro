@@ -17,7 +17,7 @@ export function getStaticPaths() {
 const locale = 'en-ie';
 const slug = Astro.params.office as OfficeSlug;
 const office = OFFICES[slug];
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const description = `Contact Schillings ${office.cityLabel} — address, map, phone, email, and regional enquiry form.`;
 const pageTitle = `Contact — ${office.name} | Schillings`;
 const jsonLd = buildJsonLdGraph(

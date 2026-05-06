@@ -22,7 +22,7 @@ const officeSeg = aboutUsOfficeSlug(locale);
 const officePageHref = localeHref(locale, officeSeg);
 const peopleOfficeHref = `${localeHref(locale, 'people')}?office=${m.teamOfficeParam}`;
 const newsHref = m.relatedNewsSlug ? localeHref(locale, `news/${m.relatedNewsSlug}`) : null;
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 
 const officeId = m.teamOfficeParam as OfficeId;
 const leadershipTeam = publishedPeopleForOffice(officeId);

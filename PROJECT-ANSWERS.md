@@ -23,7 +23,7 @@
 | Question | Answer | Source |
 |----------|--------|--------|
 | Primary marketing domain? | **schillingspartners.com** | Live site |
-| Trading name? | **Schillings** is a trading name of **Schillings International LLP** | [Standard Terms of Business](https://www.schillingspartners.com/standard-terms-of-business-and-privacy-notice) |
+| Trading name? | **Schillings** is a trading name of **Schillings International LLP** | [Standard Terms of Business](/standard-terms-of-business-and-privacy-notice) |
 
 ---
 
@@ -31,9 +31,9 @@
 
 | Entity | Role | Regulation / registration (as stated by firm) |
 |--------|------|-----------------------------------------------|
-| **Schillings International LLP** | Main UK ABS; “Schillings” trading name | LLP **England & Wales**, reg. **OC398731**; **SRA** ABS **621152**; registered office **12 Arthur Street, London EC4R 9AB**. Heads of practice per SRA register: **Benjamin Hobbs** (HOLP), **Brett Reynolds** (HOFA). | [SRA compliance page](https://www.schillingspartners.com/compliance/schillings-sra), [SRA register](https://www.sra.org.uk/solicitors/firm-based-authorisation/abs-register/621152) |
+| **Schillings International LLP** | Main UK ABS; “Schillings” trading name | LLP **England & Wales**, reg. **OC398731**; **SRA** ABS **621152**; registered office **12 Arthur Street, London EC4R 9AB**. Heads of practice per SRA register: **Benjamin Hobbs** (HOLP), **Brett Reynolds** (HOFA). | [SRA compliance page](/compliance/schillings-sra), [SRA register](https://www.sra.org.uk/solicitors/firm-based-authorisation/abs-register/621152) |
 | **Schillings Ireland LLP** | Ireland | LLP **Republic of Ireland**; **Law Society of Ireland** firm no. **F11151**; authorised by **LSRA** as LLP. Address on contact page: **9 Pembroke Street Upper, Dublin 2, D02 KR83**. | Standard Terms §1 |
-| **Schillings International (USA) LLP** | US | **Delaware** LLP; principal office **1101 Brickell Avenue, South Tower, 8th Floor, Miami, FL 33131**; attorneys **foreign legal consultants** in **Florida**. | Standard Terms §1, [Contact](https://www.schillingspartners.com/contact) |
+| **Schillings International (USA) LLP** | US | **Delaware** LLP; principal office **1101 Brickell Avenue, South Tower, 8th Floor, Miami, FL 33131**; attorneys **foreign legal consultants** in **Florida**. | Standard Terms §1, [Contact](/contact) |
 | **Schillings Communications LLP** | UK | **Unregulated** LLP, subsidiary of Schillings International LLP, **OC445763** (as stated in terms). | Standard Terms §1 |
 | **Legendary LLC** | US | **Utah**; partly owned by Schillings International LLP; **unregulated**; referrals under agreement. | Standard Terms §1 |
 
@@ -44,7 +44,7 @@ Source: Standard Terms “KEY FACTS”.
 
 **Compliance contact (public):**  
 `compliance@schillingspartners.com` — Director of Risk and Compliance, 12 Arthur Street, EC4R 9AB.  
-Source: [SRA compliance page](https://www.schillingspartners.com/compliance/schillings-sra).
+Source: [SRA compliance page](/compliance/schillings-sra).
 
 ---
 
@@ -56,7 +56,7 @@ Source: [SRA compliance page](https://www.schillingspartners.com/compliance/schi
 | **US** | 1101 Brickell Avenue, South Tower, 8th Floor, Miami, FL 33131 |
 | **Ireland** | 9 Pembroke Street Upper, Dublin 2, D02 KR83 |
 
-Source: [Contact](https://www.schillingspartners.com/contact).
+Source: [Contact](/contact).
 
 **UAE:** No office on the fetched contact page — **hreflang `en-ae` or a UAE page** should only be added if you **publish** equivalent content and a business basis; do not infer from “we can do business there” alone.
 
@@ -87,7 +87,7 @@ Source: [SRA warning notice — marketing](https://www.sra.org.uk/solicitors/gui
 | Issue | Detail |
 |-------|--------|
 | **Placeholder copy** | **Astro build** (`site/`): homepage editorial strips use **live headline pairs** — no Lorem in shipped templates (spot-check **`HomeEditorialStrips.astro`**). The **legacy Webflow** homepage may still show filler until DNS cuts to the new stack. |
-| **Sitemap** | `https://www.schillingspartners.com/sitemap.xml` — **HTTP 200** verified **2026-05-04** (curl). Re-check before launch. |
+| **Sitemap** | `/sitemap.xml` — **HTTP 200** verified **2026-05-04** (curl). Re-check before launch. |
 | **Sample URL** | **`/law`** — **404** on live **2026-05-04**. IA: future practice hubs under **`/services/{slug}/`** in **`IA-URL-SPEC.md`** §2; homepage pillars are not a substitute for a dedicated law URL until published. |
 | **Legacy privacy URL** | **`/privacy-notice/`** on live **301 → `/privacy-notice` → 404`** (broken chain) **2026-05-04**. New stack: **`vercel.json`** + **`redirect-map.csv`** send **`/privacy-notice`** to **`/compliance/privacy-disclaimer/`** (UK unprefixed). |
 | **Standard terms** | Live uses **`/compliance/standard-terms-of-business`** (and legacy long slug → short slug). Astro stub + locale redirects added **2026-05-04** — replace stub with approved HTML/PDF parity. |

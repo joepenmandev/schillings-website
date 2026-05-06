@@ -10,7 +10,7 @@ import { buildPeopleDirectoryGraphJsonLd } from '@/lib/jsonld-page';
 import { locales, isLocale } from '@/i18n/config';
 
 const locale = 'en-ie';
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const { title: peoplePageTitle, description: peoplePageDescription } = peopleDirectoryMeta(locale);
 const peopleJsonLd = buildPeopleDirectoryGraphJsonLd({
   origin,

@@ -28,7 +28,7 @@ npm run import:people:full   # import then optimize (from repo root or site/)
 ### Local `dev` vs `preview` (footer & HTML sitemap links)
 
 - **`npm run dev`:** Footer **Region** links and the HTML sitemap **Regional sitemaps** block resolve **`Astro.url.origin`**, so absolute `href`s target your dev server (e.g. `http://localhost:4321/us/...`).
-- **`npm run build` + `npm run preview`:** The same markup is **pre-rendered** with the site origin from **`astro.config.mjs`** (`site`, e.g. `https://schillingspartners.com`), so those `href`s match **production**. **`hreflang`** and **canonical** use the same apex domain in both modes.
+- **`npm run build` + `npm run preview`:** The same markup is **pre-rendered** with the site origin from **`astro.config.mjs`** (`site`: **`PUBLIC_SITE_URL`**, else **`VERCEL_URL`**, else **`http://localhost:4321`**), so those `href`s match the configured deploy origin. **`hreflang`** and **canonical** use the same origin in both modes.
 
 CI (GitHub Actions) runs **`npm ci`**, **`npx playwright install chromium --with-deps`**, and **`npm run verify`** (Vitest → locale parity → build → post-build hreflang check → Playwright HTTP + locale/sitemap + axe on **`/contact/`**) in **`site/`** on push/PR to **`main`**, **`master`**, or **`develop`** (see **`.github/workflows/ci.yml`**).
 
@@ -64,7 +64,7 @@ Legacy **`/en-gb/…`** URLs **301** to the same path **without** `/en-gb` (see 
 **Performance & SEO (speed + indexing):** After deploy, use **[PageSpeed Insights](https://pagespeed.web.dev/)** on a **public** production or preview URL for a few key routes — see repo **`TECHNICAL-SEO-LAUNCH-CHECKLIST.md`** §G–**G2** (CrUX vs lab, Astro/Vercel notes, sitemap/indexing alignment).
 
 **Security headers** (production on Vercel): **`Strict-Transport-Security`** includes **`preload`** — only keep that once **all** subdomains and apex serve HTTPS for the preload policy window; otherwise remove `preload` from `site/vercel.json`. **`Content-Security-Policy`** is set there (inline scripts allowed for Astro + form; **`frame-src`** allows the SRA Yoshki iframe in **`SiteFooter`**).
-For non-production hosts (anything other than `schillingspartners.com` / `www.schillingspartners.com`), `site/vercel.json` adds **`X-Robots-Tag: noindex, nofollow, noarchive`** to all responses and rewrites **`/robots.txt`** to **`/robots-staging.txt`** (`Disallow: /`). This remains in place when Basic Auth is enabled.
+For non-production hosts (anything other than the primary production hostname configured in `site/vercel.json`, currently `schillings-website.vercel.app` — add your custom apex there when you go live), `site/vercel.json` adds **`X-Robots-Tag: noindex, nofollow, noarchive`** to all responses and rewrites **`/robots.txt`** to **`/robots-staging.txt`** (`Disallow: /`). This remains in place when Basic Auth is enabled.
 You can audit this quickly with `npm run verify:nonprod-indexing` (set `INDEXING_VERIFY_URL` and optional `INDEXING_VERIFY_MODE=prod|nonprod`).
 
 **Consent / analytics prep:** **`ConsentModeDefaults.astro`** sets Google **Consent Mode v2** defaults (non-essential denied) before tags load. When marketing ships GA4/GTM + a CMP, follow **`ANALYTICS-CONSENT-SPEC.md`** and call `gtag('consent', 'update', …)` from the CMP.

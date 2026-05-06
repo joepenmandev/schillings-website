@@ -34,7 +34,7 @@ if (!Number.isFinite(pageNum) || pageNum < 2 || pageNum > totalPages) {
 }
 
 const articles = articlesForNewsPage(pageNum);
-const origin = (Astro.site ?? new URL('https://schillingspartners.com')).href.replace(/\/$/, '');
+const origin = Astro.site?.origin ?? Astro.url.origin;
 const newsIndexUrl = `${absolutePageUrl(origin, locale, 'news')}`;
 const prevUrl = pageNum === 2 ? newsIndexUrl : `${absolutePageUrl(origin, locale, `news/page/${pageNum - 1}`)}`;
 const nextUrl = pageNum < totalPages ? `${absolutePageUrl(origin, locale, `news/page/${pageNum + 1}`)}` : null;
