@@ -12,7 +12,7 @@ describe('resolveRecognitionOutboundHref', () => {
       href: 'https://www.legal500.com/firms/2987-schillings/r-england/lawyers/841606-jenny-afia',
     };
     expect(resolveRecognitionOutboundHref(r)).toBe(
-      'https://www.legal500.com/firms/2987-schillings/r-england',
+      'https://www.legal500.com/firms/2987-schillings/r-england/lawyers',
     );
   });
 
@@ -36,7 +36,7 @@ describe('resolveRecognitionOutboundHref', () => {
       year: '2026',
       scope: 'person',
     };
-    expect(resolveRecognitionOutboundHref(r)).toBe('https://www.chambersandpartners.com/');
+    expect(resolveRecognitionOutboundHref(r)).toBe('https://chambers.com/law-firm/schillings-uk-1:366');
   });
 
   it('firm scope uses firm Spear’s URL', () => {

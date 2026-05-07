@@ -78,7 +78,7 @@
         "title": "Firm profile listed",
         "year": "2026",
         "scope": "firm",
-        "href": "https://www.legal500.com/firms/2987-schillings/r-england"
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers"
       }
     ]
   },
@@ -137,7 +137,7 @@
     "recognitions": [
       {
         "provider": "chambers",
-        "title": "Band ranked",
+        "title": "Band 1",
         "year": "2026",
         "scope": "person",
         "href": "https://chambers.com/lawyer/jenny-afia-uk-1:353234"
@@ -162,7 +162,7 @@
     "recognitions": [
       {
         "provider": "chambers",
-        "title": "Ranked lawyer",
+        "title": "Up and Coming",
         "year": "2026",
         "scope": "person",
         "href": "https://chambers.com/lawyer/joelle-rich-uk-1:1462062"
@@ -216,7 +216,7 @@
     "recognitions": [
       {
         "provider": "chambers",
-        "title": "Ranked lawyer",
+        "title": "Senior Statesman",
         "year": "2026",
         "scope": "person",
         "href": "https://chambers.com/lawyer/keith-schilling-uk-1:9968"
@@ -252,7 +252,7 @@
     "recognitions": [
       {
         "provider": "chambers",
-        "title": "Ranked lawyer",
+        "title": "Up and Coming",
         "year": "2026",
         "scope": "person",
         "href": "https://chambers.com/lawyer/louise-prince-uk-1:292385"
@@ -292,7 +292,7 @@
     "recognitions": [
       {
         "provider": "chambers",
-        "title": "Ranked lawyer",
+        "title": "Band 2",
         "year": "2026",
         "scope": "person",
         "href": "https://chambers.com/lawyer/rachel-atkins-uk-1:13531"
@@ -317,7 +317,7 @@
     "recognitions": [
       {
         "provider": "chambers",
-        "title": "Ranked lawyer",
+        "title": "Band 6",
         "year": "2026",
         "scope": "person",
         "href": "https://chambers.com/lawyer/rod-christie-miller-uk-1:209046"

@@ -5,8 +5,10 @@ import type { PersonRecognition } from '@/data/people';
  * Used when `scope === 'firm'` or when a person-scoped badge has no individual URL.
  */
 const SCHILLINGS_FIRM_DIRECTORY_HREF: Partial<Record<PersonRecognition['provider'], string>> = {
-  chambers: 'https://www.chambersandpartners.com/',
-  legal500: 'https://www.legal500.com/firms/2987-schillings/r-england',
+  /** Schillings firm profile (UK 2026 tab); used for firm scope and person fallback. */
+  chambers: 'https://chambers.com/law-firm/schillings-uk-1:366',
+  /** England firm profile — Lawyers tab (roster); firm overview is one click away on-site. */
+  legal500: 'https://www.legal500.com/firms/2987-schillings/r-england/lawyers',
   spears: 'https://www.spears500.com/company/20906/schillings',
 };
 
