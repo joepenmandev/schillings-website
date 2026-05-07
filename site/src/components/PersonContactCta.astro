@@ -5,27 +5,42 @@ import { contactSegment, localeHref } from '../lib/site-nav';
 interface Props {
   locale: Locale;
   personName: string;
+  tone?: 'default' | 'quiet';
 }
 
-const { locale, personName } = Astro.props;
+const { locale, personName, tone = 'default' } = Astro.props;
 const href = localeHref(locale, contactSegment);
+
+const boxClass =
+  tone === 'quiet'
+    ? 'mt-12 border border-secondary-2/14 bg-transparent px-5 py-6 md:px-6 md:py-7'
+    : 'mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7';
+
+const headingClass =
+  tone === 'quiet'
+    ? 'text-[0.56rem] font-normal uppercase tracking-[0.19em] text-secondary-2/75'
+    : 'text-sm font-medium uppercase tracking-wide text-secondary-2';
+
+const bodyClass =
+  tone === 'quiet'
+    ? 'mt-3 text-pretty text-[0.8125rem] font-extralight leading-[1.6] text-secondary-3'
+    : 'mt-2 text-pretty text-sm leading-relaxed text-secondary-3';
+
+const btnClass =
+  tone === 'quiet'
+    ? 'mt-5 inline-flex border border-secondary-4/80 bg-transparent px-4 py-2.5 text-center text-[0.8125rem] font-normal tracking-wide text-secondary-4 outline-offset-4 transition-colors hover:bg-secondary-4/[0.05] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-4/55'
+    : 'mt-5 inline-flex rounded-lg border border-secondary-4 bg-secondary-4 px-5 py-3 text-sm font-medium text-brand-white shadow-sm transition-[opacity,box-shadow] hover:opacity-90 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-4';
 ---
 
-<section
-  class="mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7"
-  aria-labelledby="person-contact-cta-heading"
->
-  <h2 id="person-contact-cta-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">
+<section class={boxClass} aria-labelledby="person-contact-cta-heading">
+  <h2 id="person-contact-cta-heading" class={headingClass}>
     Confidential enquiry
   </h2>
-  <p class="mt-2 text-pretty text-sm leading-relaxed text-secondary-3">
+  <p class={bodyClass}>
     To explore whether Schillings can help in confidence, use our contact page. Nothing on this profile constitutes legal
     advice or a client relationship until terms are agreed.
   </p>
-  <a
-    href={href}
-    class="mt-5 inline-flex rounded-lg border border-secondary-4 bg-secondary-4 px-5 py-3 text-sm font-medium text-brand-white shadow-sm transition-[opacity,box-shadow] hover:opacity-90 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-4"
-  >
+  <a href={href} class={btnClass}>
     Speak confidentially
     <span class="sr-only"> — continue regarding {personName}</span>
   </a>

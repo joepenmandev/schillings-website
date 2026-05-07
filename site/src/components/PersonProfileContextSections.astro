@@ -24,30 +24,31 @@ const expertise = (person.expertise ?? []) as ExpertiseId[];
 const relatedSituationIds = strategicSituationIdsForPersonExpertise(expertise);
 
 const body = 'mt-2 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3';
-const linkList = institutional ? 'mt-5 divide-y divide-secondary-2/15 border-t border-secondary-2/20' : 'mt-4 flex flex-col gap-2 sm:gap-2.5';
+const linkList = institutional ? 'mt-6 border-t border-secondary-2/[0.08] pt-1' : 'mt-4 flex flex-col gap-2 sm:gap-2.5';
 const linkClass = institutional
-  ? 'group flex w-full items-baseline justify-between gap-4 py-3.5 text-left text-[0.95rem] font-normal text-secondary-4 transition-colors hover:bg-utility-2/30'
+  ? 'group flex w-full border-l border-secondary-2/[0.08] py-[0.7rem] pl-3 text-left text-[0.8125rem] font-extralight leading-[1.45] text-secondary-3 transition-[color,border-color] hover:border-secondary-2/22 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/45'
   : 'font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4';
 const hubTitle = institutional ? 'Core areas' : 'Helps clients with';
 const hubIntro = institutional
-  ? 'Practice hubs drawn from directory tags—firmwide context, not an individual matter list or outcome catalogue.'
+  ? 'Practice categorisation from directory tags. Firmwide indexing, not individual outcomes or positioning.'
   : 'These expertise hubs describe Schillings’ firmwide practice in these areas—useful context from directory tags, not a catalogue of individual matters or commercial positioning for any one person.';
 ---
 
 {
   expertise.length > 0 ? (
     <section
-      class:list={['mt-12 border-t border-secondary-2/20 pt-10 md:mt-14', institutional && 'max-w-2xl']}
+      class:list={['md:mt-16', institutional ? 'mt-[3.5rem] max-w-[33rem]' : 'mt-12 border-t border-secondary-2/20 pt-10 md:mt-14']}
       aria-labelledby="person-helps-heading"
     >
-      <SectionKicker id="person-helps-heading">{hubTitle}</SectionKicker>
-      <p class={body}>{hubIntro}</p>
+      <SectionKicker id="person-helps-heading" tone={institutional ? 'quiet' : 'default'}>{hubTitle}</SectionKicker>
+      <p class:list={[body, institutional && 'mt-2.5 max-w-[24rem] text-[0.8125rem] leading-[1.55] text-secondary-2/88']}>
+        {hubIntro}
+      </p>
       <ul class={`${linkList} list-none`}>
         {expertise.map((id) => (
           <li class:list={[institutional && 'm-0']}>
             <a href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(id)}`)} class={linkClass}>
-              <span class="max-w-[85%] text-pretty">{EXPERTISE_LABELS[id]}</span>
-              {institutional ? <span class="shrink-0 font-serif text-sm text-secondary-2 transition-colors group-hover:text-secondary-3">→</span> : null}
+              <span class="max-w-[90%] text-pretty">{EXPERTISE_LABELS[id]}</span>
             </a>
           </li>
         ))}

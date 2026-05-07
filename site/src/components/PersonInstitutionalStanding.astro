@@ -31,50 +31,55 @@ function publisherLine(item: PersonRecognition): string {
 const sorted = [...recognitions].sort(
   (a, b) => (PROVIDER_ORDER[a.provider] ?? 9) - (PROVIDER_ORDER[b.provider] ?? 9),
 );
+
+const indexLinkClass =
+  'block py-[1.05rem] text-inherit no-underline decoration-secondary-2/0 underline-offset-[0.2em] transition-[text-decoration-color] hover:underline hover:decoration-secondary-2/28 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/45';
 ---
 
 {
   sorted.length > 0 ? (
-    <section class="mt-8 max-w-2xl lg:mt-9" aria-labelledby="institutional-standing-heading">
-      <p id="institutional-standing-heading" class="text-[0.65rem] font-medium uppercase tracking-[0.14em] text-secondary-2">
+    <section class="mt-10 max-w-[28rem] lg:mt-[2.75rem]" aria-labelledby="institutional-standing-heading">
+      <p id="institutional-standing-heading" class="text-[0.56rem] font-normal uppercase tracking-[0.2em] text-secondary-2/70">
         Institutional standing
       </p>
-      <ul class="mt-4 border-t border-secondary-2/20" role="list">
-        {sorted.map((item) => {
+      <ul class="mt-5 border-t border-secondary-2/[0.11]" role="list">
+        {sorted.map((item, i) => {
           const href = resolveRecognitionOutboundHref(item);
           const pub = publisherLine(item);
           const detail = [item.title, item.year].filter(Boolean).join(' · ');
           const body = (
             <>
-              <div class="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                <span class="text-[0.65rem] font-medium uppercase tracking-[0.12em] text-secondary-2">{pub}</span>
+              <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                <span class="text-[0.56rem] font-normal uppercase tracking-[0.15em] text-secondary-2/62">{pub}</span>
                 {item.year ? (
-                  <span class="text-[0.65rem] tabular-nums tracking-wide text-secondary-2/80">{item.year}</span>
+                  <span class="text-[0.52rem] tabular-nums tracking-wide text-secondary-2/48">{item.year}</span>
                 ) : null}
               </div>
-              <p class="mt-1.5 max-w-xl text-pretty font-serif text-[1.05rem] font-normal leading-snug text-secondary-4">{item.title}</p>
+              <p class="mt-2 max-w-[22rem] text-pretty font-serif text-[0.8125rem] font-extralight leading-[1.5] text-secondary-3">
+                {item.title}
+              </p>
             </>
           );
           return (
-            <li class="border-b border-secondary-2/15 py-4 first:pt-4 last:border-b-0">
+            <li
+              class:list={[
+                'border-b border-secondary-2/[0.09] last:border-b-0',
+                i === 0 && 'pt-1',
+              ]}
+            >
               {href ? (
-                <a
-                  href={href}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  class="group block -mx-1 rounded-sm px-1 transition-colors hover:bg-utility-2/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/60"
-                >
+                <a href={href} rel="noopener noreferrer" target="_blank" class={indexLinkClass}>
                   {body}
                   <span class="sr-only"> — {detail} (opens in new tab)</span>
                 </a>
               ) : (
-                body
+                <div class="py-[1.05rem]">{body}</div>
               )}
             </li>
           );
         })}
       </ul>
-      <p class="mt-4 max-w-xl text-pretty text-[0.7rem] leading-relaxed text-secondary-2">
+      <p class="mt-6 max-w-[22rem] text-pretty text-[0.65rem] leading-[1.6] text-secondary-2/62">
         Independent listings shown for {personName}. Methodologies are set by each publisher; Schillings does not control
         external sites or rankings.
       </p>

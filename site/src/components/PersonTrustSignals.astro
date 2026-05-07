@@ -22,6 +22,8 @@ export interface Props {
   surface?: 'panel' | 'plain';
   /** Omit opening compliance paragraphs (e.g. already covered above). */
   omitIntro?: boolean;
+  /** `index` — caption-style directory links (institutional profiles). */
+  directoryStyle?: 'chips' | 'index';
 }
 
 const {
@@ -33,12 +35,25 @@ const {
   complianceTone = 'standard',
   surface = 'panel',
   omitIntro = false,
+  directoryStyle = 'chips',
 } = Astro.props;
 
 const surfaceClass =
-  surface === 'plain'
-    ? 'mt-8 border-t border-secondary-2/20 pt-8'
-    : 'mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7';
+  surface === 'plain' && directoryStyle === 'index'
+    ? 'mt-6 border-t border-secondary-2/10 pt-6'
+    : surface === 'plain'
+      ? 'mt-8 border-t border-secondary-2/20 pt-8'
+      : 'mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7';
+
+const headingClass =
+  directoryStyle === 'index'
+    ? 'text-[0.56rem] font-normal uppercase tracking-[0.19em] text-secondary-2/72'
+    : 'text-sm font-medium uppercase tracking-wide text-secondary-2';
+
+const indexDirLinkClass =
+  'text-[0.68rem] font-normal leading-snug text-secondary-3 no-underline decoration-secondary-2/0 underline-offset-[0.18em] transition-[color,text-decoration-color] hover:text-secondary-3 hover:underline hover:decoration-secondary-2/32';
+
+const indexMetaClass = 'text-[0.62rem] leading-[1.5] text-secondary-2/58';
 
 const linkedIn = sameAs.find((u) => /linkedin\.com\/in\//i.test(u));
 
@@ -97,12 +112,12 @@ const textLinkClass =
 ---
 
 <aside class:list={[surfaceClass]} aria-labelledby="trust-signals-heading">
-  <h2 id="trust-signals-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">
+  <h2 id="trust-signals-heading" class={headingClass}>
     {complianceTone === 'quiet' ? 'Independent directories' : 'Profiles & independent directories'}
   </h2>
   {
     !omitIntro ? (
-      <p class="mt-2 text-pretty text-sm leading-relaxed text-secondary-3">
+      <p class:list={['mt-2 text-pretty leading-relaxed', directoryStyle === 'index' ? indexMetaClass : 'text-sm text-secondary-3']}>
         {complianceTone === 'quiet' ? (
           <>
             Third-party listings may help place background in context. Use search on each publisher’s site where
@@ -163,20 +178,38 @@ const textLinkClass =
     ) : null
   }
 
-  <nav class:list={[omitIntro ? 'mt-4' : 'mt-6']} aria-label="Major legal and reputation directories">
-    <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Major legal directories</p>
-    <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3/90">Use search on each site to find the firm or named individuals.</p>
-    <ul class="mt-3 flex flex-wrap gap-2" role="list">
-      {
-        LEGAL_DIRECTORIES.map((d) => (
-          <li>
-            <a href={d.href} class={linkClass} rel="noopener noreferrer" target="_blank" title={d.hint}>
-              {d.label}
-              <span class="sr-only"> (opens in new tab)</span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+  <nav class:list={[directoryStyle === 'index' ? 'mt-4' : omitIntro ? 'mt-4' : 'mt-6']} aria-label="Major legal and reputation directories">
+    {
+      directoryStyle === 'index' ? (
+        <>
+          <p class={indexMetaClass}>Publisher search — use each site to locate firm or named listings.</p>
+          <ul class="mt-3 flex flex-col gap-y-1.5" role="list">
+            {LEGAL_DIRECTORIES.map((d) => (
+              <li>
+                <a href={d.href} class={indexDirLinkClass} rel="noopener noreferrer" target="_blank" title={d.hint}>
+                  {d.label}
+                  <span class="sr-only"> (opens in new tab)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <>
+          <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Major legal directories</p>
+          <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3/90">Use search on each site to find the firm or named individuals.</p>
+          <ul class="mt-3 flex flex-wrap gap-2" role="list">
+            {LEGAL_DIRECTORIES.map((d) => (
+              <li>
+                <a href={d.href} class={linkClass} rel="noopener noreferrer" target="_blank" title={d.hint}>
+                  {d.label}
+                  <span class="sr-only"> (opens in new tab)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
   </nav>
 </aside>

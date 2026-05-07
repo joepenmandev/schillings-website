@@ -35,16 +35,16 @@ const recognitions = person.recognitions ?? [];
 
 {
   institutional ? (
-    <div id="person-evaluation-surface" class="mt-6 md:mt-8">
-      <div class="grid max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-start lg:gap-x-10 xl:gap-x-12">
-        <div class="min-w-0 space-y-0 lg:col-span-7 lg:col-start-1 lg:row-start-1">
+    <div id="person-evaluation-surface" class="mt-7 md:mt-9">
+      <div class="grid max-w-[min(100%,72rem)] grid-cols-1 gap-y-11 lg:grid-cols-12 lg:items-start lg:gap-x-5 xl:gap-x-8">
+        <div class="min-w-0 space-y-0 lg:col-span-6 lg:col-start-1 lg:row-start-1 lg:max-w-[38rem] lg:pr-5">
           <header>
-            <h1 class={PEOPLE_PROFILE_H1_CLASS}>{person.name}</h1>
-            <p class="mt-2 max-w-3xl text-pretty font-serif text-xl font-extralight italic leading-snug text-secondary-4 md:text-2xl md:leading-snug">
+            <h1 class:list={[PEOPLE_PROFILE_H1_CLASS]}>{person.name}</h1>
+            <p class="mt-3 max-w-[32rem] text-pretty font-serif text-lg font-extralight italic leading-snug text-secondary-3 md:text-[1.35rem] md:leading-[1.35]">
               {profileSubline}
             </p>
             {localeBioNote ? (
-              <p class="mt-4 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3">{localeBioNote}</p>
+              <p class="mt-4 max-w-[28rem] text-pretty text-[0.8125rem] font-extralight leading-relaxed text-secondary-2/90">{localeBioNote}</p>
             ) : null}
             <PersonInstitutionalStanding recognitions={recognitions} personName={person.name} />
           </header>
@@ -57,33 +57,36 @@ const recognitions = person.recognitions ?? [];
             complianceTone="quiet"
             surface="plain"
             omitIntro
+            directoryStyle="index"
           />
         </div>
         {person.imagePath ? (
-          <div class="flex justify-center lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:justify-end lg:pl-2">
-            <div class="w-full max-w-[min(100%,20rem)] lg:max-w-[24.5rem]">
-              <div class="overflow-hidden rounded-[2px] ring-1 ring-secondary-2/15 lg:sticky lg:top-28">
-                <img
-                  src={person.imagePath}
-                  alt={person.name}
-                  width={640}
-                  height={768}
-                  class="aspect-[5/6] w-full object-cover object-[50%_16%]"
-                  sizes="(max-width: 1024px) 100vw, 392px"
-                  loading="eager"
-                  decoding="async"
-                  fetchpriority="high"
-                />
+          <div class="flex justify-center lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:justify-end lg:pl-6 lg:pt-3">
+            <div class="w-full max-w-[min(100%,17.5rem)] sm:max-w-[18.5rem] lg:max-w-[19.75rem]">
+              <div class="lg:sticky lg:top-28">
+                <div class="overflow-hidden outline outline-1 outline-secondary-2/[0.07]">
+                  <img
+                    src={person.imagePath}
+                    alt={person.name}
+                    width={640}
+                    height={800}
+                    class="aspect-[4/5] w-full object-cover object-[38%_12%]"
+                    sizes="(max-width: 1024px) 100vw, 316px"
+                    loading="eager"
+                    decoding="async"
+                    fetchpriority="high"
+                  />
+                </div>
               </div>
             </div>
           </div>
         ) : null}
-        <div class="min-w-0 space-y-10 lg:col-span-7 lg:col-start-1 lg:row-start-2">
+        <div class="min-w-0 space-y-12 lg:col-span-7 lg:col-start-1 lg:row-start-2 lg:space-y-[4.25rem] lg:pt-8 xl:pt-10">
           <PersonProfileContextSections locale={locale} person={person} layout="institutional" />
-          <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
-          <section class="max-w-[52rem]" aria-labelledby="person-bio-heading">
-            <SectionKicker id="person-bio-heading">Biography</SectionKicker>
-            <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
+          <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} tone="quiet" />
+          <section class="max-w-[36rem]" aria-labelledby="person-bio-heading">
+            <SectionKicker id="person-bio-heading" tone="quiet">Biography</SectionKicker>
+            <div class="mt-6 space-y-7 text-pretty text-[0.9375rem] font-extralight leading-[1.76] text-secondary-3/[0.93] md:mt-7 md:space-y-8 md:text-[0.95rem]">
               {person.paragraphs.map((para) => (
                 <p>{para}</p>
               ))}
@@ -91,8 +94,14 @@ const recognitions = person.recognitions ?? [];
           </section>
         </div>
       </div>
-      <PersonContactCta locale={locale} personName={person.name} />
-      <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />
+      <PersonContactCta locale={locale} personName={person.name} tone="quiet" />
+      <PersonNewsByline
+        locale={locale}
+        articles={newsByPerson}
+        personSlug={person.slug}
+        personName={person.name}
+        layout="institutional"
+      />
     </div>
   ) : (
     <>
