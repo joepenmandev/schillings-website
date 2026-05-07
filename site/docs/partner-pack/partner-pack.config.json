@@ -1,0 +1,183 @@
+{
+  "mode": "partner",
+  "compositionSystem": "editorial",
+  "failOnRuntimeUi": true,
+  "editorialAsymmetry": true,
+  "compositionWeighting": {
+    "imageDominance": 0.78,
+    "textDensity": 0.18,
+    "negativeSpace": 0.22
+  },
+  "branding": {
+    "logoPath": "/brand/schillings-logo-rgb.svg"
+  },
+  "pageCompositions": [
+    "statement-cover",
+    "hero-right",
+    "quiet-evidence",
+    "full-bleed-closing"
+  ],
+  "meta": {
+    "title": "Schillings Digital Platform",
+    "subtitle": "Partner launch briefing",
+    "confidentialLabel": "Confidential - Internal Partner Review",
+    "version": "v1.0",
+    "preparedFor": "Prepared for internal review | May 2026",
+    "openingStatement": "The objective was to ensure the firm's online presence more accurately reflects the quality, discretion and sophistication of the work itself."
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 2200,
+    "zoom": 1
+  },
+  "outputDir": "../artifacts/partner-pack",
+  "captureLock": true,
+  "pdf": {
+    "format": "A4",
+    "landscape": true,
+    "printBackground": true
+  },
+  "capture": {
+    "timeoutMs": 30000,
+    "retries": 1,
+    "waitUntil": "networkidle"
+  },
+  "environments": {
+    "production": {
+      "beforeBaseUrl": "https://www.schillingspartners.com"
+    },
+    "staging": {
+      "afterBaseUrl": "https://staging.schillingspartners.com"
+    },
+    "local": {}
+  },
+  "summary": {
+    "whatPartnersShouldNotice": "The platform now presents practitioner credibility and service context with greater consistency."
+  },
+  "readinessStrip": [
+    "259 automated checks passing",
+    "UK, US and Ireland experiences aligned",
+    "Regional targeting and page consistency verified",
+    "Search presentation and crawl handling verified",
+    "Compliance-sensitive publishing controls retained",
+    "Structured profile and editorial context preserved"
+  ],
+  "examples": [
+    {
+      "id": "profile-jenny-afia",
+      "title": "Practitioner profile authority",
+      "type": "profile",
+      "beforeUrl": "https://www.schillingspartners.com/people/jenny-afia",
+      "afterUrl": "http://localhost:4321/people/jenny-afia/",
+      "crop": {
+        "x": 120,
+        "y": 220,
+        "width": 1200,
+        "height": 1420
+      },
+      "annotations": [
+        {
+          "position": "top-right",
+          "text": "Independent recognition and validation are presented more clearly."
+        }
+      ],
+      "observation": {
+        "observation": "Independent recognition and professional context are presented with greater clarity.",
+        "whyItMatters": "96 practitioner profiles now use a more consistent validation structure."
+      },
+      "mobileInset": {
+        "enabled": true,
+        "source": "after",
+        "crop": {
+          "x": 0,
+          "y": 620,
+          "width": 320,
+          "height": 640
+        },
+        "targetWidth": 320,
+        "position": "bottom-right"
+      }
+    },
+    {
+      "id": "expertise-reputation-privacy",
+      "title": "Expertise ownership clarity",
+      "type": "expertise",
+      "beforeUrl": "https://www.schillingspartners.com/reputation-management",
+      "afterUrl": "http://localhost:4321/expertise/reputation-privacy/",
+      "crop": {
+        "x": 120,
+        "y": 180,
+        "width": 1200,
+        "height": 1320
+      },
+      "annotations": [
+        {
+          "position": "top-right",
+          "text": "Capability ownership and service framing are presented with greater clarity."
+        }
+      ],
+      "observation": {
+        "observation": "Expertise positioning and enquiry pathways are more clearly separated.",
+        "whyItMatters": "Service context is presented with less ambiguity."
+      },
+      "strategicImplication": "This reduces overlap between narrative, editorial and commercial surfaces, so complex capabilities are presented more coherently."
+    },
+    {
+      "id": "contact-london",
+      "title": "Contact conversion readiness",
+      "type": "contact",
+      "beforeUrl": "https://www.schillingspartners.com/contact",
+      "afterUrl": "http://localhost:4321/contact/",
+      "crop": {
+        "x": 120,
+        "y": 160,
+        "width": 1200,
+        "height": 1240
+      },
+      "annotations": [
+        {
+          "position": "top-right",
+          "text": "Urgent response and enquiry pathways are now presented with greater clarity."
+        }
+      ]
+    }
+  ],
+  "partnerNarrative": {
+    "materiallyImprovedTable": [
+      {
+        "area": "Practitioner profiles",
+        "improvement": "Clearer practitioner validation and recognition"
+      },
+      {
+        "area": "Expertise positioning",
+        "improvement": "More explicit capability ownership and service framing"
+      },
+      {
+        "area": "Intelligence",
+        "improvement": "Clearer distinction between commentary and expertise"
+      },
+      {
+        "area": "Contact pathways",
+        "improvement": "More direct routing for high-intent enquiries"
+      },
+      {
+        "area": "International structure",
+        "improvement": "More consistent UK / US / Ireland positioning"
+      },
+      {
+        "area": "Platform operations",
+        "improvement": "Lower inconsistency risk over time"
+      }
+    ],
+    "deliberateDecisions": [
+      "AI-generated publishing workflows",
+      "Aggressive expansion-led publishing tactics",
+      "Unnecessary URL restructuring",
+      "Disruptive authority migrations",
+      "Over-standardised templates that reduce clarity"
+    ],
+    "internationalSummary": "The platform uses a disciplined international structure with UK at the root domain, dedicated US and Ireland variants, and aligned regional targeting across true page equivalents.",
+    "operationalMaturityParagraph": "Ownership across practitioner, expertise and editorial surfaces is more consistent, reducing inconsistency risk over time.",
+    "closingStrip": "All substantive content remains human-written and human-reviewed. The platform was structured to support authority, clarity and discretion - rather than scaled content production."
+  }
+}

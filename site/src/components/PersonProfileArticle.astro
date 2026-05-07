@@ -1,0 +1,165 @@
+---
+/**
+ * Bio layout: default (migration parity) vs institutional benchmark (`jenny-afia` only until approved for roll-out).
+ */
+import PersonTrustSignals from '@/components/PersonTrustSignals.astro';
+import PersonPublicContact from '@/components/PersonPublicContact.astro';
+import PersonProfileContextSections from '@/components/PersonProfileContextSections.astro';
+import PersonRelatedAndExplore from '@/components/PersonRelatedAndExplore.astro';
+import SectionKicker from '@/components/SectionKicker.astro';
+import PersonContactCta from '@/components/PersonContactCta.astro';
+import PersonNewsByline from '@/components/PersonNewsByline.astro';
+import PersonInstitutionalStanding from '@/components/PersonInstitutionalStanding.astro';
+import type { NewsArticle } from '@/data/news';
+import type { PersonProfile } from '@/data/people';
+import { EXPERTISE_LABELS } from '@/data/people-taxonomy';
+import { expertisePathSlug } from '@/lib/expertise-paths';
+import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
+import type { Locale } from '@/i18n/config';
+import { PEOPLE_PROFILE_H1_CLASS } from '@/lib/visual-tokens';
+
+interface Props {
+  locale: Locale;
+  person: PersonProfile;
+  profileSubline: string;
+  localeBioNote: string | null;
+  isThinProfile: boolean;
+  newsByPerson: NewsArticle[];
+}
+
+const { locale, person, profileSubline, localeBioNote, isThinProfile, newsByPerson } = Astro.props;
+
+const institutional = person.slug === 'jenny-afia' && !isThinProfile;
+const recognitions = person.recognitions ?? [];
+---
+
+{
+  institutional ? (
+    <div id="person-evaluation-surface" class="mt-6 md:mt-8">
+      <div class="grid max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-start lg:gap-x-10 xl:gap-x-12">
+        <div class="min-w-0 space-y-0 lg:col-span-7 lg:col-start-1 lg:row-start-1">
+          <header>
+            <h1 class={PEOPLE_PROFILE_H1_CLASS}>{person.name}</h1>
+            <p class="mt-2 max-w-3xl text-pretty font-serif text-xl font-extralight italic leading-snug text-secondary-4 md:text-2xl md:leading-snug">
+              {profileSubline}
+            </p>
+            {localeBioNote ? (
+              <p class="mt-4 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3">{localeBioNote}</p>
+            ) : null}
+            <PersonInstitutionalStanding recognitions={recognitions} personName={person.name} />
+          </header>
+          <PersonTrustSignals
+            personName={person.name}
+            sameAs={person.sameAs ?? []}
+            recognitions={recognitions}
+            hideLinkedIn
+            hideRecognitionBadges
+            complianceTone="quiet"
+            surface="plain"
+            omitIntro
+          />
+        </div>
+        {person.imagePath ? (
+          <div class="flex justify-center lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:justify-end lg:pl-2">
+            <div class="w-full max-w-[min(100%,20rem)] lg:max-w-[24.5rem]">
+              <div class="overflow-hidden rounded-[2px] ring-1 ring-secondary-2/15 lg:sticky lg:top-28">
+                <img
+                  src={person.imagePath}
+                  alt={person.name}
+                  width={640}
+                  height={768}
+                  class="aspect-[5/6] w-full object-cover object-[50%_16%]"
+                  sizes="(max-width: 1024px) 100vw, 392px"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                />
+              </div>
+            </div>
+          </div>
+        ) : null}
+        <div class="min-w-0 space-y-10 lg:col-span-7 lg:col-start-1 lg:row-start-2">
+          <PersonProfileContextSections locale={locale} person={person} layout="institutional" />
+          <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
+          <section class="max-w-[52rem]" aria-labelledby="person-bio-heading">
+            <SectionKicker id="person-bio-heading">Biography</SectionKicker>
+            <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
+              {person.paragraphs.map((para) => (
+                <p>{para}</p>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+      <PersonContactCta locale={locale} personName={person.name} />
+      <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />
+    </div>
+  ) : (
+    <>
+      <div
+        class:list={[
+          'mt-6 grid max-w-6xl grid-cols-1 gap-y-8 md:mt-8 lg:items-start lg:gap-y-8',
+          person.imagePath ? 'lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-12 xl:gap-x-16' : 'lg:grid-cols-1',
+        ]}
+      >
+        <header class="min-w-0 lg:col-start-1 lg:row-start-1">
+          <h1 class={PEOPLE_PROFILE_H1_CLASS}>{person.name}</h1>
+          <p class="mt-2 max-w-3xl text-pretty font-serif text-xl font-extralight italic leading-snug text-secondary-4 md:text-2xl md:leading-snug">
+            {profileSubline}
+          </p>
+          {localeBioNote ? (
+            <p class="mt-4 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3">{localeBioNote}</p>
+          ) : null}
+          {isThinProfile && person.expertise && person.expertise.length > 0 ? (
+            <ul class="mt-6 flex flex-wrap gap-2" aria-label="Expertise">
+              {person.expertise.map((id) => (
+                <li>
+                  <a
+                    href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(id)}`)}
+                    class="inline-block rounded-full border border-secondary-2/40 px-3 py-1 text-xs font-normal text-secondary-3 transition-colors hover:border-secondary-3 hover:bg-utility-2/60"
+                  >
+                    {EXPERTISE_LABELS[id]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </header>
+        {person.imagePath ? (
+          <div class="mx-auto w-full max-w-[20rem] shrink-0 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:flex lg:justify-end lg:self-start">
+            <div class="overflow-hidden rounded-sm shadow-md ring-1 ring-secondary-2/20 lg:sticky lg:top-28">
+              <img
+                src={person.imagePath}
+                alt={person.name}
+                width={480}
+                height={480}
+                class="aspect-square w-full object-cover"
+                sizes="(max-width: 1024px) 100vw, 320px"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
+            </div>
+          </div>
+        ) : null}
+        <section
+          class:list={['max-w-[52rem]', person.imagePath ? 'lg:col-start-1 lg:row-start-2' : '']}
+          aria-labelledby="person-bio-heading"
+        >
+          <SectionKicker id="person-bio-heading">Biography</SectionKicker>
+          <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
+            {person.paragraphs.map((para) => (
+              <p>{para}</p>
+            ))}
+          </div>
+        </section>
+      </div>
+      {isThinProfile ? null : <PersonProfileContextSections locale={locale} person={person} />}
+      <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
+      <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />
+      <PersonTrustSignals personName={person.name} sameAs={person.sameAs ?? []} recognitions={recognitions} hideLinkedIn />
+      <PersonContactCta locale={locale} personName={person.name} />
+      <PersonRelatedAndExplore locale={locale} />
+    </>
+  )
+}

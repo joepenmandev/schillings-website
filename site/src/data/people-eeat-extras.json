@@ -144,17 +144,24 @@
       },
       {
         "provider": "legal500",
-        "title": "Hall of Fame listing",
+        "title": "Hall of Fame",
         "year": "2026",
         "scope": "person",
         "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/841606-jenny-afia"
       },
       {
         "provider": "spears",
-        "title": "Top Flight / Recommended",
+        "title": "Top Flight",
         "year": "2026",
         "scope": "person",
         "href": "https://www.spears500.com/adviser/24908/jenny-afia"
+      },
+      {
+        "provider": "other",
+        "title": "Top Music Lawyers",
+        "year": "2025",
+        "scope": "person",
+        "href": "https://www.billboard.com/pro/billboard-top-music-lawyers-2025-list/"
       }
     ]
   },

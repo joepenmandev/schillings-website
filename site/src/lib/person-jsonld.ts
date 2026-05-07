@@ -1,3 +1,4 @@
+import type { PersonRecognition } from '@/data/people';
 import type { Locale } from '../i18n/config';
 import { articleDateModifiedIso, articleDatePublishedIso } from './news-datetime';
 import { organizationNodeId, websiteNodeId } from './jsonld-entity-ids';
@@ -131,26 +132,74 @@ export function clipPlainText(text: string, maxLen: number): string {
   return `${t.slice(0, maxLen - 1).trimEnd()}…`;
 }
 
-/** `<title>`: name + truncated role + brand (keep within typical SERP width). */
-export function buildPersonPageTitle(name: string, role: string, maxTotal = 62): string {
-  const brand = ' | Schillings';
-  const prefix = `${name} — `;
-  const maxRole = Math.max(8, maxTotal - brand.length - prefix.length);
-  return `${prefix}${clipPlainText(role, maxRole)}${brand}`;
+const TITLE_RECOGNITION_ORDER: Array<Exclude<PersonRecognition['provider'], 'other'>> = [
+  'chambers',
+  'legal500',
+  'spears',
+];
+
+const TITLE_RECOGNITION_ABBREV: Record<Exclude<PersonRecognition['provider'], 'other'>, string> = {
+  chambers: 'CP',
+  legal500: 'L500',
+  spears: 'SP',
+};
+
+function recognitionTitleSuffix(recognitions: PersonRecognition[] | undefined): string {
+  if (!recognitions?.length) return '';
+  const seen = new Set<Exclude<PersonRecognition['provider'], 'other'>>();
+  for (const r of recognitions) {
+    if (r.provider !== 'other') seen.add(r.provider);
+  }
+  if (seen.size === 0) return '';
+  const parts = TITLE_RECOGNITION_ORDER.filter((p) => seen.has(p)).map((p) => TITLE_RECOGNITION_ABBREV[p]);
+  return ` · ${parts.join(', ')}`;
 }
 
-/** Meta description: role, office, expertise labels, bio lead. */
+/**
+ * `<title>`: name + truncated role + optional directory abbreviations + brand
+ * (keep within typical SERP width).
+ */
+export function buildPersonPageTitle(
+  name: string,
+  role: string,
+  maxTotal = 62,
+  recognitions?: PersonRecognition[],
+): string {
+  const brand = ' | Schillings';
+  const prefix = `${name} — `;
+  const suffix = recognitionTitleSuffix(recognitions);
+  const maxRole = Math.max(8, maxTotal - brand.length - prefix.length - suffix.length);
+  return `${prefix}${clipPlainText(role, maxRole)}${suffix}${brand}`;
+}
+
+function recognitionMetaHint(recognitions: PersonRecognition[] | undefined): string {
+  if (!recognitions?.length) return '';
+  const labels: string[] = [];
+  for (const p of TITLE_RECOGNITION_ORDER) {
+    if (!recognitions.some((r) => r.provider === p)) continue;
+    if (p === 'chambers') labels.push('Chambers and Partners');
+    else if (p === 'legal500') labels.push('The Legal 500');
+    else labels.push("Spear's");
+  }
+  if (!labels.length) return '';
+  return `Recognised in ${labels.join(', ')}.`;
+}
+
+/** Meta description: role, office, expertise labels, bio lead, optional directory line. */
 export function buildPersonMetaDescription(
   role: string,
   office: string,
   expertiseLabels: string[],
   firstBioParagraph: string,
   maxLen = 158,
+  recognitions?: PersonRecognition[],
 ): string {
   const exp = expertiseLabels.slice(0, 4).join(', ');
   const lead = clipPlainText(`${role} — ${office}.`, 96);
   const chunks = [lead];
   if (exp) chunks.push(`${exp}.`);
+  const dir = recognitionMetaHint(recognitions);
+  if (dir) chunks.push(dir);
   const bio = clipPlainText(firstBioParagraph, maxLen);
   if (bio.length > 40) chunks.push(bio);
   return clipPlainText(chunks.join(' '), maxLen);

@@ -1,5 +1,42 @@
 import { describe, expect, it } from 'vitest';
-import { buildPersonProfilePageJsonLd } from './person-jsonld';
+import type { PersonRecognition } from '@/data/people';
+import { buildPersonMetaDescription, buildPersonPageTitle, buildPersonProfilePageJsonLd } from './person-jsonld';
+
+describe('buildPersonPageTitle', () => {
+  it('omits directory suffix when there are no recognitions', () => {
+    expect(buildPersonPageTitle('Jane Doe', 'Partner, Legal')).toBe('Jane Doe — Partner, Legal | Schillings');
+  });
+
+  it('appends stable directory abbreviations when recognitions list publishers', () => {
+    const r: PersonRecognition[] = [
+      { provider: 'spears', title: 'Listed', year: '2026', scope: 'person', href: 'https://example.com/a' },
+      { provider: 'chambers', title: 'Band 1', year: '2026', scope: 'person', href: 'https://example.com/b' },
+      { provider: 'legal500', title: 'Listed', year: '2026', scope: 'person', href: 'https://example.com/c' },
+    ];
+    expect(buildPersonPageTitle('Jane Doe', 'Partner, Legal', 62, r)).toBe(
+      'Jane Doe — Partner, Legal · CP, L500, SP | Schillings',
+    );
+  });
+
+  it('truncates role to keep title within max length when suffix is present', () => {
+    const r: PersonRecognition[] = [{ provider: 'legal500', title: 'Listed', year: '2026', scope: 'person' }];
+    const longRole = 'Very Long Role Name That Would Overflow The Title Budget';
+    const title = buildPersonPageTitle('Jane Doe', longRole, 62, r);
+    expect(title.endsWith(' · L500 | Schillings')).toBe(true);
+    expect(title.length).toBeLessThanOrEqual(62);
+  });
+});
+
+describe('buildPersonMetaDescription', () => {
+  it('includes directory hint when recognitions are set', () => {
+    const r: PersonRecognition[] = [
+      { provider: 'chambers', title: 'Band 1', year: '2026', scope: 'person' },
+      { provider: 'legal500', title: 'Listed', year: '2026', scope: 'person' },
+    ];
+    const d = buildPersonMetaDescription('Partner', 'London', [], 'Bio text here.', 158, r);
+    expect(d).toContain('Recognised in Chambers and Partners, The Legal 500.');
+  });
+});
 
 describe('buildPersonProfilePageJsonLd', () => {
   it('includes workLocation and subjectOf BlogPosting graph when articles provided', () => {

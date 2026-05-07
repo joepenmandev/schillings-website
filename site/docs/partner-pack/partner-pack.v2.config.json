@@ -1,0 +1,98 @@
+{
+  "mode": "partner-v2",
+  "meta": {
+    "title": "Schillings Digital Platform",
+    "subtitle": "Partner launch briefing",
+    "confidentialLabel": "Confidential - Internal Partner Review",
+    "version": "v2-proof",
+    "preparedFor": "Prepared for internal review | May 2026"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 2200,
+    "zoom": 1
+  },
+  "outputDir": "../artifacts/partner-pack/v2",
+  "captureLock": true,
+  "failOnRuntimeUi": true,
+  "pdf": {
+    "format": "A4",
+    "landscape": true,
+    "printBackground": true
+  },
+  "capture": {
+    "timeoutMs": 30000,
+    "retries": 1,
+    "waitUntil": "networkidle"
+  },
+  "environments": {
+    "production": {
+      "beforeBaseUrl": "https://www.schillingspartners.com"
+    },
+    "staging": {
+      "afterBaseUrl": "https://staging.schillingspartners.com"
+    },
+    "local": {}
+  },
+  "branding": {
+    "logoPath": "/brand/schillings-logo-rgb.svg"
+  },
+  "proofPlaceholders": true,
+  "v2Stage": "full",
+  "summary": {
+    "whatPartnersShouldNotice": "The document highlights practitioner credibility, service clarity and enquiry pathways, rather than visual redesign for its own sake."
+  },
+  "readinessStrip": [
+    "259 automated checks passing",
+    "UK, US and Ireland experiences aligned",
+    "Strategic crawl handling and sitemap generation verified",
+    "Hreflang implementation verified across key route families",
+    "Metadata governance retained by page intent",
+    "Noindex protections and schema continuity preserved"
+  ],
+  "partnerNarrative": {
+    "deliberateDecisions": [
+      "Substantive publishing remains human-written and human-reviewed.",
+      "Directory validation is integrated where independently verifiable.",
+      "International routing is explicit and non-simulated."
+    ],
+    "internationalSummary": "The international model uses UK as default with US and Ireland as alternates, applying disciplined hreflang alignment without artificial geo-targeting.",
+    "operationalMaturityParagraph": "Operational controls were retained to keep publishing selective, evidence-led and reputation-safe across all principal route families.",
+    "closingStrip": "The platform was structured to support authority, clarity and discretion rather than scaled content production."
+  },
+  "placeholderAssets": {
+    "page2": {
+      "newDominant": "p2-practitioner-new-dominant.png",
+      "oldInset": "p2-practitioner-old-inset.png"
+    },
+    "page3": {
+      "newDominant": "p3-expertise-new-dominant.png",
+      "oldInset": "p3-expertise-old-inset.png"
+    },
+    "page4": {
+      "newDominant": "p4-contact-new-dominant.png",
+      "oldInset": "p4-contact-old-inset.png"
+    }
+  },
+  "examples": [
+    {
+      "id": "v2-proof-jenny-afia",
+      "title": "Practitioner authority",
+      "type": "profile",
+      "beforeUrl": "https://www.schillingspartners.com/people/jenny-afia",
+      "afterUrl": "/people/jenny-afia/",
+      "crop": {
+        "x": 120,
+        "y": 220,
+        "width": 1200,
+        "height": 1420
+      },
+      "annotations": [
+        {
+          "position": "top-right",
+          "text": "Independent recognition and professional context are easier to validate."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "page-2-practitioner-benchmark",
+  "description": "Page 2 only — benchmark evidence plate. Practitioner authority + archival inset + optional typographic micro-crop. Geometry is fixed; tune numbers here, not in code.",
+  "outputFile": "page-2-evidence-plate.png",
+  "canvas": {
+    "width": 3200,
+    "height": 1800,
+    "background": "#f2efe9"
+  },
+  "silenceMargin": { "top": 120, "bottom": 132, "left": 112, "right": 96 },
+  "compositionNotes": "Phase 3: asymmetry via uneven silence bands; dominant biased right with bleed; archival subordinate (west anchor, opacity). Intent: institutional evidence — not screenshot board. Review: does typography lead? is archival clearly secondary? is silence doing work? Process: PAGE-2-EVIDENCE-PLATE-REVIEW.md",
+  "fragments": [
+    {
+      "id": "archival",
+      "source": "artifacts/briefing-may-2026/source-material/p2-practitioner-archival-fragment.png",
+      "zIndex": 10,
+      "region": {
+        "x": 108,
+        "y": 420,
+        "width": 580,
+        "height": 900
+      },
+      "fit": "cover",
+      "position": "west",
+      "opacity": 0.93,
+      "archival": {
+        "grayscale": true,
+        "gamma": 1.02,
+        "linear": [0.92, 12],
+        "desaturateExtra": 0.04
+      }
+    },
+    {
+      "id": "microTypography",
+      "source": "artifacts/briefing-may-2026/source-material/p2-practitioner-typography-micro-fragment.png",
+      "optional": true,
+      "zIndex": 15,
+      "region": {
+        "x": 128,
+        "y": 1372,
+        "width": 520,
+        "height": 220
+      },
+      "fit": "cover",
+      "position": "west",
+      "opacity": 0.97,
+      "archival": {
+        "grayscale": true,
+        "gamma": 1,
+        "linear": [0.95, 6],
+        "desaturateExtra": 0.02
+      }
+    },
+    {
+      "id": "dominant",
+      "source": "artifacts/briefing-may-2026/source-material/p2-practitioner-dominant-fragment.png",
+      "zIndex": 20,
+      "region": {
+        "x": 940,
+        "y": 108,
+        "width": 2380,
+        "height": 1468
+      },
+      "fit": "cover",
+      "position": "north",
+      "edgeBleed": { "extendWidth": 360, "extendHeight": 64 }
+    }
+  ]
+}
