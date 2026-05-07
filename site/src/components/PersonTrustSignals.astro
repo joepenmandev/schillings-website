@@ -55,16 +55,16 @@ const surfaceClass = flush
 const headingClass =
   directoryStyle === 'index'
     ? evalSurface
-      ? 'text-[0.52rem] font-normal uppercase tracking-[0.2em] text-secondary-2/54'
+      ? 'text-[0.5rem] font-normal uppercase tracking-[0.2em] text-secondary-2/46'
       : 'text-[0.56rem] font-normal uppercase tracking-[0.19em] text-secondary-2/72'
     : 'text-sm font-medium uppercase tracking-wide text-secondary-2';
 
 const indexDirLinkClass = evalSurface
-  ? 'text-[0.65rem] font-normal leading-snug text-secondary-3/[0.92] no-underline decoration-secondary-2/0 underline-offset-[0.18em] transition-[color,text-decoration-color] hover:underline hover:decoration-secondary-2/24'
+  ? 'text-[0.65rem] font-normal leading-snug text-secondary-3/[0.9] underline decoration-transparent underline-offset-[0.18em] hover:underline hover:decoration-secondary-2/18 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/35'
   : 'text-[0.68rem] font-normal leading-snug text-secondary-3 no-underline decoration-secondary-2/0 underline-offset-[0.18em] transition-[color,text-decoration-color] hover:text-secondary-3 hover:underline hover:decoration-secondary-2/32';
 
 const indexMetaClass = evalSurface
-  ? 'text-[0.58rem] leading-[1.55] text-secondary-2/48'
+  ? 'text-[0.56rem] leading-[1.52] text-secondary-2/44'
   : 'text-[0.62rem] leading-[1.5] text-secondary-2/58';
 
 const linkedIn = sameAs.find((u) => /linkedin\.com\/in\//i.test(u));
@@ -125,7 +125,13 @@ const textLinkClass =
 
 <aside class:list={[surfaceClass]} aria-labelledby="trust-signals-heading">
   <h2 id="trust-signals-heading" class={headingClass}>
-    {complianceTone === 'quiet' ? 'Independent directories' : 'Profiles & independent directories'}
+    {
+      evalSurface
+        ? 'Directories'
+        : complianceTone === 'quiet'
+          ? 'Independent directories'
+          : 'Profiles & independent directories'
+    }
   </h2>
   {
     !omitIntro ? (
@@ -197,7 +203,9 @@ const textLinkClass =
     {
       directoryStyle === 'index' ? (
         <>
-          <p class={indexMetaClass}>Publisher search — use each site to locate firm or named listings.</p>
+          <p class={indexMetaClass}>
+            {evalSurface ? 'Listings are maintained by each publisher.' : 'Publisher search — use each site to locate firm or named listings.'}
+          </p>
           <ul class:list={['flex flex-col', evalSurface ? 'mt-2.5 gap-y-1' : 'mt-3 gap-y-1.5']} role="list">
             {LEGAL_DIRECTORIES.map((d) => (
               <li>

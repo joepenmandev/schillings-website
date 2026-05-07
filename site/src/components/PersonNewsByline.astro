@@ -30,24 +30,35 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
         id="person-news-heading"
         class:list={[
           layout === 'institutional'
-            ? 'text-[0.52rem] font-normal uppercase tracking-[0.19em] text-secondary-2/58'
+            ? 'text-[0.5rem] font-normal uppercase tracking-[0.2em] text-secondary-2/48'
             : 'text-sm font-medium uppercase tracking-wide text-secondary-2',
         ]}
       >
-        Related Intelligence
+        {layout === 'institutional' ? 'Commentary' : 'Related Intelligence'}
       </h2>
       <p
         class:list={[
           'max-w-2xl text-pretty leading-relaxed',
-          layout === 'institutional' ? 'mt-3 text-[0.8125rem] font-extralight text-secondary-3 md:mt-[0.95rem]' : 'mt-2 text-sm text-secondary-3',
+          layout === 'institutional'
+            ? 'mt-3 text-[0.78rem] font-extralight leading-[1.58] text-secondary-3/[0.88] md:mt-[0.95rem]'
+            : 'mt-2 text-sm text-secondary-3',
         ]}
       >
-        Published analysis and commentary where this colleague is credited as an author — useful context on perspective
-        and public commentary. Co-authors appear on each card with a short role line linking to their profiles.
+        {
+          layout === 'institutional' ? (
+            <>Bylined pieces only—context on public positioning, not a record of private mandates.</>
+          ) : (
+            <>
+              Published analysis and commentary where this colleague is credited as an author — useful context on
+              perspective and public commentary. Co-authors appear on each card with a short role line linking to their
+              profiles.
+            </>
+          )
+        }
       </p>
       <div
         class:list={[
-          layout === 'institutional' ? 'mt-6 border-t border-secondary-2/[0.05] pt-6' : 'mt-6 border-t border-secondary-2/20 pt-4',
+          layout === 'institutional' ? 'mt-6 border-t border-secondary-2/[0.034] pt-6' : 'mt-6 border-t border-secondary-2/20 pt-4',
         ]}
       >
         <NewsEditorialCarousel
@@ -64,11 +75,11 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
             href={localeHref(locale, `news/author/${personSlug}`)}
             class:list={[
               layout === 'institutional'
-                ? 'text-[0.8125rem] font-normal text-secondary-3 no-underline decoration-secondary-2/30 underline-offset-2 transition-[text-decoration-color] hover:underline hover:decoration-secondary-2/45'
+                ? 'text-[0.78rem] font-extralight text-secondary-3/[0.88] no-underline decoration-secondary-2/22 underline-offset-2 hover:underline hover:decoration-secondary-2/35'
                 : 'text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:decoration-secondary-4',
             ]}
           >
-            All Intelligence by {personName} →
+            {layout === 'institutional' ? `All commentary — ${personName}` : `All Intelligence by ${personName} →`}
           </a>
         </p>
       ) : hasMore ? (
@@ -77,11 +88,11 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
             href={localeHref(locale, 'news')}
             class:list={[
               layout === 'institutional'
-                ? 'text-[0.8125rem] font-normal text-secondary-3 no-underline decoration-secondary-2/30 underline-offset-2 transition-[text-decoration-color] hover:underline hover:decoration-secondary-2/45'
+                ? 'text-[0.78rem] font-extralight text-secondary-3/[0.88] no-underline decoration-secondary-2/22 underline-offset-2 hover:underline hover:decoration-secondary-2/35'
                 : 'text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:decoration-secondary-4',
             ]}
           >
-            View all Intelligence
+            {layout === 'institutional' ? 'All commentary' : 'View all Intelligence'}
           </a>
         </p>
       ) : null}

@@ -12,7 +12,7 @@ interface Props {
 const { id, class: className, tone = 'default' } = Astro.props;
 const kickerClass =
   tone === 'whisper'
-    ? 'text-[0.52rem] font-normal uppercase tracking-[0.2em] text-secondary-2/58'
+    ? 'text-[0.5rem] font-normal uppercase tracking-[0.21em] text-secondary-2/50'
     : tone === 'quiet'
       ? 'text-[0.58rem] font-normal uppercase tracking-[0.22em] text-secondary-2/78'
       : SECTION_KICKER_CLASS;
