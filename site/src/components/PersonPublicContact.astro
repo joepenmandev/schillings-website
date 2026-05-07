@@ -6,7 +6,7 @@ export interface Props {
   sameAs: string[];
   /** When set, used instead of slug-based inference. */
   email?: string;
-  tone?: 'default' | 'quiet';
+  tone?: 'default' | 'quiet' | 'admin';
 }
 
 const { slug, sameAs, email: emailProp, tone = 'default' } = Astro.props;
@@ -19,19 +19,25 @@ const twitterOrX = sameAs.find((u) =>
 if (!email && !linkedIn && !twitterOrX) return null;
 
 const wrapClass =
-  tone === 'quiet'
-    ? 'not-prose mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-secondary-2/[0.1] pt-9 font-serif text-[0.9375rem] font-extralight text-secondary-3'
-    : 'not-prose mt-12 flex flex-wrap items-center gap-x-7 gap-y-4 border-t border-secondary-2/20 pt-10 font-serif text-base font-normal text-brand-black';
+  tone === 'admin'
+    ? 'not-prose flex flex-wrap items-baseline gap-x-5 gap-y-2 border-t border-secondary-2/[0.05] pt-7 font-serif text-[0.78rem] font-extralight leading-relaxed text-secondary-3/[0.88] lg:pt-8'
+    : tone === 'quiet'
+      ? 'not-prose mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-secondary-2/[0.1] pt-9 font-serif text-[0.9375rem] font-extralight text-secondary-3'
+      : 'not-prose mt-12 flex flex-wrap items-center gap-x-7 gap-y-4 border-t border-secondary-2/20 pt-10 font-serif text-base font-normal text-brand-black';
 
 const mailClass =
-  tone === 'quiet'
-    ? 'break-all text-secondary-3 no-underline decoration-secondary-2/25 underline-offset-[0.2em] transition-[color,text-decoration-color] hover:text-secondary-3 hover:underline hover:decoration-secondary-2/45'
-    : 'break-all underline decoration-secondary-2/50 underline-offset-4 transition-colors hover:decoration-secondary-4';
+  tone === 'admin'
+    ? 'break-all text-secondary-3/[0.92] no-underline decoration-secondary-2/15 underline-offset-[0.15em] transition-[color,text-decoration-color] hover:underline hover:decoration-secondary-2/30'
+    : tone === 'quiet'
+      ? 'break-all text-secondary-3 no-underline decoration-secondary-2/25 underline-offset-[0.2em] transition-[color,text-decoration-color] hover:text-secondary-3 hover:underline hover:decoration-secondary-2/45'
+      : 'break-all underline decoration-secondary-2/50 underline-offset-4 transition-colors hover:decoration-secondary-4';
 
 const socialClass =
-  tone === 'quiet'
-    ? 'inline-flex shrink-0 items-center justify-center border border-secondary-2/22 bg-transparent p-1.5 text-secondary-4 transition-colors hover:border-secondary-2/35 hover:bg-utility-2/40'
-    : 'inline-flex shrink-0 items-center justify-center rounded border border-brand-black/15 bg-brand-black p-1.5 text-brand-white transition-opacity hover:opacity-85';
+  tone === 'admin'
+    ? 'inline-flex shrink-0 items-center justify-center border border-secondary-2/14 bg-transparent p-1 text-secondary-3/80 transition-colors hover:border-secondary-2/24 hover:bg-utility-2/25'
+    : tone === 'quiet'
+      ? 'inline-flex shrink-0 items-center justify-center border border-secondary-2/22 bg-transparent p-1.5 text-secondary-4 transition-colors hover:border-secondary-2/35 hover:bg-utility-2/40'
+      : 'inline-flex shrink-0 items-center justify-center rounded border border-brand-black/15 bg-brand-black p-1.5 text-brand-white transition-opacity hover:opacity-85';
 ---
 
 <div class={wrapClass} aria-label="Contact and profiles">

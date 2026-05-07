@@ -24,6 +24,8 @@ export interface Props {
   omitIntro?: boolean;
   /** `index` — caption-style directory links (institutional profiles). */
   directoryStyle?: 'chips' | 'index';
+  /** No outer border/margin — nest inside institutional evaluation column. */
+  flush?: boolean;
 }
 
 const {
@@ -36,10 +38,12 @@ const {
   surface = 'panel',
   omitIntro = false,
   directoryStyle = 'chips',
+  flush = false,
 } = Astro.props;
 
-const surfaceClass =
-  surface === 'plain' && directoryStyle === 'index'
+const surfaceClass = flush
+  ? 'border-0 p-0'
+  : surface === 'plain' && directoryStyle === 'index'
     ? 'mt-6 border-t border-secondary-2/10 pt-6'
     : surface === 'plain'
       ? 'mt-8 border-t border-secondary-2/20 pt-8'

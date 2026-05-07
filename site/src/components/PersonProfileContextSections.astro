@@ -37,7 +37,9 @@ const hubIntro = institutional
 {
   expertise.length > 0 ? (
     <section
-      class:list={['md:mt-16', institutional ? 'mt-[3.5rem] max-w-[33rem]' : 'mt-12 border-t border-secondary-2/20 pt-10 md:mt-14']}
+      class:list={[
+        institutional ? 'mt-10 max-w-[33rem] md:mt-[3.75rem] lg:mt-[4.25rem] xl:mt-14' : 'mt-12 border-t border-secondary-2/20 pt-10 md:mt-14',
+      ]}
       aria-labelledby="person-helps-heading"
     >
       <SectionKicker id="person-helps-heading" tone={institutional ? 'quiet' : 'default'}>{hubTitle}</SectionKicker>
