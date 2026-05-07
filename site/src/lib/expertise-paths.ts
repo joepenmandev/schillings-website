@@ -8,6 +8,7 @@ const ID_TO_SLUG: Record<ExpertiseId, string> = {
   reputation_privacy: 'reputation-privacy',
   litigation_disputes: 'litigation-disputes',
   intelligence_security: 'intelligence-investigations',
+  digital_resilience: 'digital-resilience-security',
   communications: 'strategic-communications',
   corporate_transactions: 'corporate-transactions',
   international: 'international',

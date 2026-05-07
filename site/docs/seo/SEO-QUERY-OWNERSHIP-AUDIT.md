@@ -41,19 +41,35 @@
 
 ---
 
-## Cluster: Investigations, intelligence, security
+## Cluster: Investigations, intelligence (practice)
 
 | Field | Value |
 |--------|--------|
 | **Primary owner URL** | `/expertise/intelligence-investigations/` |
-| **Secondary support** | Situations: sensitive investigations, cyber extortion, online attacks (mapping), AI threats (evidence) |
-| **Informational support** | Intelligence: Investigations, Security, AI topics |
-| **Neutral mentions** | People → hub |
+| **Secondary support** | Situations: sensitive investigations; online attacks (intelligence picture); AI threats where investigations-led |
+| **Informational support** | Intelligence: Investigations topic; AI topic (where aligned with investigations framing) |
+| **Neutral mentions** | People → hub (ISD-tagged profiles) |
 | **Prohibited competing surfaces** | Topic archive “Investigations” ranking above hub for **retained** investigation mandate queries |
 | **Expected SERP role (primary)** | Expertise hub |
 | **Expected SERP role (support)** | Situations + editorial for definitional / newsy queries |
 | **Current risk level** | **Medium** — word “investigations” shared across editorial and practice |
 | **Confidence** | **Emerging** — depends on measurement (see framework) |
+
+---
+
+## Cluster: Digital resilience & security (practice)
+
+| Field | Value |
+|--------|--------|
+| **Primary owner URL** | `/expertise/digital-resilience-security/` (all locales) |
+| **Secondary support** | Situations: online attacks & misinformation; AI & deepfake threats; cyber extortion & coercion (see cluster links) |
+| **Informational support** | Intelligence: **Security** topic → practice bridge to this hub |
+| **Neutral mentions** | People → hub (DR-tagged / `digital_resilience` expertise) |
+| **Prohibited competing surfaces** | Using ISD hub URL as the commercial owner for **digital resilience** head terms |
+| **Expected SERP role (primary)** | Expertise hub |
+| **Expected SERP role (support)** | Situations + editorial Security topic |
+| **Current risk level** | **Medium** — “security” vocabulary overlaps ISD editorial topics |
+| **Confidence** | **Emerging** — monitor split vs ISD in GSC |
 
 ---
 

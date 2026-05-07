@@ -14,7 +14,8 @@ const TOPIC_SLUG_TO_EXPERTISE: Partial<Record<string, ExpertiseId>> = {
   communications: 'communications',
   crisis: 'communications',
   investigations: 'intelligence_security',
-  security: 'intelligence_security',
+  /** Editorial “Security” topic → Digital Resilience & Security practice hub (distinct from ISD). */
+  security: 'digital_resilience',
   ai: 'intelligence_security',
   geopolitics: 'international',
   'family-businesses': 'corporate_transactions',

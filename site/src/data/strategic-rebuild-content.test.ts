@@ -251,6 +251,16 @@ describe('strategic-rebuild-content expertise index public cards', () => {
     }
   });
 
+  it('links Digital Resilience & Security and Intelligence & Investigations index rows to distinct hub paths', () => {
+    const hubs = getExpertiseIndexGraphHubEntries();
+    const base = EXPERTISE_INDEX_PATH_SEGMENT;
+    expect(hubs.find((h) => h.id === 'digital_resilience_security')?.pathAfterLocale).toBe(
+      `${base}/digital-resilience-security`,
+    );
+    expect(hubs.find((h) => h.id === 'intelligence_investigations')?.pathAfterLocale).toBe(
+      `${base}/intelligence-investigations`,
+    );
+  });
 });
 
 describe('strategic-rebuild-content public expertise mapping', () => {

@@ -41,17 +41,31 @@
 
 ---
 
-## Query cluster: investigations, intelligence, security
+## Query cluster: investigations, intelligence (practice)
 
 | Role | Owner | Path / surface |
 |------|--------|----------------|
 | **PRIMARY** | Expertise hub | `/expertise/intelligence-investigations/` |
-| **SUPPORTING** | Situations | Sensitive investigations; cyber extortion; online attacks (mapping); AI threats (evidence) |
-| **SUPPORTING (editorial)** | Intelligence | Investigations, Security, AI, Disinformation (where aligned) |
+| **SUPPORTING** | Situations | Sensitive investigations; online attacks (intelligence picture); AI threats (evidence / channel mapping where investigations-led) |
+| **SUPPORTING (editorial)** | Intelligence | Investigations, AI topics (where aligned); **not** the primary commercial home for digital-resilience mandates |
 | **Commercial owner** | Expertise hub | |
 | **Informational owner** | Situations | |
 | **Cannibalization risk** | “Investigations” topic hub vs expertise | **Mitigation:** topic hub = editorial; bridge line points to **Intelligence & Investigations** expertise |
 | **Do not compete** | — | |
+
+---
+
+## Query cluster: digital resilience, search, social, AI-visible reputation
+
+| Role | Owner | Path / surface |
+|------|--------|----------------|
+| **PRIMARY** | Expertise hub | `/expertise/digital-resilience-security/` (mirrors: `/us/expertise/digital-resilience-security/`, `/ie/expertise/digital-resilience-security/`) |
+| **SUPPORTING** | Situations | Online attacks & misinformation (monitoring / surfaces); AI & deepfake threats (verification); cyber extortion & coercion (digital channels) |
+| **SUPPORTING (editorial)** | Intelligence | **Security** topic → practice bridge targets this hub; Communications where social/stakeholder-led |
+| **Commercial owner** | Expertise hub | |
+| **Informational owner** | Situations | |
+| **Cannibalization risk** | Shared vocabulary with ISD on “security” | **Mitigation:** separate hub URL + `expertise-situation-cluster-links.ts`; ISD hub stays investigations / intelligence-led |
+| **Do not merge** | DR catalogue row | **Must not** resolve to `/expertise/intelligence-investigations/` |
 
 ---
 
@@ -105,7 +119,8 @@
 | Overlap | PRIMARY OWNER | SUPPORTING CONTEXT | NEUTRAL |
 |---------|---------------|-------------------|---------|
 | Reputation / privacy commercial | Expertise hub | Situations, Intelligence topics | People mention |
-| “Investigations” | Expertise hub (practice) | Situations, editorial Investigations topic | — |
+| “Investigations” | Expertise hub (ISD practice) | Situations, editorial Investigations topic | — |
+| Digital resilience / search / AI surfaces | Expertise hub (DR) | Situations, editorial Security topic | ISD (investigations-only) |
 | Crisis narrative | Communications hub (practice) | Crisis situation, Crisis topic | — |
 | Cross-border disputes | International + Litigation hubs (split facet) | International disputes situation | — |
 
@@ -146,3 +161,4 @@ Full link table: `SEO-CLUSTER-RELATIONSHIP-MAP.md` + `expertise-situation-cluste
 | Date | Change |
 |------|--------|
 | 2026-05-06 | Initial Phase 2B authority map + implementation hooks |
+| 2026-05-07 | Digital Resilience & Security as its own commercial hub (`/expertise/digital-resilience-security/`); ISD cluster wording narrowed to investigations practice |

@@ -29,9 +29,21 @@
     "authorityFraming": "This hub defines firmwide investigations and intelligence capability—lawful, disciplined, and built to inform legal strategy—not episodic narrative alone.",
     "ctaContext": "If you need a structured intelligence picture alongside counsel, start from this practice.",
     "bullets": [
-      "Investigations, due diligence, and open-source work where appropriate",
-      "Threat monitoring, digital resilience, and crisis support",
+      "Investigations, due diligence, and open-source research where appropriate",
+      "Technical analysis and reporting for decision makers under pressure",
       "Coordination with legal privilege and regulatory obligations"
+    ],
+    "legalNote": "Migration scaffold — not legal advice. Partnership and compliance must approve final expertise descriptions, entity-specific disclaimers, and jurisdictional limitations before go-live."
+  },
+  "digital_resilience": {
+    "serpDescription": "Digital resilience and security — Schillings helps principals and organisations strengthen how they are seen in search, on social platforms, and in AI-generated summaries. London, Miami, Dublin.",
+    "intro": "Search results, social platforms, and generative AI surfaces increasingly define first impressions. Schillings digital resilience specialists work with lawyers and communications colleagues on proportionate strategies to understand and influence those channels.",
+    "authorityFraming": "This hub is the firmwide entry for digital resilience and security—how online visibility, monitoring, and channel strategy sit alongside legal and investigations mandates.",
+    "ctaContext": "If the issue is how you or your organisation appears in digital channels and AI outputs, start from this practice.",
+    "bullets": [
+      "Search and social visibility strategy alongside reputation and legal risk",
+      "Monitoring and early insight across media, platforms, and generative AI summaries",
+      "Crisis and proactive programmes coordinated with intelligence and communications teams"
     ],
     "legalNote": "Migration scaffold — not legal advice. Partnership and compliance must approve final expertise descriptions, entity-specific disclaimers, and jurisdictional limitations before go-live."
   },

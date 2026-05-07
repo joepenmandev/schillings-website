@@ -17,6 +17,7 @@ export const EXPERTISE_RELATED_STRATEGIC_SITUATIONS: Record<
     'online_attacks_misinformation',
     'ai_deepfake_threats',
   ],
+  digital_resilience: ['online_attacks_misinformation', 'ai_deepfake_threats', 'cyber_extortion_coercion'],
   communications: [
     'media_exposure_scrutiny',
     'crisis_containment',

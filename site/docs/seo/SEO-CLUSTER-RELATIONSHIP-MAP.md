@@ -69,10 +69,21 @@ No new grids, footers, or auto-generated “related content” systems.
 
 | Situation | Strength | Intent overlap | Cannibalization | Direction | Anchor philosophy | Surface |
 |-----------|----------|----------------|-----------------|-----------|-------------------|---------|
-| Cyber extortion & coercion | strong | Threat intelligence, response | Low | ↔ | Coercion, investigations | Both |
 | Sensitive investigations | strong | Discreet fact-finding | See litigation — anchors differ | ↔ | Discreet investigations | Both |
-| Online attacks & misinformation | supporting | Attack surface mapping | Shared with reputation | ↔ | Digital attack surface | Both |
-| AI & deepfake threats | supporting | Technical + legal judgment | Shared with reputation | Situation → hub | Authenticity questions | Situation |
+| Online attacks & misinformation | supporting | Intelligence picture vs surfaces | Shared with reputation + **DR hub**; **different anchors** | ↔ | Coordinated online pressure, intelligence picture | Both |
+| AI & deepfake threats | supporting | Evidence / channel mapping | Shared with reputation + **DR hub** | Situation → hub | Synthetic media, evidence | Situation |
+
+**Note:** Cyber extortion, hostile online **resilience/monitoring**, and AI-**surface** narratives are curated primarily against the **Digital Resilience & Security** hub (`expertise-situation-cluster-links.ts`); ISD stays investigations-led.
+
+---
+
+### Digital Resilience & Security hub
+
+| Situation | Strength | Intent overlap | Cannibalization | Direction | Anchor philosophy | Surface |
+|-----------|----------|----------------|-----------------|-----------|-------------------|---------|
+| Cyber extortion & coercion | strong | Digital channels, response | Low vs ISD when anchors stay distinct | ↔ | Extortion, digital resilience | Both |
+| Online attacks & misinformation | strong | Search, social, monitoring | Medium — shared vocabulary with ISD; **split anchors** | ↔ | Online attacks, monitoring | Both |
+| AI & deepfake threats | strong | AI-visible reputation, verification | Shared with reputation | ↔ | AI surfaces, narratives | Both |
 
 ---
 

@@ -56,6 +56,8 @@ export const EXPERTISE_IDS = [
   'reputation_privacy',
   'litigation_disputes',
   'intelligence_security',
+  /** Search, social, and AI-visible reputation surfaces — distinct URL from Intelligence & Investigations. */
+  'digital_resilience',
   'communications',
   'corporate_transactions',
   'international',
@@ -98,6 +100,7 @@ export const EXPERTISE_LABELS: Record<ExpertiseId, string> = {
   reputation_privacy: 'Reputation & privacy',
   litigation_disputes: 'Legal Protection & Disputes',
   intelligence_security: 'Intelligence & Investigations',
+  digital_resilience: 'Digital Resilience & Security',
   communications: 'Strategic Communications',
   corporate_transactions: 'Corporate & transactions',
   international: 'International',

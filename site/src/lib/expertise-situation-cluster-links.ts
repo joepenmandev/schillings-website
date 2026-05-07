@@ -38,14 +38,14 @@ export const EXPERTISE_LINKS_BY_SITUATION: Record<
   ],
   online_attacks_misinformation: [
     { expertiseId: 'reputation_privacy', linkLabel: 'Online allegations and false narratives' },
-    { expertiseId: 'intelligence_security', linkLabel: 'Hostile online activity: intelligence picture' },
+    { expertiseId: 'digital_resilience', linkLabel: 'Hostile online activity: digital resilience and monitoring' },
   ],
   ai_deepfake_threats: [
     { expertiseId: 'reputation_privacy', linkLabel: 'Synthetic media and reputational exposure' },
-    { expertiseId: 'intelligence_security', linkLabel: 'Deepfakes and authenticity: investigations lens' },
+    { expertiseId: 'digital_resilience', linkLabel: 'Deepfakes and authenticity: security and verification' },
   ],
   cyber_extortion_coercion: [
-    { expertiseId: 'intelligence_security', linkLabel: 'Extortion and coercion: intelligence-led response' },
+    { expertiseId: 'digital_resilience', linkLabel: 'Extortion and coercion: response across digital channels' },
   ],
   sensitive_investigations: [
     { expertiseId: 'intelligence_security', linkLabel: 'Discreet investigations and intelligence' },
@@ -92,10 +92,14 @@ export const SITUATION_LINKS_BY_EXPERTISE: Record<ExpertiseId, readonly Expertis
     { situationId: 'crisis_containment', linkLabel: 'Crisis containment with legal strategy in view' },
   ],
   intelligence_security: [
-    { situationId: 'cyber_extortion_coercion', linkLabel: 'Cyber extortion: investigations and response' },
     { situationId: 'sensitive_investigations', linkLabel: 'Complex investigations and intelligence discipline' },
-    { situationId: 'online_attacks_misinformation', linkLabel: 'Digital attack surfaces: intelligence picture' },
-    { situationId: 'ai_deepfake_threats', linkLabel: 'AI-related threats: evidence and authenticity' },
+    { situationId: 'online_attacks_misinformation', linkLabel: 'Coordinated online pressure: intelligence picture' },
+    { situationId: 'ai_deepfake_threats', linkLabel: 'Synthetic media threats: evidence and channel mapping' },
+  ],
+  digital_resilience: [
+    { situationId: 'cyber_extortion_coercion', linkLabel: 'Cyber extortion: digital resilience and response' },
+    { situationId: 'online_attacks_misinformation', linkLabel: 'Online attacks: search, social, and monitoring' },
+    { situationId: 'ai_deepfake_threats', linkLabel: 'AI-visible reputation: surfaces and narratives' },
   ],
   communications: [
     { situationId: 'media_exposure_scrutiny', linkLabel: 'Strategic communications when media attention converges' },

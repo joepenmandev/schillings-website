@@ -61,6 +61,7 @@ describe('expertise-paths', () => {
   it('acceptance: public paths used by /expertise/[slug]/ resolve', () => {
     expect(expertiseIdFromPathSlug('reputation-privacy')).toBe('reputation_privacy');
     expect(expertiseIdFromPathSlug('intelligence-investigations')).toBe('intelligence_security');
+    expect(expertiseIdFromPathSlug('digital-resilience-security')).toBe('digital_resilience');
     expect(expertiseIdFromPathSlug('strategic-communications')).toBe('communications');
   });
 });

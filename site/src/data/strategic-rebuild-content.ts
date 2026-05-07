@@ -168,8 +168,7 @@ export const STRATEGIC_PUBLIC_EXPERTISE_SERVICE_HUB_BY_ID = {
   privacy_confidentiality: 'reputation_privacy',
   strategic_communications: 'communications',
   intelligence_investigations: 'intelligence_security',
-  /** Hub H1 is ISD; service-hub copy explicitly covers digital resilience & crisis support. */
-  digital_resilience_security: 'intelligence_security',
+  digital_resilience_security: 'digital_resilience',
   legal_protection_disputes: 'litigation_disputes',
   /** Closest directory hub: crisis & issues management, stakeholder comms. */
   crisis_response: 'communications',

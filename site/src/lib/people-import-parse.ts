@@ -22,7 +22,7 @@ export const TAG_TO_EXPERTISE: Record<string, ExpertiseId> = {
   'Strategic Communications': 'communications',
   'Schillings Communications': 'communications',
   'Digital Communications': 'communications',
-  'Digital Resilience': 'intelligence_security',
+  'Digital Resilience': 'digital_resilience',
   'Corporate Communications': 'communications',
   Litigation: 'litigation_disputes',
   Investigations: 'intelligence_security',

@@ -77,6 +77,7 @@ export function inferPracticeGroup(
     return 'legal';
   }
 
+  if (e.has('digital_resilience')) return 'dr';
   if (e.has('communications')) return 'scom';
   if (e.has('intelligence_security')) return 'isd';
   return 'legal';

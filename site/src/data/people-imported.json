@@ -312,6 +312,7 @@
     "expertise": [
       "reputation_privacy",
       "intelligence_security",
+      "digital_resilience",
       "communications"
     ],
     "paragraphs": [
@@ -1056,6 +1057,7 @@
     "expertise": [
       "reputation_privacy",
       "intelligence_security",
+      "digital_resilience",
       "communications"
     ],
     "paragraphs": [
@@ -1173,6 +1175,7 @@
     "expertise": [
       "reputation_privacy",
       "intelligence_security",
+      "digital_resilience",
       "communications"
     ],
     "paragraphs": [
@@ -1241,6 +1244,7 @@
     "practiceGroup": "dr",
     "expertise": [
       "reputation_privacy",
+      "digital_resilience",
       "communications"
     ],
     "paragraphs": [
@@ -1502,6 +1506,7 @@
     "seniority": "associate",
     "practiceGroup": "dr",
     "expertise": [
+      "digital_resilience",
       "communications"
     ],
     "paragraphs": [
@@ -2115,6 +2120,7 @@
     "practiceGroup": "dr",
     "expertise": [
       "reputation_privacy",
+      "digital_resilience",
       "communications"
     ],
     "paragraphs": [

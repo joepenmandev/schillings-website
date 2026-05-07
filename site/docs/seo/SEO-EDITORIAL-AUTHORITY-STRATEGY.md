@@ -52,8 +52,8 @@ Mapping is **supporting**, not competitive: articles reinforce hubs; they do not
 | Investigations / intelligence insight | **Intelligence & Investigations** | **Legal Protection & Disputes**, **Regulatory** |
 | Geopolitical commentary | **International** | **Legal Protection & Disputes**, **Reputation & privacy** |
 | Crisis response analysis | **Strategic Communications** | **Legal Protection & Disputes**, **Reputation & privacy** |
-| Privacy / security developments | **Reputation & privacy**, **Intelligence & Investigations** | **Regulatory** |
-| Digital threat analysis | **Intelligence & Investigations**, **Reputation & privacy** | **Strategic Communications** |
+| Privacy / security developments | **Reputation & privacy**, **Digital Resilience & Security** | **Intelligence & Investigations**, **Regulatory** |
+| Digital threat analysis | **Digital Resilience & Security**, **Reputation & privacy** | **Intelligence & Investigations**, **Strategic Communications** |
 
 *Operational note:* Topic tags and author expertise already signal adjacency; future commissioning can use this table as a **briefing** grid, not a keyword map.
 

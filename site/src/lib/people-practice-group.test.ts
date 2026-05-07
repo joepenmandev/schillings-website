@@ -63,6 +63,14 @@ describe('inferPracticeGroup', () => {
   it('uses communications expertise when role is generic', () => {
     expect(inferPracticeGroup('Director', ['communications'])).toBe('scom');
   });
+
+  it('routes digital_resilience expertise tag to dr before isd', () => {
+    expect(inferPracticeGroup('Associate London', ['digital_resilience', 'intelligence_security'])).toBe('dr');
+  });
+
+  it('prefers dr over communications when both expertise tags are present', () => {
+    expect(inferPracticeGroup('Associate London', ['communications', 'digital_resilience'])).toBe('dr');
+  });
 });
 
 describe('resolvePracticeGroup', () => {
