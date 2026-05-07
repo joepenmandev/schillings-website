@@ -80,7 +80,6 @@
     "practiceGroup": "scom",
     "expertise": [
       "reputation_privacy",
-      "litigation_disputes",
       "intelligence_security",
       "communications"
     ],
@@ -126,6 +125,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -195,6 +195,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -335,7 +336,6 @@
     "practiceGroup": "isd",
     "expertise": [
       "reputation_privacy",
-      "litigation_disputes",
       "intelligence_security",
       "corporate_transactions",
       "regulatory"
@@ -382,11 +382,11 @@
     "office": "London",
     "officeId": "london",
     "seniority": "senior_analyst",
-    "practiceGroup": "isd",
+    "practiceGroup": "dr",
     "expertise": [
       "reputation_privacy",
-      "litigation_disputes",
       "intelligence_security",
+      "digital_resilience",
       "communications"
     ],
     "paragraphs": [
@@ -498,7 +498,8 @@
     "seniority": "senior_associate",
     "practiceGroup": "legal",
     "expertise": [
-      "reputation_privacy"
+      "reputation_privacy",
+      "litigation_disputes"
     ],
     "paragraphs": [
       "Elaine is an experienced advisory and litigation lawyer specialising in the protection of rights, reputation and information in the media and online. Elaine advises in relation to defamation, malicious falsehood, privacy, breach of confidence, data protection, contempt of court, harassment, passing off and the online infringement of intellectual property rights.",
@@ -706,6 +707,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -799,7 +801,6 @@
     "practiceGroup": "scom",
     "expertise": [
       "reputation_privacy",
-      "litigation_disputes",
       "intelligence_security",
       "communications"
     ],
@@ -916,6 +917,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -942,7 +944,8 @@
     "seniority": "associate",
     "practiceGroup": "legal",
     "expertise": [
-      "reputation_privacy"
+      "reputation_privacy",
+      "litigation_disputes"
     ],
     "paragraphs": [
       "Jessica works for corporates, charities and individuals – both in and out of the spotlight – to advise on matters affecting their reputation and privacy. She is particularly experienced in areas of defamation, malicious falsehood, harassment and data protection law, especially when it concerns high-net-worth and ultra-high-net-worth individuals. Jessica often supports clients with pre-emptive advice surrounding their reputation and has extensive litigation experience on reputational issues."
@@ -1009,6 +1012,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -1080,6 +1084,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -1104,6 +1109,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "regulatory"
     ],
     "paragraphs": [
@@ -1128,6 +1134,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -1352,7 +1359,8 @@
     "seniority": "director",
     "practiceGroup": "legal",
     "expertise": [
-      "reputation_privacy"
+      "reputation_privacy",
+      "litigation_disputes"
     ],
     "paragraphs": [
       "Louise is a senior media lawyer with extensive experience advising clients on a broad range of reputational and privacy issues, specialising in defamation, privacy, and data protection. She represents a diverse client base, including high profile individuals and prominent figures in the business world, both in and out of the public eye. Louise also works with high net worth individuals, as well as leading corporates and brands, to protect their rights and reputations. Louise is ranked by both Chambers UK and Chambers High Net Worth as a Star Associate, where she is commended as ‘a great technical lawyer’ with ‘excellent insight’ and ‘fantastic attention to detail’. She is additionally recognised as a Leading Associate and Key Lawyer by the Legal 500."
@@ -1439,6 +1447,7 @@
     "seniority": "partner",
     "practiceGroup": "legal",
     "expertise": [
+      "litigation_disputes",
       "intelligence_security",
       "corporate_transactions",
       "regulatory"
@@ -1646,6 +1655,7 @@
     "expertise": [
       "reputation_privacy",
       "intelligence_security",
+      "digital_resilience",
       "communications"
     ],
     "paragraphs": [
@@ -1693,6 +1703,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -1716,6 +1727,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -1760,6 +1772,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],
@@ -1783,6 +1796,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "communications"
     ],
     "paragraphs": [
@@ -1805,6 +1819,7 @@
     "practiceGroup": "legal",
     "expertise": [
       "reputation_privacy",
+      "litigation_disputes",
       "intelligence_security",
       "international"
     ],

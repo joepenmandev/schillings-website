@@ -28,6 +28,7 @@
     "verify:strategic-crawl": "tsx scripts/verify-strategic-crawl.ts",
     "verify:strategic-crawl:local": "node scripts/verify-strategic-crawl-local.mjs",
     "audit:strategic-copy": "tsx scripts/audit-strategic-copy.ts",
+    "audit:people-expertise-hubs": "tsx scripts/audit-people-expertise-hubs.ts",
     "backfill:news-authors": "tsx scripts/backfill-news-author-slugs.ts",
     "publish:migrated-news": "tsx scripts/publish-migrated-news.ts"
   },
