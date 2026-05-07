@@ -1,4 +1,69 @@
 {
+  "abby-stanglin": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Ranked lawyer",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/abby-stanglin-litigation-support-58:26405084"
+      }
+    ]
+  },
+  "adam-wilkinson": {
+    "recognitions": [
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/22853/adam-wilkinson"
+      }
+    ]
+  },
+  "allan-dunlavy": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Ranked lawyer",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/allan-dunlavy-high-net-worth-21:738417"
+      },
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/846421-allan-dunlavy"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/25155/allan-dunlavy"
+      }
+    ]
+  },
+  "ben-hobbs": {
+    "recognitions": [
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/1255427-ben-hobbs"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/25112/ben-hobbs"
+      }
+    ]
+  },
   "david-imison": {
     "recognitions": [
       {
@@ -6,7 +71,7 @@
         "title": "Power List",
         "year": "2025",
         "scope": "person",
-        "href": "https://spears500.com/company/20906/schillings"
+        "href": "https://www.spears500.com/adviser/25045/david-imison"
       },
       {
         "provider": "legal500",
@@ -17,13 +82,65 @@
       }
     ]
   },
+  "emily-mitcheson": {
+    "recognitions": [
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/5294110-emily-mitcheson"
+      }
+    ]
+  },
+  "george-pascoe-watson": {
+    "recognitions": [
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/23910/george-pascoe-watson"
+      }
+    ]
+  },
+  "gillian-duffy": {
+    "recognitions": [
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/1255421-gillian-duffy"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/24979/gillian-duffy"
+      }
+    ]
+  },
+  "hind-habib": {
+    "recognitions": [
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/6197274-hind-habib"
+      }
+    ]
+  },
   "jenny-afia": {
     "recognitions": [
       {
         "provider": "chambers",
         "title": "Band ranked",
         "year": "2026",
-        "scope": "person"
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/jenny-afia-uk-1:353234"
       },
       {
         "provider": "legal500",
@@ -37,7 +154,260 @@
         "title": "Top Flight / Recommended",
         "year": "2026",
         "scope": "person",
-        "href": "https://spears500.com/company/20906/schillings"
+        "href": "https://www.spears500.com/adviser/24908/jenny-afia"
+      }
+    ]
+  },
+  "joelle-rich": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Ranked lawyer",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/joelle-rich-uk-1:1462062"
+      },
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/1255433-joelle-rich"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/24132/joelle-rich"
+      }
+    ]
+  },
+  "josh-leigh": {
+    "recognitions": [
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/22135/josh-leigh"
+      }
+    ]
+  },
+  "juliet-young": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Ranked lawyer",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/juliet-young-litigation-support-58:25972281"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/24099/juliet-young"
+      }
+    ]
+  },
+  "keith-schilling": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Ranked lawyer",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/keith-schilling-uk-1:9968"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/24853/keith-schilling"
+      }
+    ]
+  },
+  "lily-kennett": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Ranked lawyer",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/lily-kennett-litigation-support-58:26052531"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/24839/lily-kennett"
+      }
+    ]
+  },
+  "louise-prince": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Ranked lawyer",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/louise-prince-uk-1:292385"
+      }
+    ]
+  },
+  "natasha-hibbert": {
+    "recognitions": [
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/6197286-natasha-hibbert"
+      }
+    ]
+  },
+  "phil-hartley": {
+    "recognitions": [
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/6197298-phil-hartley"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/23912/phil-hartley"
+      }
+    ]
+  },
+  "rachel-atkins": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Ranked lawyer",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/rachel-atkins-uk-1:13531"
+      },
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/841600-rachel-atkins"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/24711/rachel-atkins"
+      }
+    ]
+  },
+  "rod-christie-miller": {
+    "recognitions": [
+      {
+        "provider": "chambers",
+        "title": "Ranked lawyer",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://chambers.com/lawyer/rod-christie-miller-uk-1:209046"
+      },
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/846415-rod-christie-miller"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/22281/rod-christie-miller"
+      }
+    ]
+  },
+  "sam-ahuja": {
+    "recognitions": [
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/4725774-sam-ahuja"
+      },
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/23917/sam-ahuja"
+      }
+    ]
+  },
+  "simon-brown": {
+    "recognitions": [
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/5797734-simon-brown"
+      }
+    ]
+  },
+  "steven-hudson": {
+    "recognitions": [
+      {
+        "provider": "legal500",
+        "title": "Listed",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.legal500.com/firms/2987-schillings/r-england/lawyers/3810078-steven-hudson"
+      }
+    ]
+  },
+  "tim-robinson": {
+    "recognitions": [
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/24600/tim-robinson"
+      }
+    ]
+  },
+  "victoria-obyrne": {
+    "recognitions": [
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/23909/victoria-obyrne"
+      }
+    ]
+  },
+  "viv-oconnor-jemmett": {
+    "recognitions": [
+      {
+        "provider": "spears",
+        "title": "Recommended",
+        "year": "2026",
+        "scope": "person",
+        "href": "https://www.spears500.com/adviser/25828/viv-o-connor-jemmett"
       }
     ]
   }
