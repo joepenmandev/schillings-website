@@ -24,9 +24,11 @@ const expertise = (person.expertise ?? []) as ExpertiseId[];
 const relatedSituationIds = strategicSituationIdsForPersonExpertise(expertise);
 
 const body = 'mt-2 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3';
-const linkList = institutional ? 'mt-6 border-t border-secondary-2/[0.08] pt-1' : 'mt-4 flex flex-col gap-2 sm:gap-2.5';
+const linkList = institutional
+  ? 'mt-5 flex flex-col gap-0'
+  : 'mt-4 flex flex-col gap-2 sm:gap-2.5';
 const linkClass = institutional
-  ? 'group flex w-full border-l border-secondary-2/[0.08] py-[0.7rem] pl-3 text-left text-[0.8125rem] font-extralight leading-[1.45] text-secondary-3 transition-[color,border-color] hover:border-secondary-2/22 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/45'
+  ? 'group flex w-full py-[0.62rem] pl-0 text-left text-[0.8125rem] font-extralight leading-[1.48] text-secondary-3 transition-colors first:pt-0 hover:text-secondary-3 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/45'
   : 'font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4';
 const hubTitle = institutional ? 'Core areas' : 'Helps clients with';
 const hubIntro = institutional
@@ -38,12 +40,12 @@ const hubIntro = institutional
   expertise.length > 0 ? (
     <section
       class:list={[
-        institutional ? 'mt-9 max-w-[33rem] md:mt-12 lg:mt-14 xl:mt-[3.75rem]' : 'mt-12 border-t border-secondary-2/20 pt-10 md:mt-14',
+        institutional ? 'mt-10 max-w-[33rem] md:mt-[3.125rem] lg:mt-[4.5rem] xl:mt-[3.75rem]' : 'mt-12 border-t border-secondary-2/20 pt-10 md:mt-14',
       ]}
       aria-labelledby="person-helps-heading"
     >
-      <SectionKicker id="person-helps-heading" tone={institutional ? 'quiet' : 'default'}>{hubTitle}</SectionKicker>
-      <p class:list={[body, institutional && 'mt-2.5 max-w-[24rem] text-[0.8125rem] leading-[1.55] text-secondary-2/88']}>
+      <SectionKicker id="person-helps-heading" tone={institutional ? 'whisper' : 'default'}>{hubTitle}</SectionKicker>
+      <p class:list={[body, institutional && 'mt-2 max-w-[24rem] text-[0.8rem] leading-[1.56] text-secondary-2/78']}>
         {hubIntro}
       </p>
       <ul class={`${linkList} list-none`}>

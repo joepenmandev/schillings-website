@@ -5,31 +5,37 @@ import { contactSegment, localeHref } from '../lib/site-nav';
 interface Props {
   locale: Locale;
   personName: string;
-  tone?: 'default' | 'quiet';
+  tone?: 'default' | 'quiet' | 'institutional';
 }
 
 const { locale, personName, tone = 'default' } = Astro.props;
 const href = localeHref(locale, contactSegment);
 
 const boxClass =
-  tone === 'quiet'
-    ? 'mt-12 border border-secondary-2/14 bg-transparent px-5 py-6 md:px-6 md:py-7'
-    : 'mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7';
+  tone === 'institutional'
+    ? 'mt-10 border-t border-secondary-2/[0.045] pt-8 md:mt-12 md:pt-9'
+    : tone === 'quiet'
+      ? 'mt-12 border border-secondary-2/14 bg-transparent px-5 py-6 md:px-6 md:py-7'
+      : 'mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7';
 
 const headingClass =
-  tone === 'quiet'
-    ? 'text-[0.56rem] font-normal uppercase tracking-[0.19em] text-secondary-2/75'
-    : 'text-sm font-medium uppercase tracking-wide text-secondary-2';
+  tone === 'institutional'
+    ? 'text-[0.52rem] font-normal uppercase tracking-[0.2em] text-secondary-2/58'
+    : tone === 'quiet'
+      ? 'text-[0.56rem] font-normal uppercase tracking-[0.19em] text-secondary-2/75'
+      : 'text-sm font-medium uppercase tracking-wide text-secondary-2';
 
 const bodyClass =
-  tone === 'quiet'
-    ? 'mt-3 text-pretty text-[0.8125rem] font-extralight leading-[1.6] text-secondary-3'
+  tone === 'institutional' || tone === 'quiet'
+    ? 'mt-3 max-w-[28rem] text-pretty text-[0.8125rem] font-extralight leading-[1.62] text-secondary-3/[0.92]'
     : 'mt-2 text-pretty text-sm leading-relaxed text-secondary-3';
 
 const btnClass =
-  tone === 'quiet'
-    ? 'mt-5 inline-flex border border-secondary-4/80 bg-transparent px-4 py-2.5 text-center text-[0.8125rem] font-normal tracking-wide text-secondary-4 outline-offset-4 transition-colors hover:bg-secondary-4/[0.05] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-4/55'
-    : 'mt-5 inline-flex rounded-lg border border-secondary-4 bg-secondary-4 px-5 py-3 text-sm font-medium text-brand-white shadow-sm transition-[opacity,box-shadow] hover:opacity-90 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-4';
+  tone === 'institutional'
+    ? 'mt-6 inline-flex border border-secondary-2/35 bg-transparent px-4 py-2.5 text-center text-[0.78rem] font-normal tracking-[0.06em] text-secondary-3 outline-offset-4 transition-colors hover:border-secondary-2/48 hover:bg-secondary-4/[0.03] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/45'
+    : tone === 'quiet'
+      ? 'mt-5 inline-flex border border-secondary-4/80 bg-transparent px-4 py-2.5 text-center text-[0.8125rem] font-normal tracking-wide text-secondary-4 outline-offset-4 transition-colors hover:bg-secondary-4/[0.05] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-4/55'
+      : 'mt-5 inline-flex rounded-lg border border-secondary-4 bg-secondary-4 px-5 py-3 text-sm font-medium text-brand-white shadow-sm transition-[opacity,box-shadow] hover:opacity-90 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-4';
 ---
 
 <section class={boxClass} aria-labelledby="person-contact-cta-heading">

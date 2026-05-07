@@ -5,14 +5,17 @@ interface Props {
   id: string;
   class?: string;
   /** `quiet` — index / documentary scale (institutional profiles). */
-  tone?: 'default' | 'quiet';
+  /** `whisper` — lowest contrast index line; evaluation surfaces. */
+  tone?: 'default' | 'quiet' | 'whisper';
 }
 
 const { id, class: className, tone = 'default' } = Astro.props;
 const kickerClass =
-  tone === 'quiet'
-    ? 'text-[0.58rem] font-normal uppercase tracking-[0.22em] text-secondary-2/78'
-    : SECTION_KICKER_CLASS;
+  tone === 'whisper'
+    ? 'text-[0.52rem] font-normal uppercase tracking-[0.2em] text-secondary-2/58'
+    : tone === 'quiet'
+      ? 'text-[0.58rem] font-normal uppercase tracking-[0.22em] text-secondary-2/78'
+      : SECTION_KICKER_CLASS;
 ---
 
 <h2 id={id} class:list={[kickerClass, className]}>

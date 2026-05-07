@@ -25,12 +25,12 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
 
 {
   articles.length > 0 ? (
-    <section class:list={[layout === 'institutional' ? 'mt-14 md:mt-[3.75rem]' : 'mt-10']} aria-labelledby="person-news-heading">
+    <section class:list={[layout === 'institutional' ? 'mt-12 md:mt-12 lg:mt-[3.75rem] xl:mt-14' : 'mt-10']} aria-labelledby="person-news-heading">
       <h2
         id="person-news-heading"
         class:list={[
           layout === 'institutional'
-            ? 'text-[0.56rem] font-normal uppercase tracking-[0.19em] text-secondary-2/72'
+            ? 'text-[0.52rem] font-normal uppercase tracking-[0.19em] text-secondary-2/58'
             : 'text-sm font-medium uppercase tracking-wide text-secondary-2',
         ]}
       >
@@ -49,8 +49,8 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
       </p>
       <div
         class:list={[
-          'pt-5',
-          layout === 'institutional' ? 'mt-5 border-t border-secondary-2/[0.1]' : 'mt-6 border-t border-secondary-2/20',
+          'pt-4',
+          layout === 'institutional' ? 'mt-4 border-t border-secondary-2/[0.05]' : 'mt-6 border-t border-secondary-2/20',
         ]}
       >
         <NewsEditorialCarousel
