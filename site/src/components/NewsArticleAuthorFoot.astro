@@ -4,7 +4,8 @@
  */
 import type { Locale } from '@/i18n/config';
 import type { NewsArticle } from '@/data/news';
-import { getPersonBySlug, publicContactEmailForPersonSlug } from '@/data/people';
+import { isHouseNewsAuthorSlug, resolveNewsAuthorProfile } from '@/data/news-house-author';
+import { publicContactEmailForPersonSlug } from '@/data/people';
 import { newsListAuthorEntries } from '@/lib/news-list-authors';
 import { localeHref } from '@/lib/site-nav';
 import RecognitionBadges from '@/components/RecognitionBadges.astro';
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const { locale, article } = Astro.props;
+const aboutSchillingsHref = localeHref(locale, 'about-us');
 const entries = newsListAuthorEntries(article);
 const profiles = entries.filter((e): e is Extract<typeof e, { type: 'profile' }> => e.type === 'profile');
 const credits = entries.filter((e): e is Extract<typeof e, { type: 'credit' }> => e.type === 'credit');
@@ -39,10 +41,13 @@ const singleProfile = profiles.length === 1;
         showProfiles ? (
           <div class:list={[singleProfile ? 'mt-6' : 'mt-8 grid gap-10 md:grid-cols-2 md:gap-x-12 md:gap-y-10']}>
             {profiles.map((entry) => {
-              const p = getPersonBySlug(entry.slug);
+              const p = resolveNewsAuthorProfile(entry.slug);
               if (!p) return null;
-              const email = publicContactEmailForPersonSlug(entry.slug);
-              const profileHref = localeHref(locale, `people/${entry.slug}`);
+              const house = isHouseNewsAuthorSlug(entry.slug);
+              const email = house ? undefined : publicContactEmailForPersonSlug(entry.slug);
+              const profileHref = house
+                ? localeHref(locale, `news/author/${entry.slug}`)
+                : localeHref(locale, `people/${entry.slug}`);
               const authorArchiveHref = localeHref(locale, `news/author/${entry.slug}`);
               const img = entry.imagePath ?? p.imagePath;
               return (
@@ -60,8 +65,13 @@ const singleProfile = profiles.length === 1;
                     {img ? (
                       <a
                         href={profileHref}
-                        class="shrink-0 self-start rounded-full ring-2 ring-secondary-2/15 ring-offset-2 ring-offset-utility-1 transition hover:ring-secondary-3"
-                        aria-label={`${p.name} — profile`}
+                        class:list={[
+                          'shrink-0 self-start ring-2 ring-secondary-2/15 ring-offset-2 ring-offset-utility-1 transition hover:ring-secondary-3',
+                          house
+                            ? 'rounded-lg bg-brand-white p-2 ring-offset-utility-1'
+                            : 'rounded-full',
+                        ]}
+                        aria-label={house ? `${p.name} — author archive` : `${p.name} — profile`}
                       >
                         <img
                           src={img}
@@ -70,7 +80,10 @@ const singleProfile = profiles.length === 1;
                           height="96"
                           loading="lazy"
                           decoding="async"
-                          class="h-20 w-20 rounded-full object-cover sm:h-24 sm:w-24"
+                          class:list={[
+                            'h-20 w-20 sm:h-24 sm:w-24',
+                            house ? 'rounded-md object-contain' : 'rounded-full object-cover',
+                          ]}
                         />
                       </a>
                     ) : (
@@ -111,12 +124,21 @@ const singleProfile = profiles.length === 1;
                         ))}
                       </div>
                       <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-                        <a
-                          href={profileHref}
-                          class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:text-secondary-3"
-                        >
-                          View full professional profile
-                        </a>
+                        {house ? (
+                          <a
+                            href={aboutSchillingsHref}
+                            class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:text-secondary-3"
+                          >
+                            About Schillings
+                          </a>
+                        ) : (
+                          <a
+                            href={profileHref}
+                            class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:text-secondary-3"
+                          >
+                            View full professional profile
+                          </a>
+                        )}
                         <a
                           href={authorArchiveHref}
                           class="font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:text-secondary-3"

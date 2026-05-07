@@ -241,7 +241,7 @@ describe('strategic-rebuild-content expertise index public cards', () => {
   it('emits JSON-LD hub entries under EXPERTISE_INDEX_PATH_SEGMENT', () => {
     const hubs = getExpertiseIndexGraphHubEntries();
     const base = EXPERTISE_INDEX_PATH_SEGMENT;
-    expect(hubs).toHaveLength(8);
+    expect(hubs).toHaveLength(9);
     for (const h of hubs) {
       expect(h.pathAfterLocale === base || h.pathAfterLocale.startsWith(`${base}/`)).toBe(true);
       if (h.pathAfterLocale !== base) {
@@ -254,12 +254,12 @@ describe('strategic-rebuild-content expertise index public cards', () => {
 });
 
 describe('strategic-rebuild-content public expertise mapping', () => {
-  it('lists eight public expertise rows with unique ids and unique labels', () => {
-    expect(STRATEGIC_PUBLIC_EXPERTISE).toHaveLength(8);
+  it('lists public expertise rows with unique ids and unique labels', () => {
+    expect(STRATEGIC_PUBLIC_EXPERTISE).toHaveLength(9);
     const ids = new Set(STRATEGIC_PUBLIC_EXPERTISE.map((e) => e.id));
     const labels = new Set(STRATEGIC_PUBLIC_EXPERTISE.map((e) => e.label));
-    expect(ids.size).toBe(8);
-    expect(labels.size).toBe(8);
+    expect(ids.size).toBe(9);
+    expect(labels.size).toBe(9);
     for (const row of STRATEGIC_PUBLIC_EXPERTISE) {
       expect(row.label.trim().length).toBeGreaterThan(0);
       expect(getStrategicPublicExpertiseById(row.id)).toEqual(row);

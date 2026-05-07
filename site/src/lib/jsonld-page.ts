@@ -11,6 +11,7 @@ import { organizationNodeId, websiteNodeId } from './jsonld-entity-ids';
 import { expertisePathSlug } from './expertise-paths';
 import { absolutePageUrl } from './public-url';
 import { isExpertiseId } from './service-hubs';
+import { isHouseNewsAuthorSlug } from '../data/news-house-author';
 
 export function canonicalPageUrl(origin: string, locale: string, pathSegment: string): string {
   return absolutePageUrl(origin, locale as Locale, pathSegment);
@@ -386,8 +387,11 @@ export function buildNewsAuthorHubGraphJsonLd(options: {
     },
   }));
 
-  const personPageUrl = absolutePageUrl(o, options.locale, `people/${options.authorSlug}`);
-  const personEntityId = `${personPageUrl}#person`;
+  const authorEntityRef = isHouseNewsAuthorSlug(options.authorSlug)
+    ? { '@id': organizationNodeId(o) }
+    : {
+        '@id': `${absolutePageUrl(o, options.locale, `people/${options.authorSlug}`)}#person`,
+      };
 
   const collectionPage: Record<string, unknown> = {
     '@type': 'CollectionPage',
@@ -398,8 +402,8 @@ export function buildNewsAuthorHubGraphJsonLd(options: {
     inLanguage: htmlLang[options.locale],
     isPartOf: { '@id': websiteNodeId(o, options.locale) },
     about: { '@id': organizationNodeId(o) },
-    /** Same `@id` as `Person` on the profile URL — ties listing to canonical bio without duplicating `Person` here. */
-    author: { '@id': personEntityId },
+    /** Person profile `@id`, or the firm `Organization` for the synthetic Schillings byline hub. */
+    author: authorEntityRef,
     mainEntity: { '@id': listId },
   };
 

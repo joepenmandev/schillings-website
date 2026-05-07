@@ -18,9 +18,14 @@ describe('locale-marketing-meta', () => {
     expect(ie.description.toLowerCase()).toMatch(/dublin|miami|london/);
   });
 
-  it('aligns contact JSON-LD entity name with title for US', () => {
+  it('aligns contact JSON-LD entity name with title and uses regional titles', () => {
+    expect(contactPageMeta('en-gb')).toMatchObject({
+      title: 'Contact Schillings London, UK',
+      pageEntityName: 'Contact Schillings London, UK',
+    });
     const us = contactPageMeta('en-us');
     expect(us.title).toBe(us.pageEntityName);
-    expect(us.description).toContain('Miami');
+    expect(us.title).toContain('Miami');
+    expect(contactPageMeta('en-ie').title).toContain('Dublin');
   });
 });

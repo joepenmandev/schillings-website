@@ -1,9 +1,32 @@
 import { describe, expect, it } from 'vitest';
+import { SCHILLINGS_NEWS_AUTHOR_SLUG } from '../data/news-house-author';
 import { getNewsBySlug } from '../data/news';
 import type { NewsArticle } from '../data/news';
 import { latestPostsByAuthorsSectionTitle, newsListAuthorEntries } from './news-list-authors';
 
 describe('newsListAuthorEntries', () => {
+  it('maps firm byline slug to profile entry', () => {
+    const a: NewsArticle = {
+      id: 'house-test',
+      slug: 'house-test',
+      locale: 'en-gb',
+      title: 'T',
+      date: '2026-01-01',
+      description: 'D',
+      paragraphs: [],
+      legacyUrl: 'https://example.com',
+      status: 'published',
+      authorSlugs: [SCHILLINGS_NEWS_AUTHOR_SLUG],
+    };
+    const entries = newsListAuthorEntries(a);
+    expect(entries).toHaveLength(1);
+    expect(entries[0]).toMatchObject({
+      type: 'profile',
+      slug: SCHILLINGS_NEWS_AUTHOR_SLUG,
+      name: 'Schillings',
+    });
+  });
+
   it('maps published article with author slug to profile entries', () => {
     const a = getNewsBySlug('twelve-schillings-partners-featured-in-spears-500-guide-to-top-hnw-advisors');
     expect(a).toBeTruthy();

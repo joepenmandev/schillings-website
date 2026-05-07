@@ -10,14 +10,15 @@ import { publishedPeople } from '@/data/people';
 import { EXPERTISE_LABELS, type ExpertiseId } from '@/data/people-taxonomy';
 import PersonColleagueCard from '@/components/PersonColleagueCard.astro';
 import ServiceHubInternalNav from '@/components/ServiceHubInternalNav.astro';
-import { getServiceHubCopy } from '@/lib/service-hub-copy';
-import { clipPlainText } from '@/lib/person-jsonld';
+import { expertiseHubDocumentTitle, expertiseHubMetaDescription, getServiceHubCopy } from '@/lib/service-hub-copy';
 import { expertisePathSlug } from '@/lib/expertise-paths';
 import { peopleForExpertise } from '@/lib/service-hubs';
 import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
 import { buildJsonLdGraph, buildPageEntityJsonLd } from '@/lib/jsonld-page';
 import { absolutePageUrl } from '@/lib/public-url';
 import { contactSegment, EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
+import { situationLinksForExpertise } from '@/lib/expertise-situation-cluster-links';
+import { situationPathSlug } from '@/data/strategic-rebuild-content';
 import type { Locale } from '@/i18n/config';
 
 interface Props {
@@ -31,11 +32,11 @@ const label = EXPERTISE_LABELS[expertiseId];
 const people = peopleForExpertise(publishedPeople(), expertiseId);
 const expertiseIndexHref = localeHref(locale, EXPERTISE_PUBLIC_SEGMENT);
 const copy = getServiceHubCopy(expertiseId);
-const metaDesc = clipPlainText(`${label}: ${copy.intro}`, 158);
+const metaDesc = expertiseHubMetaDescription(expertiseId, label);
 const origin = Astro.site?.origin ?? Astro.url.origin;
 const publicSlug = expertisePathSlug(expertiseId);
 const hubUrl = `${absolutePageUrl(origin, locale, `${EXPERTISE_PUBLIC_SEGMENT}/${publicSlug}`)}`;
-const hubTitle = `${label} | Expertise | Schillings`;
+const hubTitle = expertiseHubDocumentTitle(label);
 const pathSegment = `${EXPERTISE_PUBLIC_SEGMENT}/${publicSlug}`;
 const hubJsonLd = buildJsonLdGraph(
   buildPageEntityJsonLd({
@@ -54,6 +55,7 @@ const hubJsonLd = buildJsonLdGraph(
 );
 
 const contactHref = localeHref(locale, contactSegment);
+const relatedSituations = situationLinksForExpertise(expertiseId);
 ---
 
 <Base title={hubTitle} description={metaDesc} {locale} pathAfterLocale={pathSegment}>
@@ -74,6 +76,13 @@ const contactHref = localeHref(locale, contactSegment);
         <p class="mt-6 max-w-3xl text-pretty text-base font-normal leading-relaxed text-secondary-3 md:text-[1.05rem] md:leading-[1.65]">
           {copy.intro}
         </p>
+        {
+          copy.authorityFraming ? (
+            <p class="mt-4 max-w-3xl text-pretty text-base font-normal leading-relaxed text-secondary-3 md:mt-5 md:text-[1.05rem] md:leading-[1.65]">
+              {copy.authorityFraming}
+            </p>
+          ) : null
+        }
       </header>
 
       {
@@ -102,6 +111,26 @@ const contactHref = localeHref(locale, contactSegment);
         <ServiceHubInternalNav {locale} />
       </div>
 
+      {
+        relatedSituations.length > 0 ? (
+          <section class="mt-10 md:mt-12" aria-labelledby="related-situations-heading">
+            <SectionKicker id="related-situations-heading">Related situations</SectionKicker>
+            <ul class="mt-4 flex flex-col gap-2 md:mt-5">
+              {relatedSituations.map(({ situationId, linkLabel }) => (
+                <li>
+                  <a
+                    href={localeHref(locale, `situations/${situationPathSlug(situationId)}`)}
+                    class="inline-flex text-base font-extralight text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+                  >
+                    {linkLabel}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null
+      }
+
       <section class="mt-10 md:mt-12" aria-labelledby="expertise-hub-people-heading">
         <SectionKicker id="expertise-hub-people-heading">People</SectionKicker>
         {
@@ -128,8 +157,8 @@ const contactHref = localeHref(locale, contactSegment);
         href={contactHref}
         buttonText="Speak confidentially"
       >
-        If you need to protect reputation, privacy, family, or continuity under pressure, we can discuss your context in
-        confidence.
+        {copy.ctaContext ? `${copy.ctaContext} ` : ''}If you need to protect reputation, privacy, family, or continuity
+        under pressure, we can discuss your context in confidence.
       </CtaConfidentialBand>
 
       <p class="mt-10 text-sm md:mt-12">

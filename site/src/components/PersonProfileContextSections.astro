@@ -31,8 +31,8 @@ const linkClass =
     <section class="mt-12 border-t border-secondary-2/20 pt-10 md:mt-14" aria-labelledby="person-helps-heading">
       <SectionKicker id="person-helps-heading">Helps clients with</SectionKicker>
       <p class={body}>
-        Expertise hubs that match this colleague’s directory tags — useful for context, not a complete list of how they
-        practise.
+        These expertise hubs describe Schillings’ firmwide practice in these areas—useful context from directory tags,
+        not a catalogue of individual matters or commercial positioning for any one person.
       </p>
       <ul class={`${linkList} list-none`}>
         {expertise.map((id) => (
@@ -55,7 +55,8 @@ const linkClass =
     >
       <SectionKicker id="person-related-situations-heading">Related situations</SectionKicker>
       <p class={body}>
-        Typical entry points on our site that often sit alongside these practice areas.
+        Scenario-style pages that often sit beside these practice tags—not illustrative of any individual’s work or
+        outcomes.
       </p>
       <ul class={`${linkList} list-none`}>
         {relatedSituationIds.map((sid) => {

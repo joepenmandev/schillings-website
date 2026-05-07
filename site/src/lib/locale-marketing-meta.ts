@@ -60,24 +60,24 @@ export function contactPageMeta(locale: Locale): { title: string; description: s
   switch (locale) {
     case 'en-us':
       return {
-        title: 'Contact Schillings — United States',
+        title: 'Contact Schillings Miami, USA',
         description:
-          'Contact Schillings — enquiry form, offices in Miami, London and Dublin, twenty-four-hour urgent line, and minimum engagement information.',
-        pageEntityName: 'Contact Schillings — United States',
+          'Contact Schillings — enquiry form, offices in Miami, London and Dublin, twenty-four-hour urgent line, and minimum engagement information. Discretion-led enquiries for sensitive reputation, privacy, and legal matters.',
+        pageEntityName: 'Contact Schillings Miami, USA',
       };
     case 'en-ie':
       return {
-        title: 'Contact Schillings — Ireland',
+        title: 'Contact Schillings Dublin, Ireland',
         description:
-          'Contact Schillings — enquiry form, Dublin, London and Miami offices, urgent line, and minimum engagement information.',
-        pageEntityName: 'Contact Schillings — Ireland',
+          'Contact Schillings — enquiry form, Dublin, London and Miami offices, urgent line, and minimum engagement information. Discretion-led enquiries for sensitive reputation, privacy, and legal matters.',
+        pageEntityName: 'Contact Schillings Dublin, Ireland',
       };
     default:
       return {
-        title: 'Contact Schillings',
+        title: 'Contact Schillings London, UK',
         description:
-          'Contact Schillings — enquiry form, offices in London, Miami and Dublin, urgent line, and minimum engagement information.',
-        pageEntityName: 'Contact Schillings',
+          'Contact Schillings — enquiry form, offices in London, Miami and Dublin, urgent line, and minimum engagement information. Discretion-led enquiries for sensitive reputation, privacy, and legal matters.',
+        pageEntityName: 'Contact Schillings London, UK',
       };
   }
 }

@@ -5,6 +5,7 @@ import SiteHeader from '@/components/SiteHeader.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
 import MarketingStubNav from '@/components/MarketingStubNav.astro';
 import NewsHubIndexHero from '@/components/NewsHubIndexHero.astro';
+import NewsTopicExpertiseContext from '@/components/NewsTopicExpertiseContext.astro';
 import { publishedNews } from '@/data/news';
 import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
 import { buildJsonLdGraph, buildNewsTopicHubGraphNodes } from '@/lib/jsonld-page';
@@ -68,6 +69,7 @@ const thinTopicHub = articles.length === 0;
     subtitleLink={{ href: localeHref(locale, 'news'), label: 'All Intelligence' }}
   />
   <DocumentMain contentWidth="wide">
+    <NewsTopicExpertiseContext {locale} topicSlug={topicSlug} />
     {
       articles.length === 0 ? (
         <p class="mt-2 max-w-2xl text-pretty text-secondary-3">

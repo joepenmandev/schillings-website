@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../i18n/config';
 import type { PersonProfile } from '../data/people';
+import { isHouseNewsAuthorSlug } from '../data/news-house-author';
 import { OFFICE_LABELS, type OfficeId, type SeniorityId } from '../data/people-taxonomy';
 import { localeHref } from '../lib/site-nav';
 import { peopleDirectoryCardByline, resolvePersonPracticeGroup } from '../lib/people-directory';
@@ -14,6 +15,9 @@ interface Props {
 }
 
 const { locale, person, authorSlug, articleCount } = Astro.props;
+
+const houseAuthor = isHouseNewsAuthorSlug(authorSlug);
+const aboutUsHref = localeHref(locale, 'about-us');
 
 /** Long lists only: short pages don’t need a sticky rail; centre the card in the viewport while scrolling. */
 const useStickyAside = typeof articleCount === 'number' && articleCount > 3;
@@ -41,13 +45,18 @@ const officeLabel =
     <h2 id="author-archive-aside-heading" class="sr-only">About the author</h2>
     {
       person.imagePath ? (
-        <div class="overflow-hidden rounded-md ring-1 ring-secondary-2/12">
+        <div
+          class:list={[
+            'overflow-hidden rounded-md ring-1 ring-secondary-2/12',
+            houseAuthor ? 'bg-brand-white p-6' : '',
+          ]}
+        >
           <img
             src={person.imagePath}
             alt={person.name}
             width="320"
             height="320"
-            class="aspect-square w-full object-cover"
+            class:list={['aspect-square w-full', houseAuthor ? 'object-contain' : 'object-cover']}
             loading="lazy"
             decoding="async"
             sizes="(max-width: 768px) 100vw, 320px"
@@ -65,16 +74,33 @@ const officeLabel =
         </p>
       ) : null
     }
-    <p class="mt-4 text-pretty text-sm leading-relaxed text-secondary-3">
-      For practice background, expertise, and how to get in touch, open the full profile.
-    </p>
+    {
+      houseAuthor ? (
+        <p class="mt-4 text-pretty text-sm leading-relaxed text-secondary-3">{person.paragraphs[0]}</p>
+      ) : (
+        <p class="mt-4 text-pretty text-sm leading-relaxed text-secondary-3">
+          For practice background, expertise, and how to get in touch, open the full profile.
+        </p>
+      )
+    }
     <div class="mt-5 flex flex-col gap-2 text-sm font-medium">
-      <a
-        href={localeHref(locale, `people/${authorSlug}`)}
-        class="text-secondary-4 underline decoration-secondary-2/50 underline-offset-2 transition-colors hover:decoration-secondary-4"
-      >
-        Full profile →
-      </a>
+      {
+        houseAuthor ? (
+          <a
+            href={aboutUsHref}
+            class="text-secondary-4 underline decoration-secondary-2/50 underline-offset-2 transition-colors hover:decoration-secondary-4"
+          >
+            About Schillings →
+          </a>
+        ) : (
+          <a
+            href={localeHref(locale, `people/${authorSlug}`)}
+            class="text-secondary-4 underline decoration-secondary-2/50 underline-offset-2 transition-colors hover:decoration-secondary-4"
+          >
+            Full profile →
+          </a>
+        )
+      }
       <a
         href={localeHref(locale, 'news')}
         class="text-secondary-4 underline decoration-secondary-2/50 underline-offset-2 transition-colors hover:decoration-secondary-4"

@@ -4,10 +4,15 @@ import {
   type ImportedArticleRecord,
 } from '../lib/article-import-schema';
 import newsImportedJson from './news-imported.json';
+import { isHouseNewsAuthorSlug } from './news-house-author';
 import {
   getPersonBySlug,
   resolvePublishedPersonSlugFromLegacyCredit,
 } from './people';
+
+function isResolvedNewsAuthorSlug(slug: string): boolean {
+  return Boolean(getPersonBySlug(slug) || isHouseNewsAuthorSlug(slug));
+}
 
 export interface NewsArticle {
   /** Stable internal key from import pipeline. */
@@ -52,6 +57,7 @@ const editorialNewsStubs: unknown[] = [
     datePublished: '2026-04-18',
     legacyUrl: '/news/privacy-reputation-safety-one-fight',
     status: 'published',
+    authorSlugs: ['schillings'],
     description:
       'Personal and institutional risk rarely arrives as a single “legal” or “PR” problem — mapping the whole surface area early reduces blind spots.',
     body: [
@@ -139,7 +145,7 @@ export function publishedNewsAuthorSlugs(): string[] {
   for (const a of publishedNews()) {
     for (const raw of a.authorSlugs ?? []) {
       const s = raw.trim();
-      if (s && getPersonBySlug(s)) set.add(s);
+      if (s && isResolvedNewsAuthorSlug(s)) set.add(s);
     }
   }
   return [...set].sort();
@@ -148,7 +154,7 @@ export function publishedNewsAuthorSlugs(): string[] {
 /** Resolved profile slugs credited on this piece (for “related by author” and article UI). */
 export function authorSlugsForRelatedPosts(article: NewsArticle): string[] {
   const slugs = (article.authorSlugs ?? []).map((s) => s.trim()).filter(Boolean);
-  const resolved = slugs.filter((s) => getPersonBySlug(s));
+  const resolved = slugs.filter((s) => isResolvedNewsAuthorSlug(s));
   if (resolved.length > 0) return [...new Set(resolved)];
   const inferred = article.legacyAuthorRaw?.trim()
     ? resolvePublishedPersonSlugFromLegacyCredit(article.legacyAuthorRaw)

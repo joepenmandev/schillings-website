@@ -1,0 +1,35 @@
+---
+/**
+ * Optional practice-context line on Intelligence topic hubs — editorial vs commercial boundary.
+ */
+import type { Locale } from '@/i18n/config';
+import { EXPERTISE_LABELS } from '@/data/people-taxonomy';
+import { expertiseIdForNewsTopicSlug } from '@/lib/news-topic-expertise-bridge';
+import { expertisePathSlug } from '@/lib/expertise-paths';
+import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  topicSlug: string;
+}
+
+const { locale, topicSlug } = Astro.props;
+const expertiseId = expertiseIdForNewsTopicSlug(topicSlug);
+const linkClass =
+  'font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4';
+---
+
+{
+  expertiseId ? (
+    <p class="mt-4 max-w-2xl text-pretty text-sm font-extralight leading-relaxed text-secondary-3 md:text-[0.9375rem]">
+      <span class="font-normal text-secondary-3">Related expertise:</span>{' '}
+      <a
+        href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(expertiseId)}`)}
+        class={linkClass}
+      >
+        {EXPERTISE_LABELS[expertiseId]}
+      </a>
+      <span class="text-secondary-3/90"> — firmwide practice context, separate from this editorial archive.</span>
+    </p>
+  ) : null
+}

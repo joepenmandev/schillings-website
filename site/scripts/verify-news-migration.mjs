@@ -140,6 +140,9 @@ function readNewsSitemapSlugSet() {
   return new Set(slugs.filter((s) => typeof s === 'string'));
 }
 
+/** Synthetic news byline — not a People directory row; see `src/data/news-house-author.ts`. */
+const HOUSE_NEWS_AUTHOR_SLUG = 'schillings';
+
 function validateAuthorSlugs(rawRow, peopleSlugs, errors, key) {
   const as = rawRow.authorSlugs;
   if (as == null) return;
@@ -153,6 +156,7 @@ function validateAuthorSlugs(rawRow, peopleSlugs, errors, key) {
       continue;
     }
     const slug = s.trim();
+    if (slug === HOUSE_NEWS_AUTHOR_SLUG) continue;
     if (!peopleSlugs.has(slug)) {
       fail(errors, `Unknown authorSlug "${slug}" (not in people-imported.json): ${key}`);
     }

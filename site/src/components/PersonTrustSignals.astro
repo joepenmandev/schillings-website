@@ -1,10 +1,12 @@
 ---
 /**
  * Visible E-E-A-T affordances: verified-style outbound links.
- * Directory links point to publisher homepages (not individual ranking claims) unless you add per-profile URLs in people-eeat-extras.json.
+ * Recognition badges use `resolveRecognitionOutboundHref`: `scope: firm` → Schillings firm URL for that publisher;
+ * `scope: person` → the row’s `href` when set, else the same firm URL (e.g. Chambers with no deep link).
  */
 import RecognitionBadges from '@/components/RecognitionBadges.astro';
 import type { PersonRecognition } from '@/data/people';
+import { schillingsFirmDirectoryHref } from '@/lib/person-recognition-href';
 
 export interface Props {
   personName: string;
@@ -48,17 +50,17 @@ function externalLinkLabel(url: string): string {
 const LEGAL_DIRECTORIES: { label: string; href: string; hint: string }[] = [
   {
     label: 'Chambers and Partners',
-    href: 'https://www.chambersandpartners.com/',
+    href: schillingsFirmDirectoryHref('chambers') ?? 'https://www.chambersandpartners.com/',
     hint: 'Independent legal directory',
   },
   {
     label: 'The Legal 500',
-    href: 'https://www.legal500.com/',
+    href: schillingsFirmDirectoryHref('legal500') ?? 'https://www.legal500.com/',
     hint: 'Independent legal directory',
   },
   {
     label: "Spear's",
-    href: 'https://www.spears500.com/',
+    href: schillingsFirmDirectoryHref('spears') ?? 'https://www.spears500.com/',
     hint: 'HNW legal and reputation rankings',
   },
 ];

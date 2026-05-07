@@ -1,5 +1,5 @@
 import type { NewsArticle } from '../data/news';
-import { getPersonBySlug } from '../data/people';
+import { resolveNewsAuthorProfile } from '../data/news-house-author';
 
 /** Paths that should not be used as a photographic hero `<img>` (OG/meta may still use them). */
 const HERO_IMG_PLACEHOLDERS = new Set(['/og-default.svg', '/og-default.png']);
@@ -21,9 +21,9 @@ export function newsHeroDisplaySrc(article: NewsArticle): string | undefined {
     if (!HERO_IMG_PLACEHOLDERS.has(n)) return n;
   }
   for (const slug of article.authorSlugs ?? []) {
-    const person = getPersonBySlug(slug.trim());
+    const person = resolveNewsAuthorProfile(slug.trim());
     const img = person?.imagePath?.trim();
-    if (img) return normalizeSitePath(img);
+    if (img && !img.toLowerCase().endsWith('.svg')) return normalizeSitePath(img);
   }
   return undefined;
 }
@@ -65,7 +65,7 @@ export function newsHeroAlt(article: NewsArticle): string {
  */
 export function newsDisplayAuthors(article: NewsArticle): string[] {
   const mapped = (article.authorSlugs ?? []).map((s) => s.trim()).filter(Boolean);
-  const resolved = mapped.filter((slug) => getPersonBySlug(slug));
+  const resolved = mapped.filter((slug) => resolveNewsAuthorProfile(slug));
   if (resolved.length > 0) return resolved;
   const raw = (article.legacyAuthorRaw ?? '').trim();
   return raw ? [raw] : [];

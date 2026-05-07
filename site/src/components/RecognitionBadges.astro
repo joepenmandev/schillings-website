@@ -1,5 +1,6 @@
 ---
 import type { PersonRecognition } from '@/data/people';
+import { resolveRecognitionOutboundHref } from '@/lib/person-recognition-href';
 
 interface Props {
   items: PersonRecognition[];
@@ -27,13 +28,14 @@ function providerLetters(provider: PersonRecognition['provider']) {
   items.length > 0 ? (
     <ul class:list={['flex flex-wrap gap-2.5', compact ? 'text-xs' : 'text-sm']} aria-label="Independent recognitions">
       {items.map((item) => {
+        const outboundHref = resolveRecognitionOutboundHref(item);
         const subtitle = [providerLabel(item.provider), item.year].filter(Boolean).join(' · ');
         const title = subtitle ? `${item.title} — ${subtitle}` : item.title;
         return (
           <li>
-            {item.href ? (
+            {outboundHref ? (
               <a
-                href={item.href}
+                href={outboundHref}
                 rel="noopener noreferrer"
                 target="_blank"
                 class:list={[

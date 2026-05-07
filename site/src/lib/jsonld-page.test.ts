@@ -182,4 +182,18 @@ describe('jsonld-page', () => {
     expect(page.url).toBe('https://x.com/us/news/author/jane-doe/');
     expect(page.author).toEqual({ '@id': 'https://x.com/us/people/jane-doe/#person' });
   });
+
+  it('news author hub for firm byline references Organization @id', () => {
+    const g = buildNewsAuthorHubGraphJsonLd({
+      origin: 'https://x.com',
+      locale: 'en-gb',
+      authorSlug: 'schillings',
+      articles: [{ slug: 'a-story', title: 'A Story' }],
+      pageTitle: 'Schillings — News',
+      pageDescription: 'Desc.',
+    }) as { '@graph': Record<string, unknown>[] };
+    const page = g['@graph'][0] as { author: { '@id': string }; url: string };
+    expect(page.url).toBe('https://x.com/news/author/schillings/');
+    expect(page.author).toEqual({ '@id': 'https://x.com/#organization' });
+  });
 });

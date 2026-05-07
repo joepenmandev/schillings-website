@@ -7,7 +7,7 @@ import SiteHeader from '@/components/SiteHeader.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
 import MarketingStubNav from '@/components/MarketingStubNav.astro';
 import { getAllNewsForPersonSlug, publishedNewsAuthorSlugs } from '@/data/news';
-import { getPersonBySlug } from '@/data/people';
+import { isHouseNewsAuthorSlug, resolveNewsAuthorProfile } from '@/data/news-house-author';
 import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
 import { buildJsonLdGraph, buildNewsAuthorHubGraphNodes } from '@/lib/jsonld-page';
 import { absolutePageUrl } from '@/lib/public-url';
@@ -23,7 +23,7 @@ if (typeof raw !== 'string' || !publishedNewsAuthorSlugs().includes(raw)) {
 }
 const locale = 'en-us';
 const authorSlug = raw;
-const person = getPersonBySlug(authorSlug);
+const person = resolveNewsAuthorProfile(authorSlug);
 if (!person) {
   return new Response(null, { status: 404 });
 }
@@ -34,8 +34,16 @@ const origin = Astro.site?.origin ?? Astro.url.origin;
 const pageUrl = `${absolutePageUrl(origin, locale, pathAfterLocale)}`;
 
 const pageTitle = `${person.name} — Intelligence | Schillings`;
-const pageDescription = `Analysis and commentary by ${person.name} at Schillings.`;
+const pageDescription = isHouseNewsAuthorSlug(authorSlug)
+  ? `Firm byline articles and analysis from ${person.name}.`
+  : `Analysis and commentary by ${person.name} at Schillings.`;
 const thinAuthorHub = articles.length === 0;
+const hubSubtitle = isHouseNewsAuthorSlug(authorSlug)
+  ? `Articles and analysis published under the ${person.name} byline (editorial and internal pieces).`
+  : `Articles and analysis where ${person.name} is credited as an author.`;
+const hubSubtitleLink = isHouseNewsAuthorSlug(authorSlug)
+  ? { href: localeHref(locale, 'about-us'), label: 'About Schillings' }
+  : { href: localeHref(locale, `people/${authorSlug}`), label: 'Full profile' };
 
 const authorJsonLd = buildJsonLdGraph(
   ...buildNewsAuthorHubGraphNodes({
@@ -60,10 +68,10 @@ const authorJsonLd = buildJsonLdGraph(
   <NewsHubIndexHero
     {locale}
     title={person.name}
-    subtitle={`Articles and analysis where ${person.name} is credited as an author.`}
+    subtitle={hubSubtitle}
     hubKind="author"
     activeAuthorSlug={authorSlug}
-    subtitleLink={{ href: localeHref(locale, `people/${authorSlug}`), label: 'Full profile' }}
+    subtitleLink={hubSubtitleLink}
   />
   <DocumentMain contentWidth="wide">
     <div

@@ -10,7 +10,9 @@ import SiteHeader from '@/components/SiteHeader.astro';
 import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
 import StrategicPageTitle from '@/components/StrategicPageTitle.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
-import { contactSegment, localeHref, localeHrefResponseSystemPillar } from '@/lib/site-nav';
+import { contactSegment, EXPERTISE_PUBLIC_SEGMENT, localeHref, localeHrefResponseSystemPillar } from '@/lib/site-nav';
+import { expertisePathSlug } from '@/lib/expertise-paths';
+import { expertiseLinksForSituation } from '@/lib/expertise-situation-cluster-links';
 import {
   getSituationDetailById,
   getStrategicResponsePillarById,
@@ -54,6 +56,7 @@ const jsonLd = buildJsonLdGraph(
 );
 const contactHref = localeHref(locale, contactSegment);
 const whatWeProtectHubHref = localeHref(locale, 'what-we-protect');
+const relatedExpertise = expertiseLinksForSituation(situationId);
 ---
 
 <Base title={model.metaTitle} description={model.metaDescription} {locale} {pathAfterLocale}>
@@ -150,6 +153,24 @@ const whatWeProtectHubHref = localeHref(locale, 'what-we-protect');
                 </li>
               );
             })
+          }
+        </ul>
+      </section>
+
+      <section class="mt-10 md:mt-12" aria-labelledby="related-expertise-heading">
+        <SectionKicker id="related-expertise-heading">Related expertise</SectionKicker>
+        <ul class="mt-4 flex flex-col gap-2 md:mt-5">
+          {
+            relatedExpertise.map(({ expertiseId, linkLabel }) => (
+              <li>
+                <a
+                  href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(expertiseId)}`)}
+                  class="inline-flex text-base font-extralight text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+                >
+                  {linkLabel}
+                </a>
+              </li>
+            ))
           }
         </ul>
       </section>

@@ -1,5 +1,5 @@
 import type { NewsArticle } from '../data/news';
-import { getPersonBySlug } from '../data/people';
+import { resolveNewsAuthorProfile } from '../data/news-house-author';
 
 export type NewsListAuthorEntry =
   | { type: 'profile'; slug: string; name: string; role: string; imagePath?: string }
@@ -18,7 +18,7 @@ export function newsListAuthorEntries(article: NewsArticle): NewsListAuthorEntry
 
   const out: NewsListAuthorEntry[] = [];
   for (const slug of slugs) {
-    const p = getPersonBySlug(slug);
+    const p = resolveNewsAuthorProfile(slug);
     if (p) {
       out.push({ type: 'profile', slug, name: p.name, role: p.role, imagePath: p.imagePath });
     }

@@ -31,9 +31,9 @@ export interface PersonRecognition {
   provider: 'chambers' | 'legal500' | 'spears' | 'other';
   title: string;
   year?: string;
-  /** Scope of claim for on-page copy and filtering. */
+  /** `firm` = link to Schillings directory listing; `person` = link to this profile’s URL in `href` when present. */
   scope?: 'person' | 'firm';
-  /** Optional source URL to listing/profile. */
+  /** Publisher listing; for `person`, should be that individual’s profile where the directory provides one. */
   href?: string;
   /** Optional official badge/logo image path under `/public`. */
   imagePath?: string;

@@ -6,6 +6,7 @@ import { articleDatePublishedIso } from '@/lib/news-datetime';
 import { formatNewsCardDateUk, newsExcerpt, newsHeroAlt, newsHeroDisplaySrc } from '@/lib/news-render';
 import { topicSlugFromLabel } from '@/lib/news-topic-slug';
 import { localeHref } from '@/lib/site-nav';
+import { isHouseNewsAuthorSlug, newsAuthorPublicPathAfterLocale } from '@/data/news-house-author';
 
 interface Props {
   locale: Locale;
@@ -121,12 +122,19 @@ const authors = filterAuthors(rawAuthors);
             entry.type === 'credit' ? (
               <p class="font-serif text-sm italic text-secondary-3">By {entry.name}</p>
             ) : (
+              (() => {
+                const house = isHouseNewsAuthorSlug(entry.slug);
+                const authorHref = localeHref(locale, newsAuthorPublicPathAfterLocale(entry.slug));
+                return (
               <div class="flex gap-2.5">
                 {entry.imagePath ? (
                   <a
-                    href={localeHref(locale, `people/${entry.slug}`)}
-                    class="shrink-0 rounded-full ring-1 ring-secondary-2/20 transition hover:ring-secondary-3"
-                    aria-label={`${entry.name} profile`}
+                    href={authorHref}
+                    class:list={[
+                      'shrink-0 ring-1 ring-secondary-2/20 transition hover:ring-secondary-3',
+                      house ? 'rounded-lg bg-brand-white p-0.5' : 'rounded-full',
+                    ]}
+                    aria-label={house ? `${entry.name} — author archive` : `${entry.name} profile`}
                   >
                     <img
                       src={entry.imagePath}
@@ -155,7 +163,7 @@ const authors = filterAuthors(rawAuthors);
                   <p class="font-serif text-sm italic leading-tight text-secondary-4">
                     <span class="not-italic font-sans text-xs font-normal text-secondary-2">By </span>
                     <a
-                      href={localeHref(locale, `people/${entry.slug}`)}
+                      href={authorHref}
                       class="underline decoration-secondary-2/40 underline-offset-2 transition-colors hover:text-secondary-3 hover:decoration-secondary-3"
                     >
                       {entry.name}
@@ -166,6 +174,8 @@ const authors = filterAuthors(rawAuthors);
                   ) : null}
                 </div>
               </div>
+                );
+              })(),
             ),
           )}
         </div>

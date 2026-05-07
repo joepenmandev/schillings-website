@@ -4,7 +4,7 @@
  */
 import type { Locale } from '../i18n/config';
 import { publishedNews, publishedNewsAuthorSlugs } from '../data/news';
-import { getPersonBySlug } from '../data/people';
+import { resolveNewsAuthorProfile } from '../data/news-house-author';
 import { uniqueTopicEntriesFromArticles } from '../lib/news-topic-slug';
 import { localeHref } from '../lib/site-nav';
 import { NEWS_MICRO_LABEL_CLASS } from '../lib/visual-tokens';
@@ -33,7 +33,7 @@ for (const e of topicEntries) {
 
 const authorRows = publishedNewsAuthorSlugs()
   .map((slug) => {
-    const p = getPersonBySlug(slug);
+    const p = resolveNewsAuthorProfile(slug);
     return p ? { slug, name: p.name } : null;
   })
   .filter((x): x is { slug: string; name: string } => x != null)

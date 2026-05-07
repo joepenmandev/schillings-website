@@ -1,6 +1,9 @@
 {
   "reputation_privacy": {
+    "serpDescription": "Defamation, privacy, and online harms — Schillings lawyers and advisers align legal strategy with communications and intelligence. London, Miami, and Dublin.",
     "intro": "Defamation, privacy, breach of confidence, and online harms often arrive together. Schillings teams align legal strategy with communications and intelligence so clients can respond with clarity and proportion.",
+    "authorityFraming": "This hub describes firmwide reputation and privacy strategy—the substantive legal and advisory work clients instruct us for—rather than a single scenario sketch or an Intelligence article.",
+    "ctaContext": "If your issue sits where law, narrative, and privacy meet, this practice entry is the right place to start a confidential conversation.",
     "bullets": [
       "Pre- and post-publication advice, takedowns, and platform engagement",
       "Privacy, data protection, and reputation risk in litigation and investigations",
@@ -9,7 +12,10 @@
     "legalNote": "Migration scaffold — not legal advice. Partnership and compliance must approve final expertise descriptions, entity-specific disclaimers, and jurisdictional limitations before go-live."
   },
   "litigation_disputes": {
+    "serpDescription": "High-stakes disputes and litigation — Schillings lawyers coordinate courts, regulators, and the public record with intelligence and communications colleagues. UK, US, and Ireland.",
     "intro": "High-stakes disputes need disciplined strategy across courts, regulators, and the public record. Schillings litigators work alongside intelligence and communications colleagues where matters cross channels.",
+    "authorityFraming": "This hub anchors how Schillings organises complex disputes and litigation strategy at practice level—broader than any one situation page or commentary piece.",
+    "ctaContext": "When proceedings, regulators, and the public record interact, begin from disputes capability here.",
     "bullets": [
       "Commercial, regulatory, and reputational aspects of complex disputes",
       "Coordination with parallel civil, criminal, or regulatory threads",
@@ -18,7 +24,10 @@
     "legalNote": "Migration scaffold — not legal advice. Partnership and compliance must approve final expertise descriptions, entity-specific disclaimers, and jurisdictional limitations before go-live."
   },
   "intelligence_security": {
+    "serpDescription": "Investigations and intelligence — Schillings teams deliver lawful, proportionate insight for legal and security strategy: diligence, monitoring, and crisis support. London, Miami, Dublin.",
     "intro": "Understanding who is acting, through which channels, and with what intent is often decisive. Schillings intelligence and security specialists support legal and communications leads with proportionate, lawful insight.",
+    "authorityFraming": "This hub defines firmwide investigations and intelligence capability—lawful, disciplined, and built to inform legal strategy—not episodic narrative alone.",
+    "ctaContext": "If you need a structured intelligence picture alongside counsel, start from this practice.",
     "bullets": [
       "Investigations, due diligence, and open-source work where appropriate",
       "Threat monitoring, digital resilience, and crisis support",
@@ -27,7 +36,10 @@
     "legalNote": "Migration scaffold — not legal advice. Partnership and compliance must approve final expertise descriptions, entity-specific disclaimers, and jurisdictional limitations before go-live."
   },
   "communications": {
+    "serpDescription": "Strategic and crisis communications alongside Schillings lawyers — narratives, stakeholders, and timing that stay accurate, defensible, and aligned with legal and regulatory constraints.",
     "intro": "Narrative, stakeholder trust, and timing matter as much as facts. Schillings communications advisers work with lawyers and investigators so messaging stays accurate, defensible, and aligned with legal strategy.",
+    "authorityFraming": "This hub sets out strategic and crisis communications as an integrated Schillings practice—paired with lawyers and investigators—not a standalone publicity layer.",
+    "ctaContext": "When audiences, timing, and legal constraints must move together, this is the communications practice entry point.",
     "bullets": [
       "Crisis and issues management across media, political, and digital channels",
       "Stakeholder mapping, content strategy, and controlled disclosure",
@@ -36,7 +48,10 @@
     "legalNote": "Migration scaffold — not legal advice. Partnership and compliance must approve final expertise descriptions, entity-specific disclaimers, and jurisdictional limitations before go-live."
   },
   "corporate_transactions": {
+    "serpDescription": "Corporate and transactional risk — Schillings supports principals and counsel on deals, leaks, diligence, and cross-border information flows alongside disputes and investigations teams.",
     "intro": "Deals, restructurings, and investigations create reputational and information risk as well as legal risk. Schillings supports principals and counsel with diligence-style insight and dispute-aware planning.",
+    "authorityFraming": "This hub describes how Schillings approaches corporate and transactional risk alongside disputes and investigations—at mandate level, not headline level.",
+    "ctaContext": "If a transaction, leak, or governance moment carries reputational or cross-border information risk, begin here.",
     "bullets": [
       "Transaction-related diligence, leaks, and counter-parties",
       "Asset tracing and complex cross-border information flows",
@@ -45,7 +60,10 @@
     "legalNote": "Migration scaffold — not legal advice. Partnership and compliance must approve final expertise descriptions, entity-specific disclaimers, and jurisdictional limitations before go-live."
   },
   "international": {
+    "serpDescription": "Cross-border reputation, privacy, and disputes — Schillings coordinates mandates across jurisdictions from London, Miami, and Dublin, working with local counsel and allied firms where required.",
     "intro": "Cross-border exposure—sanctions, politics, media, and enforcement—requires coordinated advice. Schillings helps clients map where risk sits and how to respond across jurisdictions and time zones.",
+    "authorityFraming": "This hub is the firmwide entry for cross-border mandates—coordination, forums, and reputation-sensitive exposure—not a substitute for local counsel where required.",
+    "ctaContext": "When a matter spans jurisdictions or audiences, use this practice as the coordinating lens.",
     "bullets": [
       "Geopolitical and jurisdictional risk in disputes and investigations",
       "Coordination with local counsel and regulators where required",
@@ -54,7 +72,10 @@
     "legalNote": "Migration scaffold — not legal advice. Partnership and compliance must approve final expertise descriptions, entity-specific disclaimers, and jurisdictional limitations before go-live."
   },
   "regulatory": {
+    "serpDescription": "Regulatory investigations and enforcement — Schillings lawyers align disclosure, privilege, and reputation-sensitive messaging with communications and governance stakeholders.",
     "intro": "Regulatory attention can move markets and careers overnight. Schillings helps clients prepare for engagement, manage disclosure, and align legal, communications, and governance responses.",
+    "authorityFraming": "This hub organises regulatory and enforcement-facing strategy with reputation and governance in view—firmwide capability, not a single event write-up.",
+    "ctaContext": "If regulators, disclosure, and external narrative are in the same frame, start from this practice.",
     "bullets": [
       "Financial crime, conduct, and enforcement-facing advice in collaboration with specialists",
       "Reputation and privacy dimensions of regulatory investigations",

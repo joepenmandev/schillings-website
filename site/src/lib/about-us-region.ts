@@ -42,7 +42,7 @@ export function getAboutUsRegionModel(locale: Locale): AboutUsRegionModel {
     return {
       metaTitle: 'About Schillings — United States | Schillings',
       metaDescription:
-        'Schillings in the United States — Miami Brickell office, US leadership, and how our Americas hub works with London and Dublin on reputation, privacy, and security.',
+        'International law firm in the United States — Schillings Miami Brickell hub, US leadership, and integrated legal, intelligence, communications, and security with London and Dublin.',
       heroTitle: 'About Schillings in the United States',
       heroLead:
         'Schillings deploys integrated legal, intelligence, communications, and security expertise for high-stakes situations. Our Miami office at Brickell anchors client work across the United States and Latin America, coordinated with our global offices.',
@@ -80,7 +80,7 @@ export function getAboutUsRegionModel(locale: Locale): AboutUsRegionModel {
     return {
       metaTitle: 'About Schillings — Ireland | Schillings',
       metaDescription:
-        'Schillings Ireland — Dublin EU hub at Pembroke Street, leadership, and Schillings Ireland LLP’s role alongside London and Miami for reputation, privacy, and security.',
+        'Schillings Ireland LLP — international law firm with Dublin EU hub at Pembroke Street, alongside London and Miami for reputation, privacy, disputes, investigations, and security.',
       heroTitle: 'About Schillings in Ireland',
       heroLead:
         'Schillings Ireland LLP supports clients from Dublin as part of an integrated international firm—linking EU mandates with Schillings’ London headquarters and Miami Americas hub.',
@@ -118,7 +118,7 @@ export function getAboutUsRegionModel(locale: Locale): AboutUsRegionModel {
   return {
     metaTitle: 'About Schillings — London & headquarters | Schillings',
     metaDescription:
-      'Schillings — founded in London in 1984; today a multidisciplinary firm for reputation, privacy, intelligence, communications, and security. Headquarters in the City of London.',
+      'Schillings — international law firm founded in London in 1984. Multidisciplinary legal, intelligence, communications, and security capabilities; headquarters in the City of London with Miami and Dublin offices.',
     heroTitle: 'About Schillings',
     heroLead:
       'Schillings helps successful individuals and global organisations navigate high-stakes threats and opportunities—from London, our headquarters in the City, working with colleagues in Miami, Dublin, and allied firms worldwide.',

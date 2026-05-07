@@ -8,6 +8,7 @@ import OfficeLocationSection from '@/components/OfficeLocationSection.astro';
 import { OFFICES, officeSlugs, type OfficeSlug } from '@/lib/offices';
 import { breadcrumbListGraphNode } from '@/lib/jsonld-breadcrumbs';
 import { buildJsonLdGraph, buildOfficeLocalBusinessJsonLd, buildPageEntityJsonLd } from '@/lib/jsonld-page';
+import { officeContactPageDescription } from '@/lib/office-page-meta';
 import { absolutePageUrl } from '@/lib/public-url';
 
 export function getStaticPaths() {
@@ -18,7 +19,7 @@ const locale = 'en-ie';
 const slug = Astro.params.office as OfficeSlug;
 const office = OFFICES[slug];
 const origin = Astro.site?.origin ?? Astro.url.origin;
-const description = `Contact Schillings ${office.cityLabel} — address, map, phone, email, and regional enquiry form.`;
+const description = officeContactPageDescription(office);
 const pageTitle = `Contact — ${office.name} | Schillings`;
 const jsonLd = buildJsonLdGraph(
   buildPageEntityJsonLd({

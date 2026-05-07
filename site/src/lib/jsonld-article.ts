@@ -22,6 +22,7 @@ function isSvgImageUrl(url: string): boolean {
 import { firstNonemptyParagraphIndex, newsHeroDisplaySrc } from './news-render';
 import { clipPlainText } from './person-jsonld';
 import { absolutePageUrl } from './public-url';
+import { isHouseNewsAuthorSlug } from '../data/news-house-author';
 
 export type ResolvePerson = (slug: string) => PersonProfile | null;
 
@@ -52,6 +53,10 @@ export function buildNewsArticleBlogPostingGraph(options: {
   const authorRefs: Record<string, unknown>[] = [];
 
   for (const slug of slugs) {
+    if (isHouseNewsAuthorSlug(slug)) {
+      authorRefs.push({ '@id': orgId });
+      continue;
+    }
     const p = resolvePerson(slug);
     if (!p) continue;
     const purl = personProfilePageUrl(o, locale, slug);

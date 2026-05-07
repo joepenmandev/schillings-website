@@ -4,6 +4,7 @@
  */
 import type { Locale } from '@/i18n/config';
 import type { NewsArticle } from '@/data/news';
+import { isHouseNewsAuthorSlug, newsAuthorPublicPathAfterLocale } from '@/data/news-house-author';
 import { publicContactEmailForPersonSlug } from '@/data/people';
 import { articleDatePublishedIso } from '@/lib/news-datetime';
 import { newsListAuthorEntries } from '@/lib/news-list-authors';
@@ -111,15 +112,20 @@ const homeHref = localeHref(locale, '');
                 </div>
               ) : (
                 (() => {
-                  const email = publicContactEmailForPersonSlug(entry.slug);
+                  const house = isHouseNewsAuthorSlug(entry.slug);
+                  const email = house ? null : publicContactEmailForPersonSlug(entry.slug);
+                  const profileHref = localeHref(locale, newsAuthorPublicPathAfterLocale(entry.slug));
                   const img = entry.imagePath;
                   return (
                     <div class="flex gap-3 sm:gap-4">
                       {img ? (
                         <a
-                          href={localeHref(locale, `people/${entry.slug}`)}
-                          class="shrink-0 self-start rounded-full ring-2 ring-brand-white shadow-md ring-offset-2 ring-offset-[#f0ebe3] transition hover:ring-secondary-3"
-                          aria-label={`${entry.name} — profile`}
+                          href={profileHref}
+                          class:list={[
+                            'shrink-0 self-start ring-2 ring-brand-white shadow-md ring-offset-2 ring-offset-[#f0ebe3] transition hover:ring-secondary-3',
+                            house ? 'rounded-lg bg-brand-white p-1.5' : 'rounded-full',
+                          ]}
+                          aria-label={house ? `${entry.name} — author archive` : `${entry.name} — profile`}
                         >
                           <img
                             src={img}
@@ -128,7 +134,10 @@ const homeHref = localeHref(locale, '');
                             height="64"
                             loading="lazy"
                             decoding="async"
-                            class="h-14 w-14 rounded-full object-cover sm:h-16 sm:w-16"
+                            class:list={[
+                              'h-14 w-14 object-cover sm:h-16 sm:w-16',
+                              house ? 'rounded-md' : 'rounded-full',
+                            ]}
                           />
                         </a>
                       ) : (
@@ -154,7 +163,7 @@ const homeHref = localeHref(locale, '');
                         ) : null}
                         <p class:list={[email ? 'mt-1' : '', 'font-serif text-base font-normal leading-snug text-secondary-4 sm:text-lg']}>
                           <a
-                            href={localeHref(locale, `people/${entry.slug}`)}
+                            href={profileHref}
                             class="underline decoration-secondary-2/35 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
                           >
                             {entry.name}

@@ -35,7 +35,7 @@ const showCarouselArrows = articles.length >= 4;
             <>
               <button
                 type="button"
-                class="carousel-nav-prev absolute left-0 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 -translate-x-1 items-center justify-center rounded-full border border-secondary-2/35 bg-brand-white/95 text-lg leading-none text-secondary-4 shadow-md backdrop-blur-sm transition hover:border-secondary-3 hover:bg-utility-2 sm:flex lg:-translate-x-4"
+                class="carousel-nav-prev pointer-events-auto absolute left-0 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 -translate-x-1 items-center justify-center rounded-full border border-secondary-2/35 bg-brand-white/95 text-lg leading-none text-secondary-4 shadow-md backdrop-blur-sm transition hover:border-secondary-3 hover:bg-utility-2 sm:flex lg:-translate-x-4"
                 aria-label="Scroll articles backward"
                 data-carousel-prev=""
               >
@@ -43,7 +43,7 @@ const showCarouselArrows = articles.length >= 4;
               </button>
               <button
                 type="button"
-                class="carousel-nav-next absolute right-0 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 translate-x-1 items-center justify-center rounded-full border border-secondary-2/35 bg-brand-white/95 text-lg leading-none text-secondary-4 shadow-md backdrop-blur-sm transition hover:border-secondary-3 hover:bg-utility-2 sm:flex lg:translate-x-4"
+                class="carousel-nav-next pointer-events-auto absolute right-0 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 translate-x-1 items-center justify-center rounded-full border border-secondary-2/35 bg-brand-white/95 text-lg leading-none text-secondary-4 shadow-md backdrop-blur-sm transition hover:border-secondary-3 hover:bg-utility-2 sm:flex lg:translate-x-4"
                 aria-label="Scroll articles forward"
                 data-carousel-next=""
               >
@@ -54,7 +54,7 @@ const showCarouselArrows = articles.length >= 4;
         }
 
         <div
-          class="carousel-track flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-3 pt-1 [scrollbar-width:thin] [-ms-overflow-style:auto] [scrollbar-color:var(--secondary-2)_transparent]"
+          class="carousel-track relative z-0 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-3 pt-1 [scrollbar-width:thin] [-ms-overflow-style:auto] [scrollbar-color:var(--secondary-2)_transparent]"
           data-carousel-track=""
           tabindex="0"
           role="list"

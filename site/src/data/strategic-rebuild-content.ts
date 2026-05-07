@@ -129,6 +129,7 @@ export const STRATEGIC_PUBLIC_EXPERTISE = [
   { id: 'digital_resilience_security', label: 'Digital Resilience & Security' },
   { id: 'legal_protection_disputes', label: 'Legal Protection & Disputes' },
   { id: 'crisis_response', label: 'Crisis Response' },
+  { id: 'international', label: 'International' },
   { id: 'family_personal_protection', label: 'Family & Personal Protection' },
 ] as const;
 
@@ -167,9 +168,12 @@ export const STRATEGIC_PUBLIC_EXPERTISE_SERVICE_HUB_BY_ID = {
   privacy_confidentiality: 'reputation_privacy',
   strategic_communications: 'communications',
   intelligence_investigations: 'intelligence_security',
-  digital_resilience_security: null,
+  /** Hub H1 is ISD; service-hub copy explicitly covers digital resilience & crisis support. */
+  digital_resilience_security: 'intelligence_security',
   legal_protection_disputes: 'litigation_disputes',
-  crisis_response: null,
+  /** Closest directory hub: crisis & issues management, stakeholder comms. */
+  crisis_response: 'communications',
+  international: 'international',
   family_personal_protection: 'reputation_privacy',
 } as const satisfies Record<StrategicPublicExpertiseId, ExpertiseId | null>;
 
@@ -1032,7 +1036,7 @@ const HUB_PAGE_COPY: Record<
   'response-system': {
     title: 'Response System | Schillings',
     metaDescription:
-      'Schillings integrates intelligence, legal, communications, and security—one coordinated response to threats, rights, narratives, and exposure.',
+      'Schillings integrates intelligence, legal, communications, and security — one coordinated response for organisations and individuals facing threats to reputation, rights, narrative, and operational security.',
     heading: 'Response System',
     intro:
       'Every engagement draws on the right mix of disciplines so you see the full picture early and respond with a single coherent strategy—not a patchwork of separate advisers.',

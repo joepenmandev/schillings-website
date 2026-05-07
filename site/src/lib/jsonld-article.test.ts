@@ -100,6 +100,20 @@ describe('buildNewsArticleBlogPostingGraph', () => {
     expect(post.author).toEqual({ '@id': 'https://example.org/#organization' });
   });
 
+  it('firm byline slug schillings references Organization @id (no Person graph node)', () => {
+    const a: NewsArticle = { ...baseArticle, authorSlugs: ['schillings'] };
+    const g = buildNewsArticleBlogPostingGraph({
+      origin: 'https://example.org',
+      locale: 'en-gb',
+      article: a,
+      pageUrl: 'https://example.org/news/test-article/',
+      resolvePerson: () => null,
+    });
+    expect(g['@graph']).toHaveLength(1);
+    const post = g['@graph'][0] as Record<string, unknown>;
+    expect(post.author).toEqual({ '@id': 'https://example.org/#organization' });
+  });
+
   it('omits BlogPosting image when hero resolves to SVG', () => {
     const a: NewsArticle = {
       ...baseArticle,
