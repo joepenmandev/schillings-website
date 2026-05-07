@@ -53,18 +53,20 @@ const recognitions = person.recognitions ?? [];
           <PersonInstitutionalStanding recognitions={recognitions} personName={person.name} />
         </div>
         {person.imagePath ? (
-          <div class="min-w-0 min-[520px]:col-span-5 min-[520px]:row-start-1 lg:col-span-8 lg:col-start-5 lg:row-span-2 lg:row-start-1 lg:-mt-0.5">
-            <div class="relative mx-auto w-full max-w-[16.5rem] min-[520px]:mx-0 min-[520px]:max-w-none lg:ml-0 lg:mr-[max(-0.25rem,-0.8vw)] lg:max-w-[min(26rem,calc(100%+2rem))]">
-              <div class="lg:translate-x-[min(1rem,2.8vw)] xl:translate-x-[min(1.35rem,3.2vw)]">
-                <div class="lg:sticky lg:top-20">
-                  <div class="relative aspect-[3/4] w-full min-h-[17.5rem] overflow-hidden min-[520px]:min-h-[19rem] lg:aspect-auto lg:h-[min(33rem,calc(100vh-7.75rem))] lg:min-h-[23rem] lg:max-h-[35rem]">
+          <div class="min-w-0 min-[520px]:col-span-5 min-[520px]:row-start-1 min-[520px]:justify-self-end lg:col-span-8 lg:col-start-5 lg:row-span-2 lg:row-start-1 lg:justify-self-stretch lg:-mt-1.5">
+            <div class="relative mx-auto w-full max-w-[15.75rem] min-[520px]:mx-0 min-[520px]:max-w-none lg:ml-0 lg:-mr-[min(2rem,4.5vw)] lg:max-w-[min(28.5rem,calc(100%+3.25rem))]">
+              <div class="-translate-y-1 lg:-translate-y-3 lg:translate-x-[min(1.5rem,3.8vw)] xl:translate-x-[min(2.25rem,5vw)]">
+                <div class="lg:sticky lg:top-[4.25rem]">
+                  <div
+                    class="relative aspect-[11/14] w-full min-h-[18.25rem] overflow-hidden min-[520px]:min-h-[20.5rem] min-[520px]:max-w-[19rem] lg:aspect-auto lg:h-[min(35rem,calc(100vh-7.25rem))] lg:min-h-[25rem] lg:max-h-[37rem] lg:max-w-none"
+                  >
                     <img
                       src={person.imagePath}
                       alt={person.name}
                       width={640}
                       height={800}
-                      class="absolute inset-0 h-full w-full object-cover object-[32%_11%] [transform-origin:34%_19%] scale-[1.24]"
-                      sizes="(max-width: 1024px) 45vw, 380px"
+                      class="absolute inset-0 h-full w-full object-cover object-[44%_14%] [transform-origin:45%_22%] scale-[1.34]"
+                      sizes="(max-width: 1024px) 48vw, 400px"
                       loading="eager"
                       decoding="async"
                       fetchpriority="high"
