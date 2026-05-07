@@ -48,7 +48,7 @@ describe('news-render helpers', () => {
   it('returns only slugs that resolve to published bios', () => {
     const a = getNewsBySlug('twelve-schillings-partners-featured-in-spears-500-guide-to-top-hnw-advisors');
     expect(a).toBeTruthy();
-    expect(newsDisplayAuthors(a!)).toEqual(['chris-bell-watson']);
+    expect(newsDisplayAuthors(a!)).toEqual(['schillings']);
   });
 
   it('newsHeroDisplaySrc skips OG placeholder and uses first author photo', () => {

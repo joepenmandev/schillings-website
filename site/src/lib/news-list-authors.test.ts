@@ -27,15 +27,15 @@ describe('newsListAuthorEntries', () => {
     });
   });
 
-  it('maps published article with author slug to profile entries', () => {
+  it('maps published article with firm author slug to profile entries', () => {
     const a = getNewsBySlug('twelve-schillings-partners-featured-in-spears-500-guide-to-top-hnw-advisors');
     expect(a).toBeTruthy();
     const entries = newsListAuthorEntries(a!);
     expect(entries).toHaveLength(1);
     expect(entries[0]).toMatchObject({
       type: 'profile',
-      slug: 'chris-bell-watson',
-      name: expect.stringMatching(/Chris/i),
+      slug: SCHILLINGS_NEWS_AUTHOR_SLUG,
+      name: 'Schillings',
     });
   });
 

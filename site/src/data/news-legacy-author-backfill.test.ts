@@ -10,6 +10,6 @@ describe('news legacy author → authorSlugs backfill', () => {
 
   it('does not override explicit authorSlugs', () => {
     const a = getNewsBySlug('twelve-schillings-partners-featured-in-spears-500-guide-to-top-hnw-advisors');
-    expect(a?.authorSlugs).toEqual(['chris-bell-watson']);
+    expect(a?.authorSlugs).toEqual(['schillings']);
   });
 });
