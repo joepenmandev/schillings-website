@@ -35,7 +35,7 @@ const recognitions = person.recognitions ?? [];
 
 {
   institutional ? (
-    <div id="person-evaluation-surface" class="mt-7 overflow-x-clip md:mt-8">
+    <div id="person-evaluation-surface" class="mt-[1.6875rem] overflow-x-clip md:mt-[2.0625rem]">
       <header class="max-w-[36rem]">
         <h1 class="font-serif text-[1.875rem] font-extralight leading-[1.08] tracking-tight text-secondary-4 md:text-[2.25rem] md:leading-[1.06] lg:text-[2.35rem]">
           {person.name}
@@ -48,24 +48,24 @@ const recognitions = person.recognitions ?? [];
         ) : null}
       </header>
 
-      <div class="mt-8 grid grid-cols-1 gap-y-3 min-[520px]:mt-9 min-[520px]:grid-cols-12 min-[520px]:gap-x-6 min-[520px]:gap-y-0 min-[520px]:items-start lg:mt-10 lg:gap-x-0">
-        <div class="min-w-0 min-[520px]:col-span-7 min-[520px]:row-start-1 lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:max-w-[30rem] lg:pr-6 xl:pr-8">
+      <div class="mt-[2.0625rem] grid grid-cols-1 gap-y-[0.6875rem] min-[520px]:mt-[2.4375rem] min-[520px]:grid-cols-12 min-[520px]:gap-x-[1.375rem] min-[520px]:gap-y-0 min-[520px]:items-start lg:mt-[2.6875rem] lg:gap-x-0">
+        <div class="min-w-0 min-[520px]:col-span-7 min-[520px]:row-start-1 lg:col-span-5 lg:col-start-1 lg:row-start-1 lg:max-w-[30rem] lg:pr-[1.375rem] xl:pr-[2.0625rem]">
           <PersonInstitutionalStanding recognitions={recognitions} personName={person.name} />
         </div>
         {person.imagePath ? (
-          <div class="min-w-0 min-[520px]:col-span-5 min-[520px]:row-start-1 min-[520px]:justify-self-end lg:col-span-8 lg:col-start-5 lg:row-span-2 lg:row-start-1 lg:justify-self-stretch lg:-mt-1.5">
-            <div class="relative mx-auto w-full max-w-[15.75rem] min-[520px]:mx-0 min-[520px]:max-w-none lg:ml-0 lg:-mr-[min(2rem,4.5vw)] lg:max-w-[min(28.5rem,calc(100%+3.25rem))]">
-              <div class="-translate-y-1 lg:-translate-y-3 lg:translate-x-[min(1.5rem,3.8vw)] xl:translate-x-[min(2.25rem,5vw)]">
-                <div class="lg:sticky lg:top-[4.25rem]">
+          <div class="min-w-0 min-[520px]:col-span-5 min-[520px]:row-start-1 min-[520px]:justify-self-start min-[520px]:pl-[0.3125rem] lg:col-span-8 lg:col-start-5 lg:row-span-2 lg:row-start-1 lg:justify-self-stretch lg:-mt-[0.3125rem] lg:pl-0">
+            <div class="relative w-full max-w-[15.625rem] min-[520px]:mx-0 min-[520px]:max-w-[19.375rem] lg:ml-0 lg:-mr-[min(1.8125rem,4.15vw)] lg:max-w-[min(28.25rem,calc(100%+3.0625rem))]">
+              <div class="-translate-y-[0.1875rem] lg:-translate-y-[0.8125rem] lg:translate-x-[min(1.0625rem,2.9vw)] xl:translate-x-[min(1.6875rem,4.35vw)]">
+                <div class="lg:sticky lg:top-[4.4375rem]">
                   <div
-                    class="relative aspect-[11/14] w-full min-h-[18.25rem] overflow-hidden min-[520px]:min-h-[20.5rem] min-[520px]:max-w-[19rem] lg:aspect-auto lg:h-[min(35rem,calc(100vh-7.25rem))] lg:min-h-[25rem] lg:max-h-[37rem] lg:max-w-none"
+                    class="relative aspect-[11/14] w-full min-h-[18.125rem] overflow-hidden min-[520px]:min-h-[20.375rem] lg:aspect-auto lg:h-[min(34.375rem,calc(100vh-7.1875rem))] lg:min-h-[24.6875rem] lg:max-h-[36.875rem] lg:max-w-none"
                   >
                     <img
                       src={person.imagePath}
                       alt={person.name}
                       width={640}
                       height={800}
-                      class="absolute inset-0 h-full w-full object-cover object-[44%_14%] [transform-origin:45%_22%] scale-[1.34]"
+                      class="absolute inset-0 h-full w-full object-cover object-[47%_15%] [transform-origin:48%_23%] scale-[1.2975]"
                       sizes="(max-width: 1024px) 48vw, 400px"
                       loading="eager"
                       decoding="async"
@@ -77,7 +77,7 @@ const recognitions = person.recognitions ?? [];
             </div>
           </div>
         ) : null}
-        <div class="min-w-0 pt-2 min-[520px]:col-span-12 min-[520px]:pt-3 lg:col-span-5 lg:col-start-1 lg:row-start-2 lg:pt-[1.15rem] xl:max-w-[30rem]">
+        <div class="min-w-0 pt-[0.4375rem] min-[520px]:col-span-12 min-[520px]:pt-[0.8125rem] lg:col-span-5 lg:col-start-1 lg:row-start-2 lg:pt-[1.0625rem] xl:max-w-[30rem]">
           <PersonTrustSignals
             personName={person.name}
             sameAs={person.sameAs ?? []}
@@ -95,21 +95,28 @@ const recognitions = person.recognitions ?? [];
       </div>
 
       <div class="min-w-0 lg:max-w-[min(100%,44rem)]">
-        <div class="mt-[2.875rem] md:mt-16 lg:mt-[4.75rem] xl:mt-[6rem]">
+        <div class="mt-[3.0625rem] md:mt-[3.875rem] lg:mt-[4.6875rem] xl:mt-[6.125rem]">
           <PersonProfileContextSections locale={locale} person={person} layout="institutional" />
         </div>
         <section
-          class="mt-8 max-w-[34rem] md:mt-[2.25rem] lg:mt-11 xl:mt-12"
+          class="mt-[2.0625rem] max-w-[34rem] md:mt-[2.1875rem] lg:mt-[2.75rem] xl:mt-[3.3125rem]"
           aria-labelledby="person-bio-heading"
         >
           <SectionKicker id="person-bio-heading" tone="whisper">Biography</SectionKicker>
-          <div class="mt-3 text-pretty font-serif text-[0.875rem] font-extralight leading-[1.68] text-secondary-3/[0.9] md:mt-[0.85rem] md:text-[0.90625rem] md:leading-[1.7]">
+          <div class="mt-[0.6875rem] text-pretty font-serif text-[0.875rem] font-extralight leading-[1.68] text-secondary-3/[0.9] md:mt-[0.9375rem] md:text-[0.90625rem] md:leading-[1.7]">
             {person.paragraphs.map((para, idx) => (
-              <p class:list={[idx === 1 ? 'mt-5 md:mt-[1.2rem]' : '', idx === 2 ? 'mt-6 md:mt-[1.85rem]' : '']}>{para}</p>
+              <p
+                class:list={[
+                  idx === 1 ? 'mt-[1.25rem] md:mt-[1.1875rem]' : '',
+                  idx === 2 ? 'mt-[1.6875rem] md:mt-[1.9375rem]' : '',
+                ]}
+              >
+                {para}
+              </p>
             ))}
           </div>
         </section>
-        <div class="mt-6 max-w-[36rem] md:mt-7 lg:mt-8 xl:mt-9">
+        <div class="mt-[1.5625rem] max-w-[36rem] md:mt-[1.9375rem] lg:mt-[2.1875rem] xl:mt-[2.4375rem]">
           <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} tone="admin" />
         </div>
       </div>

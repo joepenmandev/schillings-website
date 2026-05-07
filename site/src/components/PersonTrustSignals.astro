@@ -55,16 +55,16 @@ const surfaceClass = flush
 const headingClass =
   directoryStyle === 'index'
     ? evalSurface
-      ? 'text-[0.5rem] font-normal uppercase tracking-[0.2em] text-secondary-2/46'
+      ? 'font-[system-ui,sans-serif] text-[0.53125rem] font-normal uppercase tracking-[0.11em] text-secondary-2/34'
       : 'text-[0.56rem] font-normal uppercase tracking-[0.19em] text-secondary-2/72'
     : 'text-sm font-medium uppercase tracking-wide text-secondary-2';
 
 const indexDirLinkClass = evalSurface
-  ? 'text-[0.65rem] font-normal leading-snug text-secondary-3/[0.9] underline decoration-transparent underline-offset-[0.18em] hover:underline hover:decoration-secondary-2/18 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/35'
+  ? 'font-[system-ui,sans-serif] text-[0.71875rem] font-normal leading-[1.45] text-secondary-3/[0.78] underline decoration-transparent underline-offset-[0.16em] hover:underline hover:decoration-secondary-2/14 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/32'
   : 'text-[0.68rem] font-normal leading-snug text-secondary-3 no-underline decoration-secondary-2/0 underline-offset-[0.18em] transition-[color,text-decoration-color] hover:text-secondary-3 hover:underline hover:decoration-secondary-2/32';
 
 const indexMetaClass = evalSurface
-  ? 'text-[0.56rem] leading-[1.52] text-secondary-2/44'
+  ? 'font-[system-ui,sans-serif] text-[0.546875rem] leading-[1.48] text-secondary-2/36'
   : 'text-[0.62rem] leading-[1.5] text-secondary-2/58';
 
 const linkedIn = sameAs.find((u) => /linkedin\.com\/in\//i.test(u));
@@ -197,7 +197,7 @@ const textLinkClass =
   }
 
   <nav
-    class:list={[directoryStyle === 'index' ? (evalSurface ? 'mt-3' : 'mt-4') : omitIntro ? 'mt-4' : 'mt-6']}
+    class:list={[directoryStyle === 'index' ? (evalSurface ? 'mt-[0.6875rem]' : 'mt-4') : omitIntro ? 'mt-4' : 'mt-6']}
     aria-label="Major legal and reputation directories"
   >
     {
@@ -206,7 +206,7 @@ const textLinkClass =
           <p class={indexMetaClass}>
             {evalSurface ? 'Listings are maintained by each publisher.' : 'Publisher search — use each site to locate firm or named listings.'}
           </p>
-          <ul class:list={['flex flex-col', evalSurface ? 'mt-2.5 gap-y-1' : 'mt-3 gap-y-1.5']} role="list">
+          <ul class:list={['flex flex-col', evalSurface ? 'mt-[0.4375rem] gap-y-[0.21875rem]' : 'mt-3 gap-y-1.5']} role="list">
             {LEGAL_DIRECTORIES.map((d) => (
               <li>
                 <a href={d.href} class={indexDirLinkClass} rel="noopener noreferrer" target="_blank" title={d.hint}>

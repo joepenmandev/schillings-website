@@ -25,12 +25,12 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
 
 {
   articles.length > 0 ? (
-    <section class:list={[layout === 'institutional' ? 'mt-[4.5rem] md:mt-20 lg:mt-[6.25rem] xl:mt-28' : 'mt-10']} aria-labelledby="person-news-heading">
+    <section class:list={[layout === 'institutional' ? 'mt-[4.25rem] md:mt-[4.875rem] lg:mt-[6.125rem] xl:mt-[7.125rem]' : 'mt-10']} aria-labelledby="person-news-heading">
       <h2
         id="person-news-heading"
         class:list={[
           layout === 'institutional'
-            ? 'text-[0.5rem] font-normal uppercase tracking-[0.2em] text-secondary-2/48'
+            ? 'font-[system-ui,sans-serif] text-[0.53125rem] font-normal uppercase tracking-[0.11em] text-secondary-2/40'
             : 'text-sm font-medium uppercase tracking-wide text-secondary-2',
         ]}
       >
@@ -40,7 +40,7 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
         class:list={[
           'max-w-2xl text-pretty leading-relaxed',
           layout === 'institutional'
-            ? 'mt-3 text-[0.78rem] font-extralight leading-[1.58] text-secondary-3/[0.88] md:mt-[0.95rem]'
+            ? 'mt-[0.6875rem] text-pretty font-[system-ui,sans-serif] text-[0.75rem] font-normal leading-[1.55] text-secondary-3/[0.78] md:mt-[0.9375rem]'
             : 'mt-2 text-sm text-secondary-3',
         ]}
       >
@@ -58,7 +58,7 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
       </p>
       <div
         class:list={[
-          layout === 'institutional' ? 'mt-6 border-t border-secondary-2/[0.034] pt-6' : 'mt-6 border-t border-secondary-2/20 pt-4',
+          layout === 'institutional' ? 'mt-[1.375rem] border-t border-secondary-2/[0.028] pt-[1.4375rem]' : 'mt-6 border-t border-secondary-2/20 pt-4',
         ]}
       >
         <NewsEditorialCarousel
@@ -75,7 +75,7 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
             href={localeHref(locale, `news/author/${personSlug}`)}
             class:list={[
               layout === 'institutional'
-                ? 'text-[0.78rem] font-extralight text-secondary-3/[0.88] no-underline decoration-secondary-2/22 underline-offset-2 hover:underline hover:decoration-secondary-2/35'
+                ? 'font-[system-ui,sans-serif] text-[0.75rem] font-normal text-secondary-3/[0.78] no-underline decoration-secondary-2/16 underline-offset-2 hover:underline hover:decoration-secondary-2/28'
                 : 'text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:decoration-secondary-4',
             ]}
           >
@@ -88,7 +88,7 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
             href={localeHref(locale, 'news')}
             class:list={[
               layout === 'institutional'
-                ? 'text-[0.78rem] font-extralight text-secondary-3/[0.88] no-underline decoration-secondary-2/22 underline-offset-2 hover:underline hover:decoration-secondary-2/35'
+                ? 'font-[system-ui,sans-serif] text-[0.75rem] font-normal text-secondary-3/[0.78] no-underline decoration-secondary-2/16 underline-offset-2 hover:underline hover:decoration-secondary-2/28'
                 : 'text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:decoration-secondary-4',
             ]}
           >

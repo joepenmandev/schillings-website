@@ -42,10 +42,13 @@ const sorted = [...recognitions].sort(
 {
   sorted.length > 0 ? (
     <section class="mt-4 max-w-[25rem] lg:mt-5" aria-labelledby="institutional-standing-heading">
-      <p id="institutional-standing-heading" class="text-[0.5rem] font-normal uppercase tracking-[0.22em] text-secondary-2/45">
+      <p
+        id="institutional-standing-heading"
+        class="font-[system-ui,sans-serif] text-[0.5625rem] font-normal uppercase tracking-[0.13em] text-secondary-2/36"
+      >
         Publisher citations
       </p>
-      <ul class="mt-2.5 border-t border-secondary-2/[0.038]" role="list">
+      <ul class="mt-[0.625rem] border-t border-secondary-2/[0.028]" role="list">
         {sorted.map((item, idx) => {
           const href = resolveRecognitionOutboundHref(item);
           const pub = publisherLine(item);
@@ -56,18 +59,18 @@ const sorted = [...recognitions].sort(
 
           const pubClass =
             tier === 'primary'
-              ? 'text-[0.48rem] font-normal uppercase tracking-[0.16em] text-secondary-2/42'
-              : 'text-[0.46rem] font-normal uppercase tracking-[0.15em] text-secondary-2/34';
+              ? 'font-[system-ui,sans-serif] text-[0.46875rem] font-normal uppercase tracking-[0.1em] text-secondary-2/36'
+              : 'font-[system-ui,sans-serif] text-[0.45rem] font-normal uppercase tracking-[0.09em] text-secondary-2/30';
 
           const yearClass =
             tier === 'primary'
-              ? 'text-[0.46rem] tabular-nums tracking-wide text-secondary-2/34'
-              : 'text-[0.44rem] tabular-nums tracking-wide text-secondary-2/28';
+              ? 'font-[system-ui,sans-serif] text-[0.4375rem] tabular-nums tracking-wide text-secondary-2/30'
+              : 'font-[system-ui,sans-serif] text-[0.421875rem] tabular-nums tracking-wide text-secondary-2/26';
 
           const titleClass =
             tier === 'primary'
-              ? 'mt-1 max-w-[21rem] text-pretty font-serif text-[0.8125rem] font-extralight leading-[1.5] text-secondary-3/[0.93]'
-              : 'mt-0.5 max-w-[20rem] text-pretty font-serif text-[0.71875rem] font-extralight leading-[1.46] text-secondary-3/[0.82]';
+              ? 'mt-[0.3125rem] max-w-[21rem] text-pretty font-[system-ui,sans-serif] text-[0.796875rem] font-normal leading-[1.46] text-secondary-3/[0.86]'
+              : 'mt-[0.1875rem] max-w-[20rem] text-pretty font-[system-ui,sans-serif] text-[0.71875rem] font-normal leading-[1.44] text-secondary-3/[0.78]';
 
           const blockPad =
             tier === 'primary' ? 'py-[0.72rem] first:pt-[0.62rem]' : 'py-[0.56rem] last:pb-[0.62rem]';
@@ -89,7 +92,7 @@ const sorted = [...recognitions].sort(
           );
 
           return (
-            <li class:list={[shelfBreak && 'mt-1 border-t border-secondary-2/[0.024] pt-[0.65rem]']}>
+            <li class:list={[shelfBreak && 'mt-[0.3125rem] border-t border-secondary-2/[0.018] pt-[0.59375rem]']}>
               {href ? (
                 <a href={href} rel="noopener noreferrer" target="_blank" class:list={linkClass}>
                   {body}
@@ -102,7 +105,7 @@ const sorted = [...recognitions].sort(
           );
         })}
       </ul>
-      <p class="mt-3 max-w-[19.5rem] text-pretty text-[0.56rem] leading-[1.55] text-secondary-2/40">
+      <p class="mt-[0.6875rem] max-w-[20rem] text-pretty font-[system-ui,sans-serif] text-[0.546875rem] leading-[1.5] text-secondary-2/34">
         Third-party pages only; each publisher sets methodology and copy.
       </p>
     </section>
