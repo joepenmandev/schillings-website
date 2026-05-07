@@ -14,43 +14,29 @@ import SectionKicker from '@/components/SectionKicker.astro';
 interface Props {
   locale: Locale;
   person: PersonProfile;
-  /** Benchmark layout: taxonomy-forward expertise, fewer “directory” cues. */
-  layout?: 'default' | 'institutional';
 }
 
-const { locale, person, layout = 'default' } = Astro.props;
-const institutional = layout === 'institutional';
+const { locale, person } = Astro.props;
 const expertise = (person.expertise ?? []) as ExpertiseId[];
 const relatedSituationIds = strategicSituationIdsForPersonExpertise(expertise);
 
 const body = 'mt-2 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3';
-const linkList = institutional
-  ? 'mt-5 flex flex-col gap-0'
-  : 'mt-4 flex flex-col gap-2 sm:gap-2.5';
-const linkClass = institutional
-  ? 'group flex w-full py-[0.62rem] pl-0 text-left text-[0.8125rem] font-extralight leading-[1.48] text-secondary-3 first:pt-0 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/40'
-  : 'font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4';
-const hubTitle = institutional ? 'Core areas' : 'Helps clients with';
-const hubIntro = institutional
-  ? 'Taxonomy from directory tags—firmwide context, not individual matters.'
-  : 'These expertise hubs describe Schillings’ firmwide practice in these areas—useful context from directory tags, not a catalogue of individual matters or commercial positioning for any one person.';
+const linkList = 'mt-4 flex flex-col gap-2 sm:gap-2.5';
+const linkClass =
+  'font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4';
 ---
 
 {
   expertise.length > 0 ? (
-    <section
-      class:list={[
-        institutional ? 'mt-0 max-w-[33rem]' : 'mt-12 border-t border-secondary-2/20 pt-10 md:mt-14',
-      ]}
-      aria-labelledby="person-helps-heading"
-    >
-      <SectionKicker id="person-helps-heading" tone={institutional ? 'whisper' : 'default'}>{hubTitle}</SectionKicker>
-      <p class:list={[body, institutional && 'mt-2 max-w-[24rem] text-[0.8rem] leading-[1.56] text-secondary-2/78']}>
-        {hubIntro}
+    <section class="mt-12 border-t border-secondary-2/20 pt-10 md:mt-14" aria-labelledby="person-helps-heading">
+      <SectionKicker id="person-helps-heading">Helps clients with</SectionKicker>
+      <p class={body}>
+        These expertise hubs describe Schillings’ firmwide practice in these areas—useful context from directory tags, not a
+        catalogue of individual matters or commercial positioning for any one person.
       </p>
       <ul class={`${linkList} list-none`}>
         {expertise.map((id) => (
-          <li class:list={[institutional && 'm-0']}>
+          <li>
             <a href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(id)}`)} class={linkClass}>
               <span class="max-w-[90%] text-pretty">{EXPERTISE_LABELS[id]}</span>
             </a>
@@ -62,15 +48,14 @@ const hubIntro = institutional
 }
 
 {
-  !institutional && relatedSituationIds.length > 0 ? (
+  relatedSituationIds.length > 0 ? (
     <section
       class="mt-10 border-t border-secondary-2/20 pt-10 md:mt-12"
       aria-labelledby="person-related-situations-heading"
     >
       <SectionKicker id="person-related-situations-heading">Related situations</SectionKicker>
       <p class={body}>
-        Scenario-style pages that often sit beside these practice tags—not illustrative of any individual’s work or
-        outcomes.
+        Scenario-style pages that often sit beside these practice tags—not illustrative of any individual’s work or outcomes.
       </p>
       <ul class={`${linkList} list-none`}>
         {relatedSituationIds.map((sid) => {
@@ -89,7 +74,7 @@ const hubIntro = institutional
 }
 
 {
-  !institutional && expertise.length > 0 ? (
+  expertise.length > 0 ? (
     <section class="mt-10 border-t border-secondary-2/20 pt-10 md:mt-12" aria-labelledby="person-related-expertise-heading">
       <SectionKicker id="person-related-expertise-heading">Related expertise</SectionKicker>
       <p class={body}>Browse all expertise and how colleagues are organised across the firm.</p>

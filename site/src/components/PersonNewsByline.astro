@@ -12,11 +12,9 @@ interface Props {
   /** Links to `/news/author/{slug}/` (full list of pieces credited to this colleague). */
   personSlug?: string;
   personName?: string;
-  /** Institutional profile: quieter editorial scale. */
-  layout?: 'default' | 'institutional';
 }
 
-const { locale, articles, displayLimit = 8, personSlug, personName, layout = 'default' } = Astro.props;
+const { locale, articles, displayLimit = 8, personSlug, personName } = Astro.props;
 const visible = articles.slice(0, displayLimit);
 const hasMore = articles.length > displayLimit;
 const showAuthorArchive = Boolean(personSlug?.trim() && personName?.trim());
@@ -25,42 +23,15 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
 
 {
   articles.length > 0 ? (
-    <section class:list={[layout === 'institutional' ? 'mt-[4.25rem] md:mt-[4.875rem] lg:mt-[6.125rem] xl:mt-[7.125rem]' : 'mt-10']} aria-labelledby="person-news-heading">
-      <h2
-        id="person-news-heading"
-        class:list={[
-          layout === 'institutional'
-            ? 'font-[system-ui,sans-serif] text-[0.53125rem] font-normal uppercase tracking-[0.11em] text-secondary-2/40'
-            : 'text-sm font-medium uppercase tracking-wide text-secondary-2',
-        ]}
-      >
-        {layout === 'institutional' ? 'Commentary' : 'Related Intelligence'}
+    <section class="mt-10" aria-labelledby="person-news-heading">
+      <h2 id="person-news-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">
+        Related Intelligence
       </h2>
-      <p
-        class:list={[
-          'max-w-2xl text-pretty leading-relaxed',
-          layout === 'institutional'
-            ? 'mt-[0.6875rem] text-pretty font-[system-ui,sans-serif] text-[0.75rem] font-normal leading-[1.55] text-secondary-3/[0.78] md:mt-[0.9375rem]'
-            : 'mt-2 text-sm text-secondary-3',
-        ]}
-      >
-        {
-          layout === 'institutional' ? (
-            <>Bylined pieces only—context on public positioning, not a record of private mandates.</>
-          ) : (
-            <>
-              Published analysis and commentary where this colleague is credited as an author — useful context on
-              perspective and public commentary. Co-authors appear on each card with a short role line linking to their
-              profiles.
-            </>
-          )
-        }
+      <p class="mt-2 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3">
+        Published analysis and commentary where this colleague is credited as an author — useful context on perspective and
+        public commentary. Co-authors appear on each card with a short role line linking to their profiles.
       </p>
-      <div
-        class:list={[
-          layout === 'institutional' ? 'mt-[1.375rem] border-t border-secondary-2/[0.028] pt-[1.4375rem]' : 'mt-6 border-t border-secondary-2/20 pt-4',
-        ]}
-      >
+      <div class="mt-6 border-t border-secondary-2/20 pt-4">
         <NewsEditorialCarousel
           {locale}
           articles={visible}
@@ -73,26 +44,18 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
         <p class="mt-5">
           <a
             href={localeHref(locale, `news/author/${personSlug}`)}
-            class:list={[
-              layout === 'institutional'
-                ? 'font-[system-ui,sans-serif] text-[0.75rem] font-normal text-secondary-3/[0.78] no-underline decoration-secondary-2/16 underline-offset-2 hover:underline hover:decoration-secondary-2/28'
-                : 'text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:decoration-secondary-4',
-            ]}
+            class="text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:decoration-secondary-4"
           >
-            {layout === 'institutional' ? `All commentary — ${personName}` : `All Intelligence by ${personName} →`}
+            All Intelligence by {personName} →
           </a>
         </p>
       ) : hasMore ? (
         <p class="mt-5">
           <a
             href={localeHref(locale, 'news')}
-            class:list={[
-              layout === 'institutional'
-                ? 'font-[system-ui,sans-serif] text-[0.75rem] font-normal text-secondary-3/[0.78] no-underline decoration-secondary-2/16 underline-offset-2 hover:underline hover:decoration-secondary-2/28'
-                : 'text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:decoration-secondary-4',
-            ]}
+            class="text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-2 hover:decoration-secondary-4"
           >
-            {layout === 'institutional' ? 'All commentary' : 'View all Intelligence'}
+            View all Intelligence
           </a>
         </p>
       ) : null}

@@ -5,67 +5,30 @@ import { contactSegment, localeHref } from '../lib/site-nav';
 interface Props {
   locale: Locale;
   personName: string;
-  tone?: 'default' | 'quiet' | 'institutional';
 }
 
-const { locale, personName, tone = 'default' } = Astro.props;
+const { locale, personName } = Astro.props;
 const href = localeHref(locale, contactSegment);
 
 const boxClass =
-  tone === 'institutional'
-    ? 'mt-[3.875rem] border-t border-secondary-2/[0.028] pt-[1.6875rem] md:mt-[4.6875rem] md:pt-[1.9375rem] lg:mt-[5.375rem] xl:mt-[6.0625rem] xl:pt-[2.1875rem]'
-    : tone === 'quiet'
-      ? 'mt-12 border border-secondary-2/14 bg-transparent px-5 py-6 md:px-6 md:py-7'
-      : 'mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7';
+  'mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7';
 
-const headingClass =
-  tone === 'institutional'
-    ? 'font-[system-ui,sans-serif] text-[0.46875rem] font-normal uppercase tracking-[0.1em] text-secondary-2/34'
-    : tone === 'quiet'
-      ? 'text-[0.56rem] font-normal uppercase tracking-[0.19em] text-secondary-2/75'
-      : 'text-sm font-medium uppercase tracking-wide text-secondary-2';
+const headingClass = 'text-sm font-medium uppercase tracking-wide text-secondary-2';
 
-const bodyClass =
-  tone === 'institutional'
-    ? 'mt-[0.4375rem] max-w-[31rem] text-pretty font-[system-ui,sans-serif] text-[0.765625rem] font-normal leading-[1.58] text-secondary-3/[0.76] md:mt-[0.5625rem] md:text-[0.78125rem] md:leading-[1.56]'
-    : tone === 'quiet'
-      ? 'mt-3 max-w-[28rem] text-pretty text-[0.8125rem] font-extralight leading-[1.62] text-secondary-3/[0.92]'
-      : 'mt-2 text-pretty text-sm leading-relaxed text-secondary-3';
-
-const institutionalInlineLinkClass =
-  'text-secondary-3/[0.8] underline decoration-secondary-2/14 underline-offset-[0.18em] hover:decoration-secondary-2/24 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/38';
+const bodyClass = 'mt-2 text-pretty text-sm leading-relaxed text-secondary-3';
 
 const btnClass =
-  tone === 'quiet'
-    ? 'mt-5 inline-flex border border-secondary-4/80 bg-transparent px-4 py-2.5 text-center text-[0.8125rem] font-normal tracking-wide text-secondary-4 outline-offset-4 transition-colors hover:bg-secondary-4/[0.05] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-4/55'
-    : 'mt-5 inline-flex rounded-lg border border-secondary-4 bg-secondary-4 px-5 py-3 text-sm font-medium text-brand-white shadow-sm transition-[opacity,box-shadow] hover:opacity-90 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-4';
+  'mt-5 inline-flex rounded-lg border border-secondary-4 bg-secondary-4 px-5 py-3 text-sm font-medium text-brand-white shadow-sm transition-[opacity,box-shadow] hover:opacity-90 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-4';
 ---
 
 <section class={boxClass} aria-labelledby="person-contact-cta-heading">
-  <h2 id="person-contact-cta-heading" class={headingClass}>
-    {tone === 'institutional' ? 'Enquiries' : 'Confidential enquiry'}
-  </h2>
-  {
-    tone === 'institutional' ? (
-      <p class={bodyClass}>
-        Nothing here constitutes legal advice or an offer of representation. For formal routing, use the
-        <a href={href} class:list={[institutionalInlineLinkClass]}>
-          firm contact page
-        </a>
-        .
-        <span class="sr-only"> — Schillings enquiries regarding {personName}</span>
-      </p>
-    ) : (
-      <>
-        <p class={bodyClass}>
-          To explore whether Schillings can help in confidence, use our contact page. Nothing on this profile constitutes
-          legal advice or a client relationship until terms are agreed.
-        </p>
-        <a href={href} class={btnClass}>
-          Speak confidentially
-          <span class="sr-only"> — continue regarding {personName}</span>
-        </a>
-      </>
-    )
-  }
+  <h2 id="person-contact-cta-heading" class={headingClass}>Confidential enquiry</h2>
+  <p class={bodyClass}>
+    To explore whether Schillings can help in confidence, use our contact page. Nothing on this profile constitutes legal
+    advice or a client relationship until terms are agreed.
+  </p>
+  <a href={href} class={btnClass}>
+    Speak confidentially
+    <span class="sr-only"> — continue regarding {personName}</span>
+  </a>
 </section>

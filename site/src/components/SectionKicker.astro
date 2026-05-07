@@ -4,20 +4,11 @@ import { SECTION_KICKER_CLASS } from '@/lib/visual-tokens';
 interface Props {
   id: string;
   class?: string;
-  /** `quiet` — index / documentary scale (institutional profiles). */
-  /** `whisper` — lowest contrast index line; evaluation surfaces. */
-  tone?: 'default' | 'quiet' | 'whisper';
 }
 
-const { id, class: className, tone = 'default' } = Astro.props;
-const kickerClass =
-  tone === 'whisper'
-    ? 'text-[0.5rem] font-normal uppercase tracking-[0.21em] text-secondary-2/50'
-    : tone === 'quiet'
-      ? 'text-[0.58rem] font-normal uppercase tracking-[0.22em] text-secondary-2/78'
-      : SECTION_KICKER_CLASS;
+const { id, class: className } = Astro.props;
 ---
 
-<h2 id={id} class:list={[kickerClass, className]}>
+<h2 id={id} class:list={[SECTION_KICKER_CLASS, className]}>
   <slot />
 </h2>

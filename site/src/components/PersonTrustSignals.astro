@@ -14,58 +14,9 @@ export interface Props {
   recognitions?: PersonRecognition[];
   /** When true, omit the LinkedIn block (e.g. already shown in `PersonPublicContact`). */
   hideLinkedIn?: boolean;
-  /** When true, omit the recognition badge block (e.g. already shown in institutional standing). */
-  hideRecognitionBadges?: boolean;
-  /** Shorter compliance line above directory links. */
-  complianceTone?: 'standard' | 'quiet';
-  /** Plain top border for benchmark profiles; default keeps the contained panel. */
-  surface?: 'panel' | 'plain';
-  /** Omit opening compliance paragraphs (e.g. already covered above). */
-  omitIntro?: boolean;
-  /** `index` — caption-style directory links (institutional profiles). */
-  directoryStyle?: 'chips' | 'index';
-  /** No outer border/margin — nest inside institutional evaluation column. */
-  flush?: boolean;
-  /** Quieter index typography and spacing for continuous evaluation surfaces. */
-  evalSurface?: boolean;
 }
 
-const {
-  personName,
-  sameAs,
-  recognitions = [],
-  hideLinkedIn = false,
-  hideRecognitionBadges = false,
-  complianceTone = 'standard',
-  surface = 'panel',
-  omitIntro = false,
-  directoryStyle = 'chips',
-  flush = false,
-  evalSurface = false,
-} = Astro.props;
-
-const surfaceClass = flush
-  ? 'border-0 p-0'
-  : surface === 'plain' && directoryStyle === 'index'
-    ? 'mt-6 border-t border-secondary-2/10 pt-6'
-    : surface === 'plain'
-      ? 'mt-8 border-t border-secondary-2/20 pt-8'
-      : 'mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7';
-
-const headingClass =
-  directoryStyle === 'index'
-    ? evalSurface
-      ? 'font-[system-ui,sans-serif] text-[0.53125rem] font-normal uppercase tracking-[0.11em] text-secondary-2/34'
-      : 'text-[0.56rem] font-normal uppercase tracking-[0.19em] text-secondary-2/72'
-    : 'text-sm font-medium uppercase tracking-wide text-secondary-2';
-
-const indexDirLinkClass = evalSurface
-  ? 'font-[system-ui,sans-serif] text-[0.71875rem] font-normal leading-[1.45] text-secondary-3/[0.78] underline decoration-transparent underline-offset-[0.16em] hover:underline hover:decoration-secondary-2/14 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/32'
-  : 'text-[0.68rem] font-normal leading-snug text-secondary-3 no-underline decoration-secondary-2/0 underline-offset-[0.18em] transition-[color,text-decoration-color] hover:text-secondary-3 hover:underline hover:decoration-secondary-2/32';
-
-const indexMetaClass = evalSurface
-  ? 'font-[system-ui,sans-serif] text-[0.546875rem] leading-[1.48] text-secondary-2/36'
-  : 'text-[0.62rem] leading-[1.5] text-secondary-2/58';
+const { personName, sameAs, recognitions = [], hideLinkedIn = false } = Astro.props;
 
 const linkedIn = sameAs.find((u) => /linkedin\.com\/in\//i.test(u));
 
@@ -123,41 +74,22 @@ const textLinkClass =
   'inline-flex items-center gap-2 text-sm font-medium text-secondary-4 underline decoration-secondary-2/50 underline-offset-2 transition-colors hover:decoration-secondary-4 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/70';
 ---
 
-<aside class:list={[surfaceClass]} aria-labelledby="trust-signals-heading">
-  <h2 id="trust-signals-heading" class={headingClass}>
-    {
-      evalSurface
-        ? 'Directories'
-        : complianceTone === 'quiet'
-          ? 'Independent directories'
-          : 'Profiles & independent directories'
-    }
-  </h2>
+<aside
+  class="mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7"
+  aria-labelledby="trust-signals-heading"
+>
+  <h2 id="trust-signals-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">Profiles & independent directories</h2>
+  <p class="mt-2 text-pretty text-sm leading-relaxed text-secondary-3">
+    Third-party sources can help readers place professional background in context. Schillings does not control external sites
+    or rankings; use firm search or name search on the directories below where applicable. Contact Schillings for formal
+    engagements.
+  </p>
   {
-    !omitIntro ? (
-      <p class:list={['mt-2 text-pretty leading-relaxed', directoryStyle === 'index' ? indexMetaClass : 'text-sm text-secondary-3']}>
-        {complianceTone === 'quiet' ? (
-          <>
-            Third-party listings may help place background in context. Use search on each publisher’s site where
-            applicable. Nothing here implies a client relationship or legal advice.
-          </>
-        ) : (
-          <>
-            Third-party sources can help readers place professional background in context. Schillings does not control
-            external sites or rankings; use firm search or name search on the directories below where applicable. Contact
-            Schillings for formal engagements.
-          </>
-        )}
-      </p>
-    ) : null
-  }
-  {
-    recognitions.length > 0 && !hideRecognitionBadges ? (
+    recognitions.length > 0 ? (
       <div class="mt-5">
         <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Recognitions</p>
         <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3/90">
-          Selected third-party listings and rankings for {personName}. Methodologies and criteria are set by each
-          publisher.
+          Selected third-party listings and rankings for {personName}. Methodologies and criteria are set by each publisher.
         </p>
         <div class="mt-3">
           <RecognitionBadges items={recognitions} />
@@ -196,43 +128,18 @@ const textLinkClass =
     ) : null
   }
 
-  <nav
-    class:list={[directoryStyle === 'index' ? (evalSurface ? 'mt-[0.6875rem]' : 'mt-4') : omitIntro ? 'mt-4' : 'mt-6']}
-    aria-label="Major legal and reputation directories"
-  >
-    {
-      directoryStyle === 'index' ? (
-        <>
-          <p class={indexMetaClass}>
-            {evalSurface ? 'Listings are maintained by each publisher.' : 'Publisher search — use each site to locate firm or named listings.'}
-          </p>
-          <ul class:list={['flex flex-col', evalSurface ? 'mt-[0.4375rem] gap-y-[0.21875rem]' : 'mt-3 gap-y-1.5']} role="list">
-            {LEGAL_DIRECTORIES.map((d) => (
-              <li>
-                <a href={d.href} class={indexDirLinkClass} rel="noopener noreferrer" target="_blank" title={d.hint}>
-                  {d.label}
-                  <span class="sr-only"> (opens in new tab)</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : (
-        <>
-          <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Major legal directories</p>
-          <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3/90">Use search on each site to find the firm or named individuals.</p>
-          <ul class="mt-3 flex flex-wrap gap-2" role="list">
-            {LEGAL_DIRECTORIES.map((d) => (
-              <li>
-                <a href={d.href} class={linkClass} rel="noopener noreferrer" target="_blank" title={d.hint}>
-                  {d.label}
-                  <span class="sr-only"> (opens in new tab)</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </>
-      )
-    }
+  <nav class="mt-6" aria-label="Major legal and reputation directories">
+    <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Major legal directories</p>
+    <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3/90">Use search on each site to find the firm or named individuals.</p>
+    <ul class="mt-3 flex flex-wrap gap-2" role="list">
+      {LEGAL_DIRECTORIES.map((d) => (
+        <li>
+          <a href={d.href} class={linkClass} rel="noopener noreferrer" target="_blank" title={d.hint}>
+            {d.label}
+            <span class="sr-only"> (opens in new tab)</span>
+          </a>
+        </li>
+      ))}
+    </ul>
   </nav>
 </aside>
