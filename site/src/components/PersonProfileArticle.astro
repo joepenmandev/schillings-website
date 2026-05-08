@@ -26,6 +26,9 @@ interface Props {
 const { locale, person, profileSubline, localeBioNote, isThinProfile, newsByPerson } = Astro.props;
 
 const recognitions = person.recognitions ?? [];
+const phase2SequencingSlugs = new Set(['jenny-afia', 'ben-hobbs', 'rachel-atkins']);
+const usePhase2ProofAdjacency = !isThinProfile && phase2SequencingSlugs.has(person.slug);
+const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
 ---
 
 <>
@@ -81,16 +84,26 @@ const recognitions = person.recognitions ?? [];
     >
       <SectionKicker id="person-bio-heading">Biography</SectionKicker>
       <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
-        {person.paragraphs.map((para) => (
-          <p>{para}</p>
-        ))}
+        {
+          usePhase2ProofAdjacency ? (
+            <>
+              {firstParagraph ? <p>{firstParagraph}</p> : null}
+              <PersonTrustSignals personName={person.name} sameAs={person.sameAs ?? []} recognitions={recognitions} hideLinkedIn />
+              {remainingParagraphs.map((para) => (
+                <p>{para}</p>
+              ))}
+            </>
+          ) : (
+            person.paragraphs.map((para) => <p>{para}</p>)
+          )
+        }
       </div>
     </section>
   </div>
   {isThinProfile ? null : <PersonProfileContextSections locale={locale} person={person} />}
   <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
   <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />
-  <PersonTrustSignals personName={person.name} sameAs={person.sameAs ?? []} recognitions={recognitions} hideLinkedIn />
+  {usePhase2ProofAdjacency ? null : <PersonTrustSignals personName={person.name} sameAs={person.sameAs ?? []} recognitions={recognitions} hideLinkedIn />}
   <PersonContactCta locale={locale} personName={person.name} />
   <PersonRelatedAndExplore locale={locale} />
 </>

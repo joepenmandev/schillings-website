@@ -84,30 +84,78 @@ Use one entry per approved rollout decision.
 
 ---
 
-### D-002 (placeholder)
-- Date:
-- Owner:
-- Cohort:
-- Profiles affected:
+### D-002
+- Date: 2026-05-08
+- Owner: Validation and governance review
+- Cohort: Cohort 1
+- Profiles affected: `jenny-afia`, `ben-hobbs`, `rachel-atkins`
 
 **What Changed**
-- 
+- Opened a narrow Phase 2 investigation gate only.
+- Investigation scope limited to early proof discoverability and mobile trust timing.
+- No implementation approved in this decision.
 
 **Why**
-- 
+- Repeated and material friction appears across core cohort validation outputs.
+- Evidence supports investigation threshold under runbook D-002 trigger logic, but not redesign or broad rollout change.
 
 **Evidence Source**
-- 
+- `site/docs/people-bio-references/automated-validation/results/` (18 structured reviews)
+- `site/scripts/people-bio-aggregate-reviews.mjs` markdown aggregation output
+- `COHORT-1-REVIEW-TRACKER.md`
+- `VALIDATION-RUNBOOK.md`
 
 **Rubric Impact**
-- Before score range:
-- After score range:
-- Delta:
-- Most improved dimensions:
-- Unresolved dimensions:
+- Before score range: 12-16 (core baseline)
+- After score range: 15-17 (core three profiles after Phase 1)
+- Delta: +1 to +2 post-Phase 1, with recurring mobile/adjacency friction in validation execution
+- Most improved dimensions: rhetoric restraint, remit clarity, institutional tone consistency
+- Unresolved dimensions: proof discoverability timing, mobile proof adjacency, recurring mobile trust formation delay
 
 **Rollback Path**
-- 
+- Not applicable (no production implementation in D-002 gate decision).
+- If investigation scope drifts, close gate and revert to stabilization-only mode under `VALIDATION-RUNBOOK.md`.
+
+**Doctrine Exception Required?**
+- No
+
+---
+
+### D-003
+- Date: 2026-05-08
+- Owner: Phase 2 constrained rollout
+- Cohort: Cohort 1 (validated core profiles)
+- Profiles affected: `jenny-afia`, `ben-hobbs`, `rachel-atkins`
+
+**What Changed**
+- Implemented approved sequencing-only adjustment in shared profile flow for validated Cohort 1 slugs.
+- Existing independent proof block now renders immediately after the first biography paragraph for these profiles.
+- No proof styling, copy, component, portrait, spacing, or typography changes.
+
+**Why**
+- D-002 investigation showed repeatable reduction in mobile trust timing friction via sequencing-only adjacency.
+- Change was limited to approved narrow scope with reversible ordering logic.
+
+**Evidence Source**
+- `PHASE-2-CONSTRAINED-IMPLEMENTATION-PROPOSAL.md`
+- `PHASE-2-PROOF-ADJACENCY-INVESTIGATION.md`
+- `site/docs/people-bio-references/automated-validation/results/` (post-implementation passes)
+- `site/scripts/people-bio-aggregate-reviews.mjs` output
+- `COHORT-1-REVIEW-TRACKER.md`
+
+**Rubric Impact**
+- Baseline mobile/desktop delta (core three): -1 each profile
+- Post-implementation mobile/desktop delta (core three): 0 each profile
+- Delta: +1 mobile normalization without desktop regression
+- Most improved dimensions: mobile trust timing, proof adjacency friction recurrence, referral confidence consistency
+- Unresolved dimensions: residual `proof discoverability friction` marker still present in controlled outputs
+
+**Rollback Path**
+- Revert sequencing logic in `PersonProfileArticle.astro`:
+  - remove `phase2SequencingSlugs` gate
+  - remove early inline `PersonTrustSignals` placement
+  - restore single downstream trust block placement
+- Re-run automated validation and confirm baseline restoration.
 
 **Doctrine Exception Required?**
 - No
