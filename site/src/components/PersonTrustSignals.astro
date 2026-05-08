@@ -67,6 +67,25 @@ const LEGAL_DIRECTORIES: { label: string; href: string; hint: string }[] = [
   },
 ];
 
+const providerOrder: Record<PersonRecognition['provider'], number> = {
+  chambers: 0,
+  legal500: 1,
+  spears: 2,
+  other: 3,
+};
+
+const sortedRecognitions = [...recognitions].sort((a, b) => {
+  const aScope = a.scope === 'person' ? 0 : 1;
+  const bScope = b.scope === 'person' ? 0 : 1;
+  if (aScope !== bScope) return aScope - bScope;
+  const aProvider = providerOrder[a.provider] ?? 99;
+  const bProvider = providerOrder[b.provider] ?? 99;
+  if (aProvider !== bProvider) return aProvider - bProvider;
+  const aYear = Number.parseInt(a.year ?? '0', 10) || 0;
+  const bYear = Number.parseInt(b.year ?? '0', 10) || 0;
+  return bYear - aYear;
+});
+
 const linkClass =
   'inline-block rounded border border-secondary-2/35 bg-utility-1 px-3 py-2 text-xs font-medium tracking-wide text-secondary-4 transition-colors hover:border-secondary-3 hover:bg-utility-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-3/70';
 
@@ -78,21 +97,20 @@ const textLinkClass =
   class="mt-10 rounded-xl border border-secondary-2/20 bg-utility-2/45 p-6 shadow-sm ring-1 ring-black/[0.02] md:p-7"
   aria-labelledby="trust-signals-heading"
 >
-  <h2 id="trust-signals-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">Profiles & independent directories</h2>
+  <h2 id="trust-signals-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">Independent proof</h2>
   <p class="mt-2 text-pretty text-sm leading-relaxed text-secondary-3">
-    Third-party sources can help readers place professional background in context. Schillings does not control external sites
-    or rankings; use firm search or name search on the directories below where applicable. Contact Schillings for formal
-    engagements.
+    Third-party sources help place professional background in context. Schillings does not control external sites or ranking
+    methodologies; use publisher search where applicable.
   </p>
   {
-    recognitions.length > 0 ? (
+    sortedRecognitions.length > 0 ? (
       <div class="mt-5">
         <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Recognitions</p>
         <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3/90">
-          Selected third-party listings and rankings for {personName}. Methodologies and criteria are set by each publisher.
+          Independent listings and references for {personName}. Criteria are set by each publisher.
         </p>
         <div class="mt-3">
-          <RecognitionBadges items={recognitions} />
+          <RecognitionBadges items={sortedRecognitions} />
         </div>
       </div>
     ) : null
@@ -113,7 +131,7 @@ const textLinkClass =
   {
     extraSameAs.length > 0 ? (
       <div class="mt-6">
-        <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Additional references</p>
+        <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Additional independent references</p>
         <ul class="mt-3 flex flex-col gap-2" role="list">
           {extraSameAs.map((href) => (
             <li>
@@ -129,7 +147,7 @@ const textLinkClass =
   }
 
   <nav class="mt-6" aria-label="Major legal and reputation directories">
-    <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Major legal directories</p>
+    <p class="text-xs font-medium uppercase tracking-wide text-secondary-2">Directory sources</p>
     <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3/90">Use search on each site to find the firm or named individuals.</p>
     <ul class="mt-3 flex flex-wrap gap-2" role="list">
       {LEGAL_DIRECTORIES.map((d) => (

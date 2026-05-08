@@ -16,7 +16,10 @@ import { officeSlugs, officeSitemapLabel } from './offices';
 export type HtmlSitemapItem = { label: string; segment: string };
 export type HtmlSitemapGroup = { heading: string; items: HtmlSitemapItem[] };
 
-export const EXCLUDE_FROM_HTML_SITEMAP = new Set(['contact/thank-you']);
+export const EXCLUDE_FROM_HTML_SITEMAP = new Set([
+  'contact/thank-you',
+  'benchmark/people/alex-hartwell',
+]);
 
 function extractAfterPagesDir(dir: string): string {
   const n = dir.replace(/\\/g, '/');

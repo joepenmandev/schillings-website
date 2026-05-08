@@ -12,8 +12,8 @@ const { items, compact = false } = Astro.props;
 function providerLabel(provider: PersonRecognition['provider']) {
   if (provider === 'legal500') return 'The Legal 500';
   if (provider === 'spears') return "Spear's";
-  if (provider === 'chambers') return 'Chambers';
-  return 'Independent listing';
+  if (provider === 'chambers') return 'Chambers and Partners';
+  return 'Independent source';
 }
 
 function providerLetters(provider: PersonRecognition['provider']) {

@@ -1,0 +1,101 @@
+---
+import Base from '@/layouts/Base.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import DocumentMain from '@/components/DocumentMain.astro';
+import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
+import PersonProfileArticle from '@/components/PersonProfileArticle.astro';
+import type { PersonProfile } from '@/data/people';
+import { localeHref } from '@/lib/site-nav';
+
+const locale = 'en-gb';
+
+const benchmarkPerson: PersonProfile = {
+  slug: 'alex-hartwell',
+  name: 'Alex Hartwell',
+  role: 'Partner',
+  office: 'London',
+  officeId: 'london',
+  seniority: 'partner',
+  practiceGroup: 'legal',
+  expertise: ['reputation_privacy', 'litigation_disputes', 'intelligence_security', 'international'],
+  paragraphs: [
+    'Alex Hartwell advises boards, founders and family principals on reputation, privacy and disputes where legal, communications and intelligence decisions must align quickly. Matters often begin in public view and develop across multiple jurisdictions at pace.',
+    'Practice covers urgent containment, cross-border publication strategy, pre-action and interim applications, and coordination with specialist investigators when risk, source reliability, or parallel proceedings affect litigation decisions.',
+    'Representative mandates include cross-jurisdiction disputes involving coordinated media narratives, online publication controls, and complex stakeholder management. Alex regularly leads integrated teams combining legal strategy, intelligence inputs, and communications discipline to protect long-term position while addressing immediate exposure.',
+    'External recognition and thought output are included here for benchmark testing only: a top-tier directory ranking profile, invited policy roundtables on digital rights and platform risk, and authored briefings on practical litigation-readiness in high-scrutiny matters.',
+  ],
+  imagePath: '/people-photos/placeholder-benchmark-portrait.svg',
+  sameAs: [
+    'https://example.com/profiles/alex-hartwell',
+    'https://www.linkedin.com/in/alex-hartwell-benchmark',
+  ],
+  recognitions: [
+    {
+      provider: 'chambers',
+      title: 'Band 1',
+      year: '2026',
+      scope: 'person',
+      href: 'https://example.com/directories/chambers/alex-hartwell',
+    },
+    {
+      provider: 'legal500',
+      title: 'Leading Partner',
+      year: '2026',
+      scope: 'person',
+      href: 'https://example.com/directories/legal500/alex-hartwell',
+    },
+    {
+      provider: 'spears',
+      title: 'Top Flight',
+      year: '2026',
+      scope: 'person',
+      href: 'https://example.com/directories/spears/alex-hartwell',
+    },
+    {
+      provider: 'other',
+      title: 'Policy Contributor',
+      year: '2025',
+      scope: 'person',
+      href: 'https://example.com/publications/policy-contributor-alex-hartwell',
+    },
+  ],
+  profileUpdatedAt: '2026-05-08T00:00:00.000Z',
+};
+
+const profileSubline = 'Partner, Schillings Legal · London';
+const localeBioNote = 'Benchmark profile for internal research only. All details are fictional.';
+---
+
+<Base
+  title="Alex Hartwell (Benchmark) | Schillings"
+  description="Hidden benchmark practitioner profile for internal bio pattern testing."
+  {locale}
+  pathAfterLocale="benchmark/people/alex-hartwell"
+  noindex={true}
+>
+  <SiteHeader {locale} deferHeaderLogoPriority={true} />
+  <DocumentMain contentWidth="wide">
+    <article>
+      <StrategicBreadcrumb
+        items={[
+          { label: 'Home', href: localeHref(locale, '') },
+          { label: 'Benchmark' },
+          { label: benchmarkPerson.name },
+        ]}
+      />
+      <PersonProfileArticle
+        {locale}
+        person={benchmarkPerson}
+        profileSubline={profileSubline}
+        localeBioNote={localeBioNote}
+        isThinProfile={false}
+        newsByPerson={[]}
+      />
+      <p class="mt-10">
+        <a class="text-sm font-medium text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, '')}>
+          ← Home
+        </a>
+      </p>
+    </article>
+  </DocumentMain>
+</Base>
