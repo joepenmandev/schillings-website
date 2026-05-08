@@ -67,3 +67,4 @@ All reference analysis should be assessed through:
 - Keep this system factual, concise, and implementation-neutral.
 - Document assumptions explicitly.
 - Timestamp updates and maintain source traceability.
+- Validation execution rules: see `VALIDATION-RUNBOOK.md`.

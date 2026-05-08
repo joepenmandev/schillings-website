@@ -1,0 +1,35 @@
+{
+  "profile_slug": "rachel-atkins-baseline",
+  "profile_url": "/people/rachel-atkins/",
+  "viewport": "mobile",
+  "reviewer_lens": "GC/legal-risk",
+  "section_scores": {
+    "speed_of_trust_formation": 1,
+    "role_and_remit_clarity": 2,
+    "proof_discoverability": 1,
+    "specificity_density": 2,
+    "institutional_tone": 2,
+    "promotional_restraint": 1,
+    "biography_rhythm": 1,
+    "contact_pathway_restraint": 2,
+    "mobile_scan_confidence": 1,
+    "institutional_coherence": 1
+  },
+  "total_score": 14,
+  "confidence_verdict": "Mixed",
+  "dominant_trust_mode": "Institutional",
+  "referral_safety": "Maybe",
+  "friction_markers": [
+    "proof discoverability friction",
+    "mobile proof adjacency",
+    "recurring mobile trust formation delay"
+  ],
+  "repeated_issue_candidates": [
+    "proof discoverability friction",
+    "mobile proof adjacency",
+    "scroll-distance to independent proof"
+  ],
+  "notes_short": "Controlled internal baseline sequence validation pass.",
+  "review_timestamp": "2026-05-08T12:47:00.000Z",
+  "source_basis": "rendered_profile"
+}

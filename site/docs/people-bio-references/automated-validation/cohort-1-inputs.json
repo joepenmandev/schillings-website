@@ -1,0 +1,38 @@
+{
+  "cohort": "cohort-1-core",
+  "profiles": [
+    {
+      "profile_slug": "jenny-afia",
+      "live_path": "/people/jenny-afia/",
+      "desktop_viewport_target": "desktop",
+      "mobile_viewport_target": "mobile",
+      "reviewer_lenses": [
+        "GC/legal-risk",
+        "adviser/intermediary",
+        "operator/executive"
+      ]
+    },
+    {
+      "profile_slug": "ben-hobbs",
+      "live_path": "/people/ben-hobbs/",
+      "desktop_viewport_target": "desktop",
+      "mobile_viewport_target": "mobile",
+      "reviewer_lenses": [
+        "GC/legal-risk",
+        "adviser/intermediary",
+        "operator/executive"
+      ]
+    },
+    {
+      "profile_slug": "rachel-atkins",
+      "live_path": "/people/rachel-atkins/",
+      "desktop_viewport_target": "desktop",
+      "mobile_viewport_target": "mobile",
+      "reviewer_lenses": [
+        "GC/legal-risk",
+        "adviser/intermediary",
+        "operator/executive"
+      ]
+    }
+  ]
+}

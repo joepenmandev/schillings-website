@@ -1,0 +1,31 @@
+{
+  "profile_slug": "rachel-atkins-prototype",
+  "profile_url": "/people/rachel-atkins/",
+  "viewport": "mobile",
+  "reviewer_lens": "GC/legal-risk",
+  "section_scores": {
+    "speed_of_trust_formation": 2,
+    "role_and_remit_clarity": 2,
+    "proof_discoverability": 2,
+    "specificity_density": 0,
+    "institutional_tone": 2,
+    "promotional_restraint": 2,
+    "biography_rhythm": 0,
+    "contact_pathway_restraint": 2,
+    "mobile_scan_confidence": 1,
+    "institutional_coherence": 2
+  },
+  "total_score": 15,
+  "confidence_verdict": "Mixed",
+  "dominant_trust_mode": "Institutional",
+  "referral_safety": "Yes",
+  "friction_markers": [
+    "proof discoverability friction"
+  ],
+  "repeated_issue_candidates": [
+    "proof discoverability friction"
+  ],
+  "notes_short": "Controlled internal prototype sequence validation pass.",
+  "review_timestamp": "2026-05-08T12:47:00.000Z",
+  "source_basis": "rendered_profile"
+}

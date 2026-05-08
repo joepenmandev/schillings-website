@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schillings.local/people-bio-references/automated-validation/review-schema.json",
+  "title": "People Bio Validation Review",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile_slug",
+    "profile_url",
+    "viewport",
+    "reviewer_lens",
+    "section_scores",
+    "total_score",
+    "confidence_verdict",
+    "dominant_trust_mode",
+    "referral_safety",
+    "friction_markers",
+    "repeated_issue_candidates",
+    "notes_short",
+    "review_timestamp",
+    "source_basis"
+  ],
+  "properties": {
+    "profile_slug": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile_url": {
+      "type": "string",
+      "minLength": 1
+    },
+    "viewport": {
+      "type": "string",
+      "enum": ["desktop", "mobile"]
+    },
+    "reviewer_lens": {
+      "type": "string",
+      "enum": [
+        "GC/legal-risk",
+        "adviser/intermediary",
+        "operator/executive",
+        "journalist/UHNW"
+      ]
+    },
+    "section_scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "speed_of_trust_formation",
+        "role_and_remit_clarity",
+        "proof_discoverability",
+        "specificity_density",
+        "institutional_tone",
+        "promotional_restraint",
+        "biography_rhythm",
+        "contact_pathway_restraint",
+        "mobile_scan_confidence",
+        "institutional_coherence"
+      ],
+      "properties": {
+        "speed_of_trust_formation": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "role_and_remit_clarity": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "proof_discoverability": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "specificity_density": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "institutional_tone": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "promotional_restraint": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "biography_rhythm": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "contact_pathway_restraint": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "mobile_scan_confidence": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "institutional_coherence": { "type": "integer", "minimum": 0, "maximum": 2 }
+      }
+    },
+    "total_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 20
+    },
+    "confidence_verdict": {
+      "type": "string",
+      "enum": ["Strong", "Mixed", "Weak"]
+    },
+    "dominant_trust_mode": {
+      "type": "string",
+      "enum": ["Institutional", "Relational", "Mixed", "Unclear"]
+    },
+    "referral_safety": {
+      "type": "string",
+      "enum": ["Yes", "Maybe", "No"]
+    },
+    "friction_markers": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "repeated_issue_candidates": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "notes_short": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_basis": {
+      "type": "string",
+      "enum": [
+        "rendered_profile",
+        "live_url",
+        "supplied_html",
+        "supplied_pdf"
+      ]
+    }
+  }
+}

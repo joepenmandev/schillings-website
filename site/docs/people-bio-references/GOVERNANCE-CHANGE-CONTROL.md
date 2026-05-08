@@ -2,6 +2,8 @@
 
 Purpose: formalize governance for the practitioner bio system so quality improvements persist without aesthetic drift.
 
+Validation execution rules: see `VALIDATION-RUNBOOK.md`.
+
 ## Governance Intent
 
 This system prioritizes:
