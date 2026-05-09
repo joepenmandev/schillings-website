@@ -15,31 +15,47 @@ interface Props {
 }
 
 const { locale, situationIds, givenName } = Astro.props;
+
+/** Shared editorial mark — presentation only; not situation-specific imagery. */
+const cardMarkClass = 'mt-0.5 h-[2.875rem] w-px shrink-0 bg-secondary-4/22';
 ---
 
 {
   situationIds.length > 0 ? (
-    <section class="mt-12 max-w-6xl border-b border-secondary-2/20 pb-10 md:mt-14 md:pb-12" aria-labelledby="person-situations-grid-heading">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-        <h2 id="person-situations-grid-heading" class="max-w-xl text-xs font-medium uppercase tracking-wider text-secondary-2">
+    <section class="mt-10 max-w-6xl border-b border-secondary-2/15 pb-9 md:mt-12 md:pb-11" aria-labelledby="person-situations-grid-heading">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+        <h2 id="person-situations-grid-heading" class="max-w-[min(100%,28rem)] text-[11px] font-medium uppercase tracking-[0.16em] text-secondary-2">
           Situations {givenName} helps clients manage
         </h2>
         <a
           href={localeHref(locale, 'situations')}
-          class="shrink-0 text-xs font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+          class="shrink-0 text-[11px] font-medium tracking-wide text-secondary-4 underline decoration-secondary-2/35 underline-offset-[0.2em] transition-colors hover:decoration-secondary-4/70"
         >
           View all situations →
         </a>
       </div>
-      <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-3 xl:grid-cols-4">
         {situationIds.map((id) => {
           const d = getSituationDetailById(id);
           const href = localeHref(locale, `situations/${situationPathSlug(id)}`);
           return (
-            <article class="border border-secondary-2/15 bg-utility-2/25 p-4">
-              <a href={href} class="block outline-none transition-colors hover:border-secondary-3 focus-visible:ring-2 focus-visible:ring-secondary-3/40 focus-visible:ring-offset-2 focus-visible:ring-offset-utility-1">
-                <h3 class="text-sm font-medium leading-snug text-secondary-4">{d.title}</h3>
-                <p class="mt-2 text-pretty text-xs leading-relaxed text-secondary-3">{d.lead}</p>
+            <article
+              class:list={[
+                'group/card border border-secondary-2/[0.11] bg-utility-2/[0.14] transition-[border-color,background-color] duration-200',
+                'hover:border-secondary-3/16 hover:bg-utility-2/[0.22]',
+              ]}
+            >
+              <a
+                href={href}
+                class="block outline-none transition-colors focus-visible:ring-2 focus-visible:ring-secondary-3/35 focus-visible:ring-offset-2 focus-visible:ring-offset-utility-1"
+              >
+                <div class="flex gap-3.5 px-4 py-4 sm:px-[1.125rem] sm:py-[1.125rem]">
+                  <span class={cardMarkClass} aria-hidden="true" />
+                  <div class="min-w-0 flex-1">
+                    <h3 class="font-serif text-[0.9375rem] font-light leading-snug tracking-tight text-secondary-4">{d.title}</h3>
+                    <p class="mt-2 text-pretty text-[0.8125rem] font-normal leading-[1.55] text-secondary-3/95">{d.lead}</p>
+                  </div>
+                </div>
                 <span class="sr-only"> — view situation</span>
               </a>
             </article>

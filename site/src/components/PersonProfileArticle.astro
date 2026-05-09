@@ -92,16 +92,19 @@ const showLowerBand = !isThinProfile && (newsByPerson.length > 0 || hasContactLo
 const showClassicContactNews = isThinProfile || !showLowerBand;
 
 const expertiseRailLinkClass =
-  'text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4';
+  'group/expertise flex w-full items-start gap-2.5 rounded-sm text-left font-serif text-[0.9375rem] font-extralight leading-snug tracking-tight text-secondary-4 decoration-secondary-2/0 underline-offset-[0.22em] outline-none transition-[color,text-decoration-color] hover:text-secondary-3 hover:underline hover:decoration-secondary-2/30 focus-visible:ring-2 focus-visible:ring-secondary-3/40 focus-visible:ring-offset-2 focus-visible:ring-offset-utility-1';
+
+const expertiseRailArrowClass =
+  'mt-[0.2em] shrink-0 text-[0.65rem] font-sans font-normal text-secondary-2/45 transition-[color,transform] group-hover/expertise:translate-x-0.5 group-hover/expertise:text-secondary-2/70';
 
 const heroOpenerClass =
-  'max-w-2xl text-pretty font-serif text-lg leading-relaxed text-secondary-4 md:text-xl md:leading-relaxed';
+  'max-w-[min(42rem,100%)] text-pretty font-serif text-lg leading-[1.55] text-secondary-4 md:text-xl md:leading-[1.52]';
 ---
 
 <>
   <div
     class:list={[
-      'mt-6 grid max-w-6xl grid-cols-1 gap-y-8 md:mt-8 lg:items-start lg:gap-y-8',
+      'mt-6 grid max-w-6xl grid-cols-1 gap-y-7 md:mt-8 md:gap-y-8 lg:items-start lg:gap-y-7',
       person.imagePath ? 'lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-12 xl:gap-x-16' : 'lg:grid-cols-1',
     ]}
   >
@@ -119,13 +122,13 @@ const heroOpenerClass =
           </>
         ) : (
           <>
-            <p class="mt-3 max-w-3xl text-pretty text-lg font-light text-secondary-3 md:text-xl">{heroRoleLocation}</p>
-            <p class="mt-1.5 max-w-3xl text-pretty font-serif text-xl font-extralight italic text-secondary-4 md:text-2xl">
+            <p class="mt-2.5 max-w-3xl text-pretty text-lg font-light text-secondary-3 md:mt-3 md:text-xl">{heroRoleLocation}</p>
+            <p class="mt-1 max-w-3xl text-pretty font-serif text-xl font-extralight italic text-secondary-4 md:mt-1.5 md:text-2xl">
               {heroStrap}
             </p>
-            <div class="mt-6 h-px w-12 bg-secondary-4/45" aria-hidden="true" />
+            <div class="mt-5 h-px w-11 bg-secondary-4/40 md:mt-6" aria-hidden="true" />
             {heroLeadParas.map((para, i) => (
-              <p class:list={[heroOpenerClass, i === 0 ? 'mt-6' : 'mt-4']}>{para}</p>
+              <p class:list={[heroOpenerClass, i === 0 ? 'mt-5 md:mt-6' : 'mt-3.5 md:mt-4']}>{para}</p>
             ))}
           </>
         )
@@ -149,15 +152,15 @@ const heroOpenerClass =
       ) : null}
     </header>
     {person.imagePath ? (
-      <div class="mx-auto w-full max-w-[20rem] shrink-0 lg:col-start-2 lg:row-start-1 lg:mx-0 lg:flex lg:max-w-[min(26rem,36vw)] lg:justify-end lg:self-start">
-        <div class="overflow-hidden rounded-sm shadow-md ring-1 ring-secondary-2/20 lg:sticky lg:top-28">
+      <div class="mx-auto w-full max-w-[min(17rem,82vw)] shrink-0 sm:max-w-[18rem] lg:col-start-2 lg:row-start-1 lg:mx-0 lg:flex lg:max-w-[min(25rem,34vw)] lg:justify-end lg:self-start">
+        <div class="overflow-hidden rounded-sm shadow-sm ring-1 ring-secondary-2/15 lg:sticky lg:top-28">
           <img
             src={person.imagePath}
             alt={person.name}
             width={480}
             height={600}
             class="aspect-[4/5] h-auto w-full object-cover lg:aspect-[4/5]"
-            sizes="(max-width: 1024px) 100vw, 360px"
+            sizes="(max-width: 1024px) min(82vw, 18rem), 400px"
             loading="eager"
             decoding="async"
             fetchpriority="high"
@@ -168,15 +171,15 @@ const heroOpenerClass =
   </div>
   {
     showRecognitionStrip ? (
-      <div class="mt-8 w-full max-w-6xl">
+      <div class="mt-6 w-full max-w-6xl md:mt-7">
         <PersonRecognitionStrip items={recognitions} />
       </div>
     ) : null
   }
   {
     showExpertiseRail ? (
-      <section class="mt-10 max-w-6xl border-b border-secondary-2/15 pb-10 md:mt-12 md:pb-12" aria-labelledby="person-bio-heading">
-        <div class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start lg:gap-10 xl:gap-12">
+      <section class="mt-9 max-w-6xl border-b border-secondary-2/12 pb-9 md:mt-11 md:pb-11" aria-labelledby="person-bio-heading">
+        <div class="grid grid-cols-1 gap-9 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.82fr)] lg:items-start lg:gap-10 xl:gap-12">
           <div class="min-w-0 max-w-[52rem] lg:max-w-none">
             <SectionKicker id="person-bio-heading">Biography</SectionKicker>
             <PersonProfileBioBody
@@ -190,19 +193,19 @@ const heroOpenerClass =
             />
           </div>
           <aside
-            class="min-w-0 border-t border-secondary-2/20 pt-8 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 xl:pl-10"
+            class="min-w-0 border-t border-secondary-2/12 pt-7 lg:border-l lg:border-t-0 lg:pl-9 lg:pt-1 xl:pl-11"
             aria-label="Expertise"
           >
-            <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Expertise</h2>
-            <ul class="mt-4 divide-y divide-secondary-2/15 border-t border-secondary-2/15">
+            <h2 class="text-[11px] font-medium uppercase tracking-[0.14em] text-secondary-2">Expertise</h2>
+            <ul class="mt-5 divide-y divide-secondary-2/[0.08] border-t border-secondary-2/[0.1]">
               {expertiseIds.map((id) => (
-                <li class="py-3">
+                <li class="py-3.5 first:pt-0.5">
                   <a
                     href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(id)}`)}
-                    class:list={[expertiseRailLinkClass, 'inline-flex flex-wrap items-baseline gap-x-2']}
+                    class={expertiseRailLinkClass}
                   >
-                    <span class="max-w-[90%] text-pretty">{EXPERTISE_LABELS[id]}</span>
-                    <span class="shrink-0 text-secondary-4/80" aria-hidden="true">
+                    <span class="min-w-0 flex-1 text-pretty">{EXPERTISE_LABELS[id]}</span>
+                    <span class={expertiseRailArrowClass} aria-hidden="true">
                       →
                     </span>
                   </a>

@@ -35,18 +35,18 @@ function formatArticleDate(iso: string): string {
 }
 
 const mailClass =
-  'break-all text-sm font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.2em] transition-colors hover:decoration-secondary-4';
+  'break-all text-sm font-normal text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.22em] transition-colors hover:decoration-secondary-4/80';
 
 const socialClass =
-  'inline-flex shrink-0 items-center justify-center rounded border border-secondary-4/20 bg-secondary-4 p-1.5 text-brand-white transition-opacity hover:opacity-90';
+  'inline-flex shrink-0 items-center justify-center rounded-sm border border-secondary-4/18 bg-secondary-4 p-1.5 text-brand-white transition-[opacity,border-color] hover:border-secondary-4/35 hover:opacity-90';
 ---
 
 {
   hasInsights || hasContact ? (
     <section
       class:list={[
-        'not-prose mt-12 grid max-w-6xl gap-8 border-t border-secondary-2/20 pt-10 md:mt-14 md:gap-10 md:pt-11',
-        hasInsights && hasContact ? 'lg:grid-cols-2' : 'lg:grid-cols-1',
+        'not-prose mt-11 grid max-w-6xl gap-9 border-t border-secondary-2/12 pt-9 md:mt-12 md:gap-10 md:pt-10',
+        hasInsights && hasContact ? 'lg:grid-cols-2 lg:gap-x-12' : 'lg:grid-cols-1',
       ]}
       aria-label="Insights and contact"
     >
@@ -55,27 +55,27 @@ const socialClass =
           <div
             class:list={[
               'min-w-0',
-              hasContact ? 'lg:border-r lg:border-secondary-2/15 lg:pr-8 xl:pr-10' : '',
+              hasContact ? 'lg:border-r lg:border-secondary-2/10 lg:pr-9 xl:pr-11' : '',
             ]}
           >
-            <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Insights &amp; publications</h2>
-            <ul class="mt-4 space-y-4">
+            <h2 class="text-[11px] font-medium uppercase tracking-[0.14em] text-secondary-2">Insights &amp; publications</h2>
+            <ul class="mt-5 space-y-3.5">
               {insights.map((a) => (
                 <li>
                   <a
                     href={localeHref(locale, `news/${a.slug}`)}
-                    class="group block text-sm font-medium leading-snug text-secondary-4 underline decoration-secondary-2/35 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+                    class="group block font-serif text-[0.9375rem] font-light leading-snug tracking-tight text-secondary-4 underline decoration-secondary-2/30 underline-offset-[0.18em] transition-colors hover:decoration-secondary-4/70"
                   >
                     {a.title}
                   </a>
-                  <p class="mt-1 text-xs text-secondary-3">{formatArticleDate(a.date)}</p>
+                  <p class="mt-1 text-[0.6875rem] font-normal leading-relaxed text-secondary-3/95">{formatArticleDate(a.date)}</p>
                 </li>
               ))}
             </ul>
             <p class="mt-5">
               <a
                 href={localeHref(locale, `news/author/${personSlug}`)}
-                class="text-xs font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+                class="text-[11px] font-medium tracking-wide text-secondary-4 underline decoration-secondary-2/35 underline-offset-[0.18em] transition-colors hover:decoration-secondary-4/75"
               >
                 View all insights →
               </a>
@@ -85,10 +85,12 @@ const socialClass =
       }
       {
         hasContact ? (
-          <div class="min-w-0">
-            <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Get in touch</h2>
-            <p class="mt-4 text-pretty text-sm leading-snug text-secondary-4">To discuss a matter confidentially, please get in touch:</p>
-            <ul class="mt-3 space-y-2 text-xs leading-relaxed text-secondary-3">
+          <div class="min-w-0 lg:flex lg:flex-col lg:justify-start">
+            <h2 class="text-[11px] font-medium uppercase tracking-[0.14em] text-secondary-2">Get in touch</h2>
+            <p class="mt-4 max-w-md text-pretty text-sm font-light leading-relaxed text-secondary-3">
+              To discuss a matter confidentially, please get in touch:
+            </p>
+            <ul class="mt-3 space-y-2.5 text-[0.8125rem] leading-relaxed text-secondary-3">
               {email ? (
                 <li>
                   <a class={mailClass} href={`mailto:${email}`}>
@@ -97,7 +99,7 @@ const socialClass =
                 </li>
               ) : null}
             </ul>
-            <div class="mt-4 flex flex-wrap gap-2" aria-label="Social profiles">
+            <div class="mt-4 flex flex-wrap gap-2.5" aria-label="Social profiles">
               {linkedIn ? (
                 <a
                   href={linkedIn}
@@ -125,10 +127,10 @@ const socialClass =
                 </a>
               ) : null}
             </div>
-            <p class="mt-5">
+            <p class="mt-6">
               <a
                 href={localeHref(locale, 'contact')}
-                class="text-xs font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+                class="text-[11px] font-medium tracking-wide text-secondary-4 underline decoration-secondary-2/35 underline-offset-[0.18em] transition-colors hover:decoration-secondary-4/75"
               >
                 Contact {personName.split(/\s+/)[0] ?? personName} →
               </a>
