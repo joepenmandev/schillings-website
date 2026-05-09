@@ -1,0 +1,141 @@
+---
+/**
+ * Benchmark-style lower band: insights list + get in touch (no middle column — no memberships in model).
+ */
+import type { Locale } from '@/i18n/config';
+import type { NewsArticle } from '@/data/news';
+import { publicContactEmailForPersonSlug } from '@/data/people';
+import { localeHref } from '@/lib/site-nav';
+
+interface Props {
+  locale: Locale;
+  personSlug: string;
+  personName: string;
+  sameAs: string[];
+  articles: NewsArticle[];
+}
+
+const { locale, personSlug, personName, sameAs, articles } = Astro.props;
+
+const email = publicContactEmailForPersonSlug(personSlug);
+const linkedIn = sameAs.find((u) => /linkedin\.com\/in\//i.test(u));
+const twitterOrX = sameAs.find((u) => /^https?:\/\/(www\.)?(twitter\.com|x\.com)\//i.test(u.trim()));
+
+const insights = articles.slice(0, 3);
+const hasInsights = insights.length > 0;
+const hasContact = Boolean(email || linkedIn || twitterOrX);
+
+function formatArticleDate(iso: string): string {
+  try {
+    const d = new Date(`${iso}T12:00:00`);
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  } catch {
+    return iso;
+  }
+}
+
+const mailClass =
+  'break-all text-sm font-medium text-secondary-4 underline decoration-secondary-2/45 underline-offset-[0.2em] transition-colors hover:decoration-secondary-4';
+
+const socialClass =
+  'inline-flex shrink-0 items-center justify-center rounded border border-secondary-4/20 bg-secondary-4 p-1.5 text-brand-white transition-opacity hover:opacity-90';
+---
+
+{
+  hasInsights || hasContact ? (
+    <section
+      class:list={[
+        'not-prose mt-12 grid max-w-6xl gap-8 border-t border-secondary-2/20 pt-10 md:mt-14 md:gap-10 md:pt-11',
+        hasInsights && hasContact ? 'lg:grid-cols-2' : 'lg:grid-cols-1',
+      ]}
+      aria-label="Insights and contact"
+    >
+      {
+        hasInsights ? (
+          <div
+            class:list={[
+              'min-w-0',
+              hasContact ? 'lg:border-r lg:border-secondary-2/15 lg:pr-8 xl:pr-10' : '',
+            ]}
+          >
+            <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Insights &amp; publications</h2>
+            <ul class="mt-4 space-y-4">
+              {insights.map((a) => (
+                <li>
+                  <a
+                    href={localeHref(locale, `news/${a.slug}`)}
+                    class="group block text-sm font-medium leading-snug text-secondary-4 underline decoration-secondary-2/35 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+                  >
+                    {a.title}
+                  </a>
+                  <p class="mt-1 text-xs text-secondary-3">{formatArticleDate(a.date)}</p>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-5">
+              <a
+                href={localeHref(locale, `news/author/${personSlug}`)}
+                class="text-xs font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+              >
+                View all insights →
+              </a>
+            </p>
+          </div>
+        ) : null
+      }
+      {
+        hasContact ? (
+          <div class="min-w-0">
+            <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Get in touch</h2>
+            <p class="mt-4 text-pretty text-sm leading-snug text-secondary-4">To discuss a matter confidentially, please get in touch:</p>
+            <ul class="mt-3 space-y-2 text-xs leading-relaxed text-secondary-3">
+              {email ? (
+                <li>
+                  <a class={mailClass} href={`mailto:${email}`}>
+                    {email}
+                  </a>
+                </li>
+              ) : null}
+            </ul>
+            <div class="mt-4 flex flex-wrap gap-2" aria-label="Social profiles">
+              {linkedIn ? (
+                <a
+                  href={linkedIn}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  class={socialClass}
+                  aria-label="LinkedIn (opens in new tab)"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                  </svg>
+                </a>
+              ) : null}
+              {twitterOrX ? (
+                <a
+                  href={twitterOrX}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  class={socialClass}
+                  aria-label="X (opens in new tab)"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+              ) : null}
+            </div>
+            <p class="mt-5">
+              <a
+                href={localeHref(locale, 'contact')}
+                class="text-xs font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4"
+              >
+                Contact {personName.split(/\s+/)[0] ?? personName} →
+              </a>
+            </p>
+          </div>
+        ) : null
+      }
+    </section>
+  ) : null
+}

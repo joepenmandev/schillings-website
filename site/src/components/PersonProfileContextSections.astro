@@ -14,11 +14,27 @@ import SectionKicker from '@/components/SectionKicker.astro';
 interface Props {
   locale: Locale;
   person: PersonProfile;
+  /** When true, omit “Helps clients with” (expertise hubs already shown beside biography). */
+  suppressHelpsClientsWith?: boolean;
+  /** When true, omit “Related situations” (card grid already shown above). */
+  suppressRelatedSituations?: boolean;
 }
 
-const { locale, person } = Astro.props;
+const { locale, person, suppressHelpsClientsWith = false, suppressRelatedSituations = false } = Astro.props;
 const expertise = (person.expertise ?? []) as ExpertiseId[];
 const relatedSituationIds = strategicSituationIdsForPersonExpertise(expertise);
+
+const helpsClientsShown = !suppressHelpsClientsWith && expertise.length > 0;
+const relatedSituationsRendered = !suppressRelatedSituations && relatedSituationIds.length > 0;
+
+const situationsSectionClass = helpsClientsShown
+  ? 'mt-10 border-t border-secondary-2/20 pt-10 md:mt-12'
+  : 'mt-12 border-t border-secondary-2/20 pt-10 md:mt-14';
+
+const relatedExpertiseSectionClass =
+  helpsClientsShown || relatedSituationsRendered
+    ? 'mt-10 border-t border-secondary-2/20 pt-10 md:mt-12'
+    : 'mt-12 border-t border-secondary-2/20 pt-10 md:mt-14';
 
 const body = 'mt-2 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3';
 const linkList = 'mt-4 flex flex-col gap-2 sm:gap-2.5';
@@ -27,7 +43,7 @@ const linkClass =
 ---
 
 {
-  expertise.length > 0 ? (
+  helpsClientsShown ? (
     <section class="mt-12 border-t border-secondary-2/20 pt-10 md:mt-14" aria-labelledby="person-helps-heading">
       <SectionKicker id="person-helps-heading">Helps clients with</SectionKicker>
       <p class={body}>
@@ -48,11 +64,8 @@ const linkClass =
 }
 
 {
-  relatedSituationIds.length > 0 ? (
-    <section
-      class="mt-10 border-t border-secondary-2/20 pt-10 md:mt-12"
-      aria-labelledby="person-related-situations-heading"
-    >
+  relatedSituationsRendered ? (
+    <section class={situationsSectionClass} aria-labelledby="person-related-situations-heading">
       <SectionKicker id="person-related-situations-heading">Related situations</SectionKicker>
       <p class={body}>
         Scenario-style pages that often sit beside these practice tags—not illustrative of any individual’s work or outcomes.
@@ -75,7 +88,7 @@ const linkClass =
 
 {
   expertise.length > 0 ? (
-    <section class="mt-10 border-t border-secondary-2/20 pt-10 md:mt-12" aria-labelledby="person-related-expertise-heading">
+    <section class={relatedExpertiseSectionClass} aria-labelledby="person-related-expertise-heading">
       <SectionKicker id="person-related-expertise-heading">Related expertise</SectionKicker>
       <p class={body}>Browse all expertise and how colleagues are organised across the firm.</p>
       <p class="mt-4">

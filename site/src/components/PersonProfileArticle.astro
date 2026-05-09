@@ -3,14 +3,20 @@ import PersonTrustSignals from '@/components/PersonTrustSignals.astro';
 import PersonRecognitionStrip from '@/components/PersonRecognitionStrip.astro';
 import PersonPublicContact from '@/components/PersonPublicContact.astro';
 import PersonProfileContextSections from '@/components/PersonProfileContextSections.astro';
+import PersonProfileSituationsGrid from '@/components/PersonProfileSituationsGrid.astro';
+import PersonProfileLowerBand from '@/components/PersonProfileLowerBand.astro';
+import PersonProfileBioBody from '@/components/PersonProfileBioBody.astro';
 import PersonRelatedAndExplore from '@/components/PersonRelatedAndExplore.astro';
 import SectionKicker from '@/components/SectionKicker.astro';
 import PersonContactCta from '@/components/PersonContactCta.astro';
 import PersonNewsByline from '@/components/PersonNewsByline.astro';
 import type { NewsArticle } from '@/data/news';
 import type { PersonProfile } from '@/data/people';
-import { EXPERTISE_LABELS } from '@/data/people-taxonomy';
+import { publicContactEmailForPersonSlug } from '@/data/people';
+import { EXPERTISE_LABELS, PRACTICE_GROUP_LABELS, type ExpertiseId } from '@/data/people-taxonomy';
+import { strategicSituationIdsForPersonExpertise } from '@/data/person-expertise-strategic-situations';
 import { expertisePathSlug } from '@/lib/expertise-paths';
+import { resolvePersonPracticeGroup } from '@/lib/people-directory';
 import { EXPERTISE_PUBLIC_SEGMENT, localeHref } from '@/lib/site-nav';
 import type { Locale } from '@/i18n/config';
 import { PEOPLE_PROFILE_H1_CLASS } from '@/lib/visual-tokens';
@@ -18,26 +24,25 @@ import { PEOPLE_PROFILE_H1_CLASS } from '@/lib/visual-tokens';
 interface Props {
   locale: Locale;
   person: PersonProfile;
+  /** Retained for route-level meta; hero uses structured `role` / `office` / practice group. */
   profileSubline: string;
   localeBioNote: string | null;
   isThinProfile: boolean;
   newsByPerson: NewsArticle[];
-  /**
-   * Lab/benchmark pages only: use the same early independent-proof sequencing as the constrained
-   * cohort rollout, without adding this person’s slug to the live rollout allowlist.
-   */
   earlyProofAfterFirstParagraph?: boolean;
 }
 
 const {
   locale,
   person,
-  profileSubline,
+  profileSubline: _profileSubline,
   localeBioNote,
   isThinProfile,
   newsByPerson,
   earlyProofAfterFirstParagraph = false,
 } = Astro.props;
+
+void _profileSubline;
 
 const recognitions = person.recognitions ?? [];
 const showRecognitionStrip = recognitions.length > 0;
@@ -45,14 +50,55 @@ const hideRecognitionBadgeBlock = showRecognitionStrip;
 const phase2SequencingSlugs = new Set(['jenny-afia', 'ben-hobbs', 'rachel-atkins']);
 const usePhase2ProofAdjacency =
   !isThinProfile && (phase2SequencingSlugs.has(person.slug) || earlyProofAfterFirstParagraph);
-const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
+
+const expertiseIds = (person.expertise ?? []) as ExpertiseId[];
+const hasBioParagraphs = person.paragraphs.some((p) => typeof p === 'string' && p.trim().length > 0);
+const showExpertiseRail = !isThinProfile && expertiseIds.length > 0 && hasBioParagraphs;
+
+const practiceGroup = resolvePersonPracticeGroup(person);
+const heroStrap = PRACTICE_GROUP_LABELS[practiceGroup];
+const heroRoleLocation = `${person.role} · ${person.office}`;
+const givenName =
+  person.name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)[0] ?? person.name;
+
+/** Opener paragraphs in hero (approved copy unchanged; layout only). */
+let heroLeadParas: string[] = [];
+let bioParas: string[] = person.paragraphs;
+if (!isThinProfile) {
+  const n = person.paragraphs.length;
+  if (n >= 3) {
+    heroLeadParas = person.paragraphs.slice(0, 2);
+    bioParas = person.paragraphs.slice(2);
+  } else if (n === 2) {
+    heroLeadParas = person.paragraphs.slice(0, 1);
+    bioParas = person.paragraphs.slice(1);
+  }
+}
+
+const heroLeadCount = heroLeadParas.length;
+const situationIds = strategicSituationIdsForPersonExpertise(expertiseIds);
+const showSituationsGrid = !isThinProfile && situationIds.length > 0;
+
+const emailLower = publicContactEmailForPersonSlug(person.slug);
+const linkedInLower = person.sameAs?.find((u) => /linkedin\.com\/in\//i.test(u));
+const twitterLower = person.sameAs?.find((u) =>
+  /^https?:\/\/(www\.)?(twitter\.com|x\.com)\//i.test((u ?? '').trim()),
+);
+const hasContactLower = Boolean(emailLower || linkedInLower || twitterLower);
+const showLowerBand = !isThinProfile && (newsByPerson.length > 0 || hasContactLower);
+const showClassicContactNews = isThinProfile || !showLowerBand;
+
+const expertiseRailLinkClass =
+  'text-sm font-medium text-secondary-4 underline decoration-secondary-2/40 underline-offset-[0.15em] transition-colors hover:decoration-secondary-4';
+
+const heroOpenerClass =
+  'max-w-2xl text-pretty font-serif text-lg leading-relaxed text-secondary-4 md:text-xl md:leading-relaxed';
 ---
 
 <>
-  {/*
-    Hero grid: identity + portrait only. Do not place full-width rows here alongside row-spanning
-    portrait — that causes grid-cell overlap at lg/xl.
-  */}
   <div
     class:list={[
       'mt-6 grid max-w-6xl grid-cols-1 gap-y-8 md:mt-8 lg:items-start lg:gap-y-8',
@@ -61,9 +107,29 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
   >
     <header class="min-w-0 lg:col-start-1 lg:row-start-1">
       <h1 class={PEOPLE_PROFILE_H1_CLASS}>{person.name}</h1>
-      <p class="mt-2 max-w-3xl text-pretty font-serif text-xl font-extralight italic leading-snug text-secondary-4 md:text-2xl md:leading-snug">
-        {profileSubline}
-      </p>
+      {
+        isThinProfile ? (
+          <>
+            <p class="mt-2 max-w-3xl text-pretty text-base font-light text-secondary-3 md:text-lg">
+              {heroRoleLocation}
+            </p>
+            <p class="mt-1 max-w-3xl text-pretty font-serif text-base font-extralight italic text-secondary-4 md:text-lg">
+              {heroStrap}
+            </p>
+          </>
+        ) : (
+          <>
+            <p class="mt-3 max-w-3xl text-pretty text-lg font-light text-secondary-3 md:text-xl">{heroRoleLocation}</p>
+            <p class="mt-1.5 max-w-3xl text-pretty font-serif text-xl font-extralight italic text-secondary-4 md:text-2xl">
+              {heroStrap}
+            </p>
+            <div class="mt-6 h-px w-12 bg-secondary-4/45" aria-hidden="true" />
+            {heroLeadParas.map((para, i) => (
+              <p class:list={[heroOpenerClass, i === 0 ? 'mt-6' : 'mt-4']}>{para}</p>
+            ))}
+          </>
+        )
+      }
       {localeBioNote ? (
         <p class="mt-4 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3">{localeBioNote}</p>
       ) : null}
@@ -83,15 +149,15 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
       ) : null}
     </header>
     {person.imagePath ? (
-      <div class="mx-auto w-full max-w-[20rem] shrink-0 lg:col-start-2 lg:row-start-1 lg:mx-0 lg:flex lg:justify-end lg:self-start">
+      <div class="mx-auto w-full max-w-[20rem] shrink-0 lg:col-start-2 lg:row-start-1 lg:mx-0 lg:flex lg:max-w-[min(26rem,36vw)] lg:justify-end lg:self-start">
         <div class="overflow-hidden rounded-sm shadow-md ring-1 ring-secondary-2/20 lg:sticky lg:top-28">
           <img
             src={person.imagePath}
             alt={person.name}
             width={480}
-            height={480}
-            class="aspect-square w-full object-cover"
-            sizes="(max-width: 1024px) 100vw, 320px"
+            height={600}
+            class="aspect-[4/5] h-auto w-full object-cover lg:aspect-[4/5]"
+            sizes="(max-width: 1024px) 100vw, 360px"
             loading="eager"
             decoding="async"
             fetchpriority="high"
@@ -107,33 +173,87 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
       </div>
     ) : null
   }
-  <section class="mt-8 max-w-[52rem]" aria-labelledby="person-bio-heading">
-    <SectionKicker id="person-bio-heading">Biography</SectionKicker>
-    <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
-      {
-        usePhase2ProofAdjacency ? (
-          <>
-            {firstParagraph ? <p>{firstParagraph}</p> : null}
-            <PersonTrustSignals
+  {
+    showExpertiseRail ? (
+      <section class="mt-10 max-w-6xl border-b border-secondary-2/15 pb-10 md:mt-12 md:pb-12" aria-labelledby="person-bio-heading">
+        <div class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start lg:gap-10 xl:gap-12">
+          <div class="min-w-0 max-w-[52rem] lg:max-w-none">
+            <SectionKicker id="person-bio-heading">Biography</SectionKicker>
+            <PersonProfileBioBody
               personName={person.name}
               sameAs={person.sameAs ?? []}
               recognitions={recognitions}
-              hideLinkedIn
-              hideRecognitionBadges={hideRecognitionBadgeBlock}
+              hideRecognitionBadgeBlock={hideRecognitionBadgeBlock}
+              usePhase2ProofAdjacency={usePhase2ProofAdjacency}
+              heroLeadCount={heroLeadCount}
+              bioParas={bioParas}
             />
-            {remainingParagraphs.map((para) => (
-              <p>{para}</p>
-            ))}
-          </>
-        ) : (
-          person.paragraphs.map((para) => <p>{para}</p>)
-        )
-      }
-    </div>
-  </section>
-  {isThinProfile ? null : <PersonProfileContextSections locale={locale} person={person} />}
-  <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
-  <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />
+          </div>
+          <aside
+            class="min-w-0 border-t border-secondary-2/20 pt-8 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0 xl:pl-10"
+            aria-label="Expertise"
+          >
+            <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Expertise</h2>
+            <ul class="mt-4 divide-y divide-secondary-2/15 border-t border-secondary-2/15">
+              {expertiseIds.map((id) => (
+                <li class="py-3">
+                  <a
+                    href={localeHref(locale, `${EXPERTISE_PUBLIC_SEGMENT}/${expertisePathSlug(id)}`)}
+                    class:list={[expertiseRailLinkClass, 'inline-flex flex-wrap items-baseline gap-x-2']}
+                  >
+                    <span class="max-w-[90%] text-pretty">{EXPERTISE_LABELS[id]}</span>
+                    <span class="shrink-0 text-secondary-4/80" aria-hidden="true">
+                      →
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+      </section>
+    ) : (
+      <section class="mt-10 max-w-[52rem] md:mt-12" aria-labelledby="person-bio-heading">
+        <SectionKicker id="person-bio-heading">Biography</SectionKicker>
+        <PersonProfileBioBody
+          personName={person.name}
+          sameAs={person.sameAs ?? []}
+          recognitions={recognitions}
+          hideRecognitionBadgeBlock={hideRecognitionBadgeBlock}
+          usePhase2ProofAdjacency={usePhase2ProofAdjacency}
+          heroLeadCount={heroLeadCount}
+          bioParas={bioParas}
+        />
+      </section>
+    )
+  }
+  {showSituationsGrid ? <PersonProfileSituationsGrid locale={locale} situationIds={situationIds} givenName={givenName} /> : null}
+  {
+    isThinProfile ? null : (
+      <PersonProfileContextSections
+        locale={locale}
+        person={person}
+        suppressHelpsClientsWith={showExpertiseRail}
+        suppressRelatedSituations={showSituationsGrid}
+      />
+    )
+  }
+  {
+    showClassicContactNews ? (
+      <>
+        <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
+        <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />
+      </>
+    ) : (
+      <PersonProfileLowerBand
+        locale={locale}
+        personSlug={person.slug}
+        personName={person.name}
+        sameAs={person.sameAs ?? []}
+        articles={newsByPerson}
+      />
+    )
+  }
   {
     usePhase2ProofAdjacency ? null : (
       <PersonTrustSignals
