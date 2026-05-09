@@ -21,13 +21,27 @@ interface Props {
   localeBioNote: string | null;
   isThinProfile: boolean;
   newsByPerson: NewsArticle[];
+  /**
+   * Lab/benchmark pages only: use the same early independent-proof sequencing as the constrained
+   * cohort rollout, without adding this person’s slug to the live rollout allowlist.
+   */
+  earlyProofAfterFirstParagraph?: boolean;
 }
 
-const { locale, person, profileSubline, localeBioNote, isThinProfile, newsByPerson } = Astro.props;
+const {
+  locale,
+  person,
+  profileSubline,
+  localeBioNote,
+  isThinProfile,
+  newsByPerson,
+  earlyProofAfterFirstParagraph = false,
+} = Astro.props;
 
 const recognitions = person.recognitions ?? [];
 const phase2SequencingSlugs = new Set(['jenny-afia', 'ben-hobbs', 'rachel-atkins']);
-const usePhase2ProofAdjacency = !isThinProfile && phase2SequencingSlugs.has(person.slug);
+const usePhase2ProofAdjacency =
+  !isThinProfile && (phase2SequencingSlugs.has(person.slug) || earlyProofAfterFirstParagraph);
 const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
 ---
 

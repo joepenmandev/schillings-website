@@ -9,6 +9,9 @@ import { localeHref } from '@/lib/site-nav';
 
 const locale = 'en-gb';
 
+// Draft bio template: fictional person, shared components only. Edit `benchmarkPerson` here, deploy to staging, open:
+//   /benchmark/people/alex-hartwell/
+// (noindex, not in directory or sitemap). Do not use real client or colleague details.
 const benchmarkPerson: PersonProfile = {
   slug: 'alex-hartwell',
   name: 'Alex Hartwell',
@@ -22,7 +25,7 @@ const benchmarkPerson: PersonProfile = {
     'Alex Hartwell advises boards, founders and family principals on reputation, privacy and disputes where legal, communications and intelligence decisions must align quickly. Matters often begin in public view and develop across multiple jurisdictions at pace.',
     'Practice covers urgent containment, cross-border publication strategy, pre-action and interim applications, and coordination with specialist investigators when risk, source reliability, or parallel proceedings affect litigation decisions.',
     'Representative mandates include cross-jurisdiction disputes involving coordinated media narratives, online publication controls, and complex stakeholder management. Alex regularly leads integrated teams combining legal strategy, intelligence inputs, and communications discipline to protect long-term position while addressing immediate exposure.',
-    'External recognition and thought output are included here for benchmark testing only: a top-tier directory ranking profile, invited policy roundtables on digital rights and platform risk, and authored briefings on practical litigation-readiness in high-scrutiny matters.',
+    'Alongside client work, Alex contributes to policy discussions on digital rights and platform risk and occasionally publishes short notes on litigation readiness in high-scrutiny matters. All recognition items below are placeholder links for layout testing only.',
   ],
   imagePath: '/people-photos/placeholder-benchmark-portrait.svg',
   sameAs: [
@@ -63,12 +66,13 @@ const benchmarkPerson: PersonProfile = {
 };
 
 const profileSubline = 'Partner, Schillings Legal · London';
-const localeBioNote = 'Benchmark profile for internal research only. All details are fictional.';
+const localeBioNote =
+  'Draft bio template — staging and internal use only. Fictional person; edit copy in site/src/pages/benchmark/people/alex-hartwell/index.astro. Not indexed. Independent proof appears after the first biography paragraph, matching the constrained live sequencing.';
 ---
 
 <Base
-  title="Alex Hartwell (Benchmark) | Schillings"
-  description="Hidden benchmark practitioner profile for internal bio pattern testing."
+  title="Draft bio template (fictional) | Schillings"
+  description="Hidden draft practitioner bio template for staging; fictional data, noindex."
   {locale}
   pathAfterLocale="benchmark/people/alex-hartwell"
   noindex={true}
@@ -79,7 +83,7 @@ const localeBioNote = 'Benchmark profile for internal research only. All details
       <StrategicBreadcrumb
         items={[
           { label: 'Home', href: localeHref(locale, '') },
-          { label: 'Benchmark' },
+          { label: 'Draft template' },
           { label: benchmarkPerson.name },
         ]}
       />
@@ -90,6 +94,7 @@ const localeBioNote = 'Benchmark profile for internal research only. All details
         localeBioNote={localeBioNote}
         isThinProfile={false}
         newsByPerson={[]}
+        earlyProofAfterFirstParagraph={true}
       />
       <p class="mt-10">
         <a class="text-sm font-medium text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, '')}>
