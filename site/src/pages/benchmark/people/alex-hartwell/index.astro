@@ -3,71 +3,68 @@ import Base from '@/layouts/Base.astro';
 import SiteHeader from '@/components/SiteHeader.astro';
 import DocumentMain from '@/components/DocumentMain.astro';
 import StrategicBreadcrumb from '@/components/StrategicBreadcrumb.astro';
-import PersonProfileArticle from '@/components/PersonProfileArticle.astro';
-import type { PersonProfile } from '@/data/people';
 import { localeHref } from '@/lib/site-nav';
 
 const locale = 'en-gb';
 
-// Draft bio template: fictional person, shared components only. Edit `benchmarkPerson` here, deploy to staging, open:
-//   /benchmark/people/alex-hartwell/
-// (noindex, not in directory or sitemap). Do not use real client or colleague details.
-const benchmarkPerson: PersonProfile = {
-  slug: 'alex-hartwell',
+const person = {
   name: 'Alex Hartwell',
   role: 'Partner',
-  office: 'London',
-  officeId: 'london',
-  seniority: 'partner',
-  practiceGroup: 'legal',
-  expertise: ['reputation_privacy', 'litigation_disputes', 'intelligence_security', 'international'],
-  paragraphs: [
-    'Alex Hartwell advises boards, founders and family principals on reputation, privacy and disputes where legal, communications and intelligence decisions must align quickly. Matters often begin in public view and develop across multiple jurisdictions at pace.',
-    'Practice covers urgent containment, cross-border publication strategy, pre-action and interim applications, and coordination with specialist investigators when risk, source reliability, or parallel proceedings affect litigation decisions.',
-    'Representative mandates include cross-jurisdiction disputes involving coordinated media narratives, online publication controls, and complex stakeholder management. Alex regularly leads integrated teams combining legal strategy, intelligence inputs, and communications discipline to protect long-term position while addressing immediate exposure.',
-    'Alongside client work, Alex contributes to policy discussions on digital rights and platform risk and occasionally publishes short notes on litigation readiness in high-scrutiny matters. All recognition items below are placeholder links for layout testing only.',
-  ],
+  location: 'London',
+  strap: 'Privacy, Reputation & Media',
   imagePath: '/people-photos/placeholder-benchmark-portrait.svg',
-  sameAs: [
-    'https://example.com/profiles/alex-hartwell',
-    'https://www.linkedin.com/in/alex-hartwell-benchmark',
-  ],
-  recognitions: [
-    {
-      provider: 'chambers',
-      title: 'Band 1',
-      year: '2026',
-      scope: 'person',
-      href: 'https://example.com/directories/chambers/alex-hartwell',
-    },
-    {
-      provider: 'legal500',
-      title: 'Leading Partner',
-      year: '2026',
-      scope: 'person',
-      href: 'https://example.com/directories/legal500/alex-hartwell',
-    },
-    {
-      provider: 'spears',
-      title: 'Top Flight',
-      year: '2026',
-      scope: 'person',
-      href: 'https://example.com/directories/spears/alex-hartwell',
-    },
-    {
-      provider: 'other',
-      title: 'Policy Contributor',
-      year: '2025',
-      scope: 'person',
-      href: 'https://example.com/publications/policy-contributor-alex-hartwell',
-    },
-  ],
-  profileUpdatedAt: '2026-05-08T00:00:00.000Z',
 };
 
-const profileSubline = 'Partner, Schillings Legal · London';
-const localeBioNote =
-  'Draft bio template — staging and internal use only. Fictional person; edit copy in site/src/pages/benchmark/people/alex-hartwell/index.astro. Not indexed. Independent proof appears after the first biography paragraph, matching the constrained live sequencing.';
+const opener =
+  'Alex Hartwell advises individuals, families and organisations on high-stakes privacy, reputation and media matters where legal, strategic and reputational risks intersect.';
+
+const biographyParagraphs = [
+  'Alex leads the firm\'s global entertainment practice and is widely recognised for expertise in complex litigation involving privacy, defamation and media law, often spanning multiple jurisdictions.',
+  'Alex represents clients in some of the most sensitive and complex legal disputes, where litigation, reputation and public exposure converge.',
+  'Alex\'s work includes defending reputations, managing crisis situations and protecting clients from intrusive media coverage. He regularly advises in urgent applications, cross-border disputes and cases involving parallel proceedings.',
+  'Alex works closely with clients, specialist counsel and investigators when risk, source reliability or public exposure may affect litigation outcomes. His practice spans litigation, interim relief, pre-action strategy and post-judgment reputation management.',
+];
+
+const recognitions = [
+  { title: 'Band 1', source: 'Chambers & Partners 2024' },
+  { title: 'Leading Partner', source: 'Legal 500 2024' },
+  { title: 'Top Flight', source: "Spears 500 2024" },
+  { title: 'Recognised Practitioner', source: "Who's Who Legal 2024" },
+];
+
+const expertise = [
+  'Privacy & Data Protection',
+  'Defamation & Media Law',
+  'Reputation Management',
+  'Entertainment & Sport',
+  'Cross-border Disputes',
+  'Crisis Response',
+];
+
+const situations = [
+  { title: 'Media Exposure & Scrutiny', body: 'Managing public attention and media narratives.' },
+  { title: 'Reputation Under Threat', body: 'Protecting reputations and responding to damaging claims.' },
+  { title: 'Privacy & Protection', body: 'Safeguarding privacy and sensitive personal information.' },
+  { title: 'High-Stakes Litigation', body: 'Handling complex, sensitive and high value disputes.' },
+  { title: 'International Disputes', body: 'Cross-border disputes and jurisdictional challenges.' },
+  { title: 'Sensitive Investigations', body: 'Supporting internal and external sensitive investigations.' },
+  { title: 'Online Harassment & Abuse', body: 'Addressing online harm and digital threats.' },
+  { title: 'AI & Emerging Risks', body: 'Advising on AI, data and emerging legal risks.' },
+];
+
+const publications = [
+  { title: 'The growing intersection of privacy and AI', date: 'May 2024' },
+  { title: 'Reputation management in the age of social media', date: '12 March 2024' },
+  { title: 'Defamation law reforms: what to watch', date: '9 February 2024' },
+];
+
+const memberships = [
+  'University of Cambridge (BA), BPP Law School (LPC)',
+  'Media and Privacy Law Committee (Chair)',
+  'International Bar Association',
+  'Law Society of England and Wales',
+  'Languages: English',
+];
 ---
 
 <Base
@@ -84,18 +81,123 @@ const localeBioNote =
         items={[
           { label: 'Home', href: localeHref(locale, '') },
           { label: 'Draft template' },
-          { label: benchmarkPerson.name },
+          { label: person.name },
         ]}
       />
-      <PersonProfileArticle
-        {locale}
-        person={benchmarkPerson}
-        profileSubline={profileSubline}
-        localeBioNote={localeBioNote}
-        isThinProfile={false}
-        newsByPerson={[]}
-        earlyProofAfterFirstParagraph={true}
-      />
+      <p class="mt-6 text-xs font-normal uppercase tracking-wide text-secondary-2">
+        Draft bio template - staging/internal only (fictional profile, noindex)
+      </p>
+
+      <section class="mt-4 grid grid-cols-1 gap-8 border-b border-secondary-2/20 pb-10 lg:grid-cols-[1fr_420px] lg:items-start">
+        <div>
+          <h1 class="text-5xl font-extralight leading-[1.05] tracking-tight text-secondary-4 md:text-6xl">{person.name}</h1>
+          <p class="mt-3 text-xl font-light text-secondary-4">
+            {person.role}
+            <span class="mx-2 text-secondary-2">·</span>
+            {person.location}
+          </p>
+          <p class="mt-1 font-serif text-xl font-extralight italic text-secondary-3">{person.strap}</p>
+          <div class="mt-6 h-px w-10 bg-secondary-2/45" />
+          <p class="mt-6 max-w-xl text-pretty text-xl leading-relaxed text-secondary-4">{opener}</p>
+          <p class="mt-4 max-w-2xl text-pretty text-sm leading-relaxed text-secondary-3">
+            This benchmark profile mirrors shared styling while testing denser institutional structure and early trust cues.
+          </p>
+        </div>
+        <div class="overflow-hidden border border-secondary-2/15 bg-utility-2/30 shadow-sm ring-1 ring-black/[0.03]">
+          <img
+            src={person.imagePath}
+            alt={person.name}
+            width={840}
+            height={560}
+            class="h-auto w-full object-cover"
+            sizes="(max-width: 1024px) 100vw, 420px"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </div>
+      </section>
+
+      <section class="mt-8 border-b border-secondary-2/20 pb-8">
+        <div class="grid grid-cols-1 divide-y divide-secondary-2/20 border border-secondary-2/20 md:grid-cols-5 md:divide-x md:divide-y-0">
+          <div class="p-4">
+            <p class="text-[11px] font-medium uppercase tracking-wider text-secondary-2">Recognised by leading directories</p>
+          </div>
+          {recognitions.map((item) => (
+            <div class="p-4">
+              <p class="text-sm font-medium text-secondary-4">{item.title}</p>
+              <p class="mt-1 text-xs text-secondary-3">{item.source}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="mt-10 grid grid-cols-1 gap-10 border-b border-secondary-2/20 pb-10 lg:grid-cols-[1.25fr_0.75fr]">
+        <div class="space-y-5 text-pretty text-base leading-[1.7] text-secondary-3">
+          {biographyParagraphs.map((para) => (
+            <p>{para}</p>
+          ))}
+        </div>
+        <aside>
+          <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Expertise</h2>
+          <ul class="mt-4 divide-y divide-secondary-2/15 border-t border-secondary-2/15">
+            {expertise.map((item) => (
+              <li class="py-3">
+                <span class="text-sm text-secondary-4">{item}</span>
+                <span class="ml-2 text-secondary-2">-></span>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </section>
+
+      <section class="mt-8 border-b border-secondary-2/20 pb-10">
+        <div class="mb-4 flex items-center justify-between gap-4">
+          <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Situations this practitioner helps clients manage</h2>
+          <span class="text-xs text-secondary-3">View all situations -></span>
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {situations.map((item) => (
+            <article class="border border-secondary-2/15 bg-utility-2/30 p-4">
+              <h3 class="text-sm font-medium text-secondary-4">{item.title}</h3>
+              <p class="mt-2 text-xs leading-relaxed text-secondary-3">{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="mt-8 grid grid-cols-1 gap-6 border border-secondary-2/20 bg-utility-2/30 p-6 md:grid-cols-3">
+        <div>
+          <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Insights & publications</h2>
+          <ul class="mt-3 space-y-3">
+            {publications.map((item) => (
+              <li>
+                <p class="text-sm text-secondary-4">{item.title}</p>
+                <p class="text-xs text-secondary-3">{item.date}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-4 text-xs text-secondary-3">View all insights -></p>
+        </div>
+        <div>
+          <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Education & memberships</h2>
+          <ul class="mt-3 space-y-2 text-xs leading-relaxed text-secondary-3">
+            {memberships.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-xs font-medium uppercase tracking-wider text-secondary-2">Get in touch</h2>
+          <p class="mt-3 text-sm text-secondary-4">To discuss a matter confidentially, please get in touch:</p>
+          <ul class="mt-3 space-y-2 text-xs leading-relaxed text-secondary-3">
+            <li>+44 (0)20 0000 0000 (placeholder)</li>
+            <li>alex.hartwell.benchmark@example.com</li>
+            <li>Example Office, Fictional Address, London (layout only)</li>
+          </ul>
+        </div>
+      </section>
+
       <p class="mt-10">
         <a class="text-sm font-medium text-secondary-4 underline hover:text-secondary-3" href={localeHref(locale, '')}>
           ← Home
