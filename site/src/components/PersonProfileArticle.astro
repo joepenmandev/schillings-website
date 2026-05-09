@@ -1,6 +1,5 @@
 ---
 import PersonTrustSignals from '@/components/PersonTrustSignals.astro';
-import PersonRecognitionStrip from '@/components/PersonRecognitionStrip.astro';
 import PersonPublicContact from '@/components/PersonPublicContact.astro';
 import PersonProfileContextSections from '@/components/PersonProfileContextSections.astro';
 import PersonRelatedAndExplore from '@/components/PersonRelatedAndExplore.astro';
@@ -40,8 +39,6 @@ const {
 } = Astro.props;
 
 const recognitions = person.recognitions ?? [];
-const showRecognitionStrip = recognitions.length > 0;
-const hideRecognitionBadgeBlock = showRecognitionStrip;
 const phase2SequencingSlugs = new Set(['jenny-afia', 'ben-hobbs', 'rachel-atkins']);
 const usePhase2ProofAdjacency =
   !isThinProfile && (phase2SequencingSlugs.has(person.slug) || earlyProofAfterFirstParagraph);
@@ -51,7 +48,7 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
 <>
   <div
     class:list={[
-      'mt-6 grid max-w-6xl grid-cols-1 gap-y-8 md:mt-8 lg:items-start lg:gap-y-9 xl:gap-y-10',
+      'mt-6 grid max-w-6xl grid-cols-1 gap-y-8 md:mt-8 lg:items-start lg:gap-y-8',
       person.imagePath ? 'lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-12 xl:gap-x-16' : 'lg:grid-cols-1',
     ]}
   >
@@ -79,12 +76,7 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
       ) : null}
     </header>
     {person.imagePath ? (
-      <div
-        class:list={[
-          'mx-auto w-full max-w-[20rem] shrink-0 lg:col-start-2 lg:row-start-1 lg:mx-0 lg:flex lg:justify-end lg:self-start',
-          showRecognitionStrip ? 'lg:row-span-3' : 'lg:row-span-2',
-        ]}
-      >
+      <div class="mx-auto w-full max-w-[20rem] shrink-0 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:flex lg:justify-end lg:self-start">
         <div class="overflow-hidden rounded-sm shadow-md ring-1 ring-secondary-2/20 lg:sticky lg:top-28">
           <img
             src={person.imagePath}
@@ -100,21 +92,8 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
         </div>
       </div>
     ) : null}
-    {
-      showRecognitionStrip ? (
-        <div
-          class:list={['min-w-0 w-full', person.imagePath ? 'lg:col-span-2 lg:row-start-2' : '']}
-        >
-          <PersonRecognitionStrip items={recognitions} />
-        </div>
-      ) : null
-    }
     <section
-      class:list={[
-        'max-w-[52rem]',
-        person.imagePath ? 'lg:col-start-1' : '',
-        person.imagePath ? (showRecognitionStrip ? 'lg:row-start-3' : 'lg:row-start-2') : '',
-      ]}
+      class:list={['max-w-[52rem]', person.imagePath ? 'lg:col-start-1 lg:row-start-2' : '']}
       aria-labelledby="person-bio-heading"
     >
       <SectionKicker id="person-bio-heading">Biography</SectionKicker>
@@ -123,13 +102,7 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
           usePhase2ProofAdjacency ? (
             <>
               {firstParagraph ? <p>{firstParagraph}</p> : null}
-              <PersonTrustSignals
-                personName={person.name}
-                sameAs={person.sameAs ?? []}
-                recognitions={recognitions}
-                hideLinkedIn
-                hideRecognitionBadges={hideRecognitionBadgeBlock}
-              />
+              <PersonTrustSignals personName={person.name} sameAs={person.sameAs ?? []} recognitions={recognitions} hideLinkedIn />
               {remainingParagraphs.map((para) => (
                 <p>{para}</p>
               ))}
@@ -144,17 +117,7 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
   {isThinProfile ? null : <PersonProfileContextSections locale={locale} person={person} />}
   <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
   <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />
-  {
-    usePhase2ProofAdjacency ? null : (
-      <PersonTrustSignals
-        personName={person.name}
-        sameAs={person.sameAs ?? []}
-        recognitions={recognitions}
-        hideLinkedIn
-        hideRecognitionBadges={hideRecognitionBadgeBlock}
-      />
-    )
-  }
+  {usePhase2ProofAdjacency ? null : <PersonTrustSignals personName={person.name} sameAs={person.sameAs ?? []} recognitions={recognitions} hideLinkedIn />}
   <PersonContactCta locale={locale} personName={person.name} />
   <PersonRelatedAndExplore locale={locale} />
 </>
