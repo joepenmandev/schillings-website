@@ -1,0 +1,58 @@
+---
+/**
+ * Full-width recognition row below the hero grid only (never inside the portrait grid).
+ */
+import type { PersonRecognition } from '@/data/people';
+import { resolveRecognitionOutboundHref } from '@/lib/person-recognition-href';
+import { recognitionDirectoryLine, sortPersonRecognitions } from '@/lib/person-recognition-meta';
+
+interface Props {
+  items: PersonRecognition[];
+}
+
+const { items } = Astro.props;
+const sorted = sortPersonRecognitions(items);
+
+/** Match benchmark `alex-hartwell` recognition band: kicker, title, source line weights. */
+const kickerClass = 'text-[11px] font-medium uppercase tracking-wider text-secondary-2';
+const titleClass = 'text-sm font-medium leading-snug text-secondary-4';
+const metaClass = 'mt-1 text-xs leading-snug text-secondary-3';
+const focusRing =
+  'rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-secondary-3/50 focus-visible:ring-offset-2 focus-visible:ring-offset-utility-1';
+---
+
+{
+  sorted.length > 0 ? (
+    <section class="not-prose border-b border-secondary-2/20 pb-8" aria-label="Independent directory recognitions">
+      <div class="flex flex-col gap-0 divide-y divide-secondary-2/20 border border-secondary-2/20 md:flex-row md:items-stretch md:divide-x md:divide-y-0">
+        <div class="p-4 md:flex md:max-w-[13.5rem] md:shrink-0 md:flex-col md:justify-start">
+          <p class={kickerClass}>Recognised by leading directories</p>
+        </div>
+        <div class="grid min-w-0 flex-1 grid-cols-1 divide-y divide-secondary-2/20 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+          {sorted.map((item) => {
+            const href = resolveRecognitionOutboundHref(item);
+            const meta = recognitionDirectoryLine(item);
+            const inner = (
+              <>
+                <p class={titleClass}>{item.title}</p>
+                {meta ? <p class={metaClass}>{meta}</p> : null}
+              </>
+            );
+            return (
+              <div class="p-4">
+                {href ? (
+                  <a href={href} rel="noopener noreferrer" target="_blank" class:list={[focusRing, 'block']}>
+                    {inner}
+                    <span class="sr-only"> (opens in new tab)</span>
+                  </a>
+                ) : (
+                  <div>{inner}</div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  ) : null
+}

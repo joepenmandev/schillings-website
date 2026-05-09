@@ -1,5 +1,6 @@
 ---
 import PersonTrustSignals from '@/components/PersonTrustSignals.astro';
+import PersonRecognitionStrip from '@/components/PersonRecognitionStrip.astro';
 import PersonPublicContact from '@/components/PersonPublicContact.astro';
 import PersonProfileContextSections from '@/components/PersonProfileContextSections.astro';
 import PersonRelatedAndExplore from '@/components/PersonRelatedAndExplore.astro';
@@ -39,6 +40,8 @@ const {
 } = Astro.props;
 
 const recognitions = person.recognitions ?? [];
+const showRecognitionStrip = recognitions.length > 0;
+const hideRecognitionBadgeBlock = showRecognitionStrip;
 const phase2SequencingSlugs = new Set(['jenny-afia', 'ben-hobbs', 'rachel-atkins']);
 const usePhase2ProofAdjacency =
   !isThinProfile && (phase2SequencingSlugs.has(person.slug) || earlyProofAfterFirstParagraph);
@@ -46,6 +49,10 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
 ---
 
 <>
+  {/*
+    Hero grid: identity + portrait only. Do not place full-width rows here alongside row-spanning
+    portrait — that causes grid-cell overlap at lg/xl.
+  */}
   <div
     class:list={[
       'mt-6 grid max-w-6xl grid-cols-1 gap-y-8 md:mt-8 lg:items-start lg:gap-y-8',
@@ -76,7 +83,7 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
       ) : null}
     </header>
     {person.imagePath ? (
-      <div class="mx-auto w-full max-w-[20rem] shrink-0 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:flex lg:justify-end lg:self-start">
+      <div class="mx-auto w-full max-w-[20rem] shrink-0 lg:col-start-2 lg:row-start-1 lg:mx-0 lg:flex lg:justify-end lg:self-start">
         <div class="overflow-hidden rounded-sm shadow-md ring-1 ring-secondary-2/20 lg:sticky lg:top-28">
           <img
             src={person.imagePath}
@@ -92,32 +99,52 @@ const [firstParagraph, ...remainingParagraphs] = person.paragraphs;
         </div>
       </div>
     ) : null}
-    <section
-      class:list={['max-w-[52rem]', person.imagePath ? 'lg:col-start-1 lg:row-start-2' : '']}
-      aria-labelledby="person-bio-heading"
-    >
-      <SectionKicker id="person-bio-heading">Biography</SectionKicker>
-      <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
-        {
-          usePhase2ProofAdjacency ? (
-            <>
-              {firstParagraph ? <p>{firstParagraph}</p> : null}
-              <PersonTrustSignals personName={person.name} sameAs={person.sameAs ?? []} recognitions={recognitions} hideLinkedIn />
-              {remainingParagraphs.map((para) => (
-                <p>{para}</p>
-              ))}
-            </>
-          ) : (
-            person.paragraphs.map((para) => <p>{para}</p>)
-          )
-        }
-      </div>
-    </section>
   </div>
+  {
+    showRecognitionStrip ? (
+      <div class="mt-8 w-full max-w-6xl">
+        <PersonRecognitionStrip items={recognitions} />
+      </div>
+    ) : null
+  }
+  <section class="mt-8 max-w-[52rem]" aria-labelledby="person-bio-heading">
+    <SectionKicker id="person-bio-heading">Biography</SectionKicker>
+    <div class="mt-5 space-y-5 text-pretty text-base font-normal leading-[1.65] text-secondary-3 md:mt-6 md:space-y-6 md:text-[1.05rem]">
+      {
+        usePhase2ProofAdjacency ? (
+          <>
+            {firstParagraph ? <p>{firstParagraph}</p> : null}
+            <PersonTrustSignals
+              personName={person.name}
+              sameAs={person.sameAs ?? []}
+              recognitions={recognitions}
+              hideLinkedIn
+              hideRecognitionBadges={hideRecognitionBadgeBlock}
+            />
+            {remainingParagraphs.map((para) => (
+              <p>{para}</p>
+            ))}
+          </>
+        ) : (
+          person.paragraphs.map((para) => <p>{para}</p>)
+        )
+      }
+    </div>
+  </section>
   {isThinProfile ? null : <PersonProfileContextSections locale={locale} person={person} />}
   <PersonPublicContact slug={person.slug} sameAs={person.sameAs ?? []} />
   <PersonNewsByline locale={locale} articles={newsByPerson} personSlug={person.slug} personName={person.name} />
-  {usePhase2ProofAdjacency ? null : <PersonTrustSignals personName={person.name} sameAs={person.sameAs ?? []} recognitions={recognitions} hideLinkedIn />}
+  {
+    usePhase2ProofAdjacency ? null : (
+      <PersonTrustSignals
+        personName={person.name}
+        sameAs={person.sameAs ?? []}
+        recognitions={recognitions}
+        hideLinkedIn
+        hideRecognitionBadges={hideRecognitionBadgeBlock}
+      />
+    )
+  }
   <PersonContactCta locale={locale} personName={person.name} />
   <PersonRelatedAndExplore locale={locale} />
 </>
