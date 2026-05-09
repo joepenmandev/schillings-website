@@ -14,31 +14,51 @@ const { items } = Astro.props;
 const sorted = sortPersonRecognitions(items);
 
 /** Recognition band: first column anchor + directory cells — typography-led, minimal chrome. */
-const kickerClass =
-  'text-[11px] font-semibold uppercase leading-snug tracking-[0.14em] text-secondary-4';
 const titleClass = 'text-[0.8125rem] font-semibold leading-snug tracking-tight text-secondary-4';
 const metaClass = 'mt-1.5 text-[0.6875rem] font-normal leading-snug text-secondary-3/95';
 const focusRing =
   'rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-secondary-3/50 focus-visible:ring-offset-2 focus-visible:ring-offset-utility-1';
 
-const directoryGlyphClass = 'mt-0.5 h-8 w-8 shrink-0 text-secondary-4/55';
+const kickerLineClass =
+  'block font-sans text-[10px] font-medium uppercase leading-tight tracking-[0.16em] text-secondary-3';
+const kickerEmphasisClass =
+  'mt-0.5 block font-sans text-[11px] font-semibold uppercase leading-tight tracking-[0.14em] text-secondary-4';
+
+/** Directory rosette — award/ribbon motif (inline SVG, no asset file). */
+const directoryAwardIconClass = 'h-11 w-9 shrink-0 text-secondary-4/70';
 ---
 
 {
   sorted.length > 0 ? (
     <section class="not-prose border-b border-secondary-2/15 bg-utility-2/20 pb-7 pt-0 md:pb-8" aria-label="Independent directory recognitions">
       <div class="flex flex-col divide-y divide-secondary-2/12 md:flex-row md:items-stretch md:divide-x md:divide-y-0">
-        <div class="flex gap-3 border-l-2 border-secondary-4/28 bg-utility-2/35 py-5 pl-4 pr-4 md:max-w-[14.5rem] md:shrink-0 md:flex-col md:justify-center md:py-6 md:pl-5 md:pr-5">
-          <svg class={directoryGlyphClass} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <div class="flex items-center gap-3.5 border-l-2 border-secondary-4/28 bg-utility-2/35 px-4 py-4 md:max-w-[17rem] md:shrink-0 md:gap-4 md:px-5 md:py-5">
+          <svg
+            class={directoryAwardIconClass}
+            viewBox="0 0 36 44"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <circle cx="18" cy="12.5" r="7" stroke="currentColor" stroke-width="1.15" />
             <path
-              d="M8 6.5h11a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H8a1.5 1.5 0 0 1-1.5-1.5v-16A1.5 1.5 0 0 1 8 6.5Z"
+              d="M12 11.5 14.2 13.7 18 9.8 21.8 13.7 24 11.5"
               stroke="currentColor"
-              stroke-width="1.1"
+              stroke-width="1.15"
+              stroke-linecap="round"
               stroke-linejoin="round"
             />
-            <path d="M11 11h6M11 15h6M11 19h4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+            <path
+              d="M13.5 19.6 10.8 38.2 18 27 25.2 38.2 22.5 19.6"
+              stroke="currentColor"
+              stroke-width="1.15"
+              stroke-linejoin="round"
+            />
           </svg>
-          <p class:list={[kickerClass, 'max-w-[12rem] text-pretty']}>Recognised by leading directories</p>
+          <p class="min-w-0 text-pretty">
+            <span class={kickerLineClass}>Recognised by</span>
+            <span class={kickerEmphasisClass}>Leading directories</span>
+          </p>
         </div>
         <div class="grid min-w-0 flex-1 grid-cols-1 divide-y divide-secondary-2/12 bg-brand-white/25 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
           {sorted.map((item) => {
