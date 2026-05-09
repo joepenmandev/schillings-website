@@ -23,7 +23,7 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
 
 {
   articles.length > 0 ? (
-    <section class="mt-10" aria-labelledby="person-news-heading">
+    <section class="mt-12 md:mt-14" aria-labelledby="person-news-heading">
       <h2 id="person-news-heading" class="text-sm font-medium uppercase tracking-wide text-secondary-2">
         Related Intelligence
       </h2>
@@ -31,7 +31,7 @@ const excludeAuthorSlugs = personSlug?.trim() ? [personSlug.trim()] : [];
         Published analysis and commentary where this colleague is credited as an author — useful context on perspective and
         public commentary. Co-authors appear on each card with a short role line linking to their profiles.
       </p>
-      <div class="mt-6 border-t border-secondary-2/20 pt-4">
+      <div class="mt-6 border-t border-secondary-2/[0.12] pt-5">
         <NewsEditorialCarousel
           {locale}
           articles={visible}

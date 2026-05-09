@@ -16,7 +16,7 @@ const twitterOrX = sameAs.find((u) => /^https?:\/\/(www\.)?(twitter\.com|x\.com)
 if (!email && !linkedIn && !twitterOrX) return null;
 
 const wrapClass =
-  'not-prose mt-12 flex flex-wrap items-center gap-x-7 gap-y-4 border-t border-secondary-2/20 pt-10 font-serif text-base font-normal text-brand-black';
+  'not-prose mt-14 flex flex-wrap items-center gap-x-7 gap-y-4 border-t border-secondary-2/[0.12] pt-10 font-serif text-base font-normal text-brand-black md:mt-16';
 
 const mailClass =
   'break-all underline decoration-secondary-2/50 underline-offset-4 transition-colors hover:decoration-secondary-4';
